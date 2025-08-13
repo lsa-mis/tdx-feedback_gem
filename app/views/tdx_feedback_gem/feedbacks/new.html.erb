@@ -1,0 +1,17 @@
+<%= render 'tdx_feedback_gem/shared/flashes' %>
+
+<h1 class="tdx-title">Send Feedback</h1>
+
+<%= form_with url: tdx_feedback_gem.feedbacks_path, method: :post, local: true, html: { class: 'tdx-form' } do |f| %>
+  <div class="tdx-field">
+    <%= f.label :message, 'Message' %><br />
+    <%= f.text_area :message, rows: 6, required: true, class: 'tdx-textarea' %>
+  </div>
+  <div class="tdx-field">
+    <%= f.label :context, 'Context (optional)' %><br />
+    <%= f.text_area :context, rows: 4, class: 'tdx-textarea' %>
+  </div>
+  <div class="tdx-actions">
+    <%= f.submit 'Submit', class: 'tdx-button' %>
+  </div>
+<% end %>

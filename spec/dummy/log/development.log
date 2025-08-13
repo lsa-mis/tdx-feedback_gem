@@ -1,0 +1,199 @@
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked hosts: www.example.com
+[ActionDispatch::HostAuthorization::DefaultResponseApp] Blocked hosts: www.example.com
+Started GET "/feedback" for 127.0.0.1 at 2025-08-13 13:16:51 -0400
+Processing by TdxFeedbackGem::FeedbacksController#new as HTML
+  Rendering /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/shared/_flashes.html.erb (Duration: 2.4ms | GC: 0.0ms)
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb (Duration: 5.2ms | GC: 0.1ms)
+Completed 200 OK in 9ms (Views: 9.2ms | GC: 0.2ms)
+
+
+Started POST "/feedback/feedbacks" for 127.0.0.1 at 2025-08-13 13:16:51 -0400
+Processing by TdxFeedbackGem::FeedbacksController#create as HTML
+  Parameters: {"feedback"=>{"message"=>"Great job", "context"=>"from test"}}
+Can't verify CSRF token authenticity.
+Completed 422 Unprocessable Content in 0ms (GC: 0.0ms)
+
+
+  
+ActionController::InvalidAuthenticityToken (Can't verify CSRF token authenticity.):
+  
+actionpack (7.2.2.1) lib/action_controller/metal/request_forgery_protection.rb:312:in `handle_unverified_request'
+actionpack (7.2.2.1) lib/action_controller/metal/request_forgery_protection.rb:406:in `handle_unverified_request'
+actionpack (7.2.2.1) lib/action_controller/metal/request_forgery_protection.rb:395:in `verify_authenticity_token'
+activesupport (7.2.2.1) lib/active_support/callbacks.rb:362:in `block in make_lambda'
+activesupport (7.2.2.1) lib/active_support/callbacks.rb:179:in `block in call'
+actionpack (7.2.2.1) lib/abstract_controller/callbacks.rb:34:in `block (2 levels) in <module:Callbacks>'
+activesupport (7.2.2.1) lib/active_support/callbacks.rb:180:in `call'
+activesupport (7.2.2.1) lib/active_support/callbacks.rb:559:in `block in invoke_before'
+activesupport (7.2.2.1) lib/active_support/callbacks.rb:559:in `each'
+activesupport (7.2.2.1) lib/active_support/callbacks.rb:559:in `invoke_before'
+activesupport (7.2.2.1) lib/active_support/callbacks.rb:109:in `run_callbacks'
+actionpack (7.2.2.1) lib/abstract_controller/callbacks.rb:260:in `process_action'
+actionpack (7.2.2.1) lib/action_controller/metal/rescue.rb:27:in `process_action'
+actionpack (7.2.2.1) lib/action_controller/metal/instrumentation.rb:77:in `block in process_action'
+activesupport (7.2.2.1) lib/active_support/notifications.rb:210:in `block in instrument'
+activesupport (7.2.2.1) lib/active_support/notifications/instrumenter.rb:58:in `instrument'
+activesupport (7.2.2.1) lib/active_support/notifications.rb:210:in `instrument'
+actionpack (7.2.2.1) lib/action_controller/metal/instrumentation.rb:76:in `process_action'
+actionpack (7.2.2.1) lib/action_controller/metal/params_wrapper.rb:259:in `process_action'
+actionpack (7.2.2.1) lib/abstract_controller/base.rb:163:in `process'
+actionview (7.2.2.1) lib/action_view/rendering.rb:40:in `process'
+actionpack (7.2.2.1) lib/action_controller/metal.rb:252:in `dispatch'
+actionpack (7.2.2.1) lib/action_controller/metal.rb:335:in `dispatch'
+actionpack (7.2.2.1) lib/action_dispatch/routing/route_set.rb:67:in `dispatch'
+actionpack (7.2.2.1) lib/action_dispatch/routing/route_set.rb:50:in `serve'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:53:in `block in serve'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:133:in `block in find_routes'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:126:in `each'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:126:in `find_routes'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:34:in `serve'
+actionpack (7.2.2.1) lib/action_dispatch/routing/route_set.rb:896:in `call'
+railties (7.2.2.1) lib/rails/engine.rb:535:in `call'
+railties (7.2.2.1) lib/rails/railtie.rb:226:in `public_send'
+railties (7.2.2.1) lib/rails/railtie.rb:226:in `method_missing'
+actionpack (7.2.2.1) lib/action_dispatch/routing/mapper.rb:33:in `block in <class:Constraints>'
+actionpack (7.2.2.1) lib/action_dispatch/routing/mapper.rb:62:in `serve'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:53:in `block in serve'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:133:in `block in find_routes'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:126:in `each'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:126:in `find_routes'
+actionpack (7.2.2.1) lib/action_dispatch/journey/router.rb:34:in `serve'
+actionpack (7.2.2.1) lib/action_dispatch/routing/route_set.rb:896:in `call'
+rack (3.1.16) lib/rack/tempfile_reaper.rb:20:in `call'
+rack (3.1.16) lib/rack/etag.rb:29:in `call'
+rack (3.1.16) lib/rack/conditional_get.rb:43:in `call'
+rack (3.1.16) lib/rack/head.rb:15:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/http/permissions_policy.rb:38:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/http/content_security_policy.rb:38:in `call'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:274:in `context'
+rack-session (2.1.1) lib/rack/session/abstract/id.rb:268:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/cookies.rb:704:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (7.2.2.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (7.2.2.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (7.2.2.1) lib/rails/rack/logger.rb:29:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/remote_ip.rb:96:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/request_id.rb:33:in `call'
+rack (3.1.16) lib/rack/method_override.rb:28:in `call'
+rack (3.1.16) lib/rack/runtime.rb:24:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.2.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.1.16) lib/rack/sendfile.rb:114:in `call'
+railties (7.2.2.1) lib/rails/engine.rb:535:in `call'
+rack-test (2.2.0) lib/rack/test.rb:360:in `process_request'
+rack-test (2.2.0) lib/rack/test.rb:153:in `request'
+actionpack (7.2.2.1) lib/action_dispatch/testing/integration.rb:287:in `process'
+actionpack (7.2.2.1) lib/action_dispatch/testing/integration.rb:25:in `post'
+actionpack (7.2.2.1) lib/action_dispatch/testing/integration.rb:378:in `post'
+/Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/spec/requests/feedback_flow_spec.rb:15:in `block (2 levels) in <top (required)>'
+rspec-core (3.13.5) lib/rspec/core/example.rb:263:in `instance_exec'
+rspec-core (3.13.5) lib/rspec/core/example.rb:263:in `block in run'
+rspec-core (3.13.5) lib/rspec/core/example.rb:511:in `block in with_around_and_singleton_context_hooks'
+rspec-core (3.13.5) lib/rspec/core/example.rb:468:in `block in with_around_example_hooks'
+rspec-core (3.13.5) lib/rspec/core/hooks.rb:486:in `block in run'
+rspec-core (3.13.5) lib/rspec/core/hooks.rb:626:in `block in run_around_example_hooks_for'
+rspec-core (3.13.5) lib/rspec/core/example.rb:352:in `call'
+rspec-rails (6.1.5) lib/rspec/rails/adapters.rb:75:in `block (2 levels) in <module:MinitestLifecycleAdapter>'
+rspec-core (3.13.5) lib/rspec/core/example.rb:457:in `instance_exec'
+rspec-core (3.13.5) lib/rspec/core/example.rb:457:in `instance_exec'
+rspec-core (3.13.5) lib/rspec/core/hooks.rb:390:in `execute_with'
+rspec-core (3.13.5) lib/rspec/core/hooks.rb:628:in `block (2 levels) in run_around_example_hooks_for'
+rspec-core (3.13.5) lib/rspec/core/example.rb:352:in `call'
+rspec-core (3.13.5) lib/rspec/core/hooks.rb:629:in `run_around_example_hooks_for'
+rspec-core (3.13.5) lib/rspec/core/hooks.rb:486:in `run'
+rspec-core (3.13.5) lib/rspec/core/example.rb:468:in `with_around_example_hooks'
+rspec-core (3.13.5) lib/rspec/core/example.rb:511:in `with_around_and_singleton_context_hooks'
+rspec-core (3.13.5) lib/rspec/core/example.rb:259:in `run'
+rspec-core (3.13.5) lib/rspec/core/example_group.rb:653:in `block in run_examples'
+rspec-core (3.13.5) lib/rspec/core/example_group.rb:649:in `map'
+rspec-core (3.13.5) lib/rspec/core/example_group.rb:649:in `run_examples'
+rspec-core (3.13.5) lib/rspec/core/example_group.rb:614:in `run'
+rspec-core (3.13.5) lib/rspec/core/runner.rb:121:in `block (3 levels) in run_specs'
+rspec-core (3.13.5) lib/rspec/core/runner.rb:121:in `map'
+rspec-core (3.13.5) lib/rspec/core/runner.rb:121:in `block (2 levels) in run_specs'
+rspec-core (3.13.5) lib/rspec/core/configuration.rb:2097:in `with_suite_hooks'
+rspec-core (3.13.5) lib/rspec/core/runner.rb:116:in `block in run_specs'
+rspec-core (3.13.5) lib/rspec/core/reporter.rb:74:in `report'
+rspec-core (3.13.5) lib/rspec/core/runner.rb:115:in `run_specs'
+rspec-core (3.13.5) lib/rspec/core/runner.rb:89:in `run'
+rspec-core (3.13.5) lib/rspec/core/runner.rb:71:in `run'
+rspec-core (3.13.5) lib/rspec/core/runner.rb:45:in `invoke'
+rspec-core (3.13.5) exe/rspec:4:in `<top (required)>'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/bin/rspec:25:in `load'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/bin/rspec:25:in `<top (required)>'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/cli/exec.rb:59:in `load'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/cli/exec.rb:59:in `kernel_load'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/cli/exec.rb:23:in `run'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/cli.rb:452:in `exec'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/vendor/thor/lib/thor/command.rb:28:in `run'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/vendor/thor/lib/thor/invocation.rb:127:in `invoke_command'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/vendor/thor/lib/thor.rb:538:in `dispatch'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/cli.rb:35:in `dispatch'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/vendor/thor/lib/thor/base.rb:584:in `start'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/cli.rb:29:in `start'
+bundler (2.6.9) exe/bundle:28:in `block in <top (required)>'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/lib/ruby/site_ruby/3.3.0/bundler/friendly_errors.rb:117:in `with_friendly_errors'
+bundler (2.6.9) exe/bundle:20:in `<top (required)>'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/bin/bundle:25:in `load'
+/Users/rsmoke/.asdf/installs/ruby/3.3.4/bin/bundle:25:in `<main>'
+Started GET "/feedback" for 127.0.0.1 at 2025-08-13 13:17:14 -0400
+Processing by TdxFeedbackGem::FeedbacksController#new as HTML
+  Rendering /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/shared/_flashes.html.erb (Duration: 2.7ms | GC: 0.0ms)
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb (Duration: 5.9ms | GC: 0.1ms)
+Completed 200 OK in 9ms (Views: 9.3ms | GC: 0.3ms)
+
+
+Started POST "/feedback/feedbacks" for 127.0.0.1 at 2025-08-13 13:17:14 -0400
+Processing by TdxFeedbackGem::FeedbacksController#create as HTML
+  Parameters: {"feedback"=>{"message"=>"Great job", "context"=>"from test"}}
+Redirected to http://www.example.com/
+Completed 302 Found in 2ms (GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2025-08-13 13:17:14 -0400
+Redirected to http://www.example.com/feedback
+Completed 301 Moved Permanently in 0ms
+
+
+Started GET "/feedback" for 127.0.0.1 at 2025-08-13 13:17:14 -0400
+Processing by TdxFeedbackGem::FeedbacksController#new as HTML
+  Rendering /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/shared/_flashes.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb (Duration: 0.4ms | GC: 0.0ms)
+Completed 200 OK in 1ms (Views: 0.5ms | GC: 0.0ms)
+
+
+Started GET "/feedback" for 127.0.0.1 at 2025-08-13 13:18:12 -0400
+Processing by TdxFeedbackGem::FeedbacksController#new as HTML
+  Rendering /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/shared/_flashes.html.erb (Duration: 2.5ms | GC: 0.0ms)
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb (Duration: 5.1ms | GC: 0.1ms)
+Completed 200 OK in 9ms (Views: 9.0ms | GC: 0.3ms)
+
+
+Started POST "/feedback/feedbacks" for 127.0.0.1 at 2025-08-13 13:18:12 -0400
+Processing by TdxFeedbackGem::FeedbacksController#create as HTML
+  Parameters: {"feedback"=>{"message"=>"Great job", "context"=>"from test"}}
+Redirected to http://www.example.com/
+Completed 302 Found in 2ms (GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2025-08-13 13:18:12 -0400
+Redirected to http://www.example.com/feedback
+Completed 301 Moved Permanently in 0ms
+
+
+Started GET "/feedback" for 127.0.0.1 at 2025-08-13 13:18:12 -0400
+Processing by TdxFeedbackGem::FeedbacksController#new as HTML
+  Rendering /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/shared/_flashes.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb (Duration: 0.3ms | GC: 0.0ms)
+Completed 200 OK in 0ms (Views: 0.4ms | GC: 0.0ms)
+
+

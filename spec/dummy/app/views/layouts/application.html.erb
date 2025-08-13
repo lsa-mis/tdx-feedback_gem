@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Dummy App</title>
+    <%= stylesheet_link_tag 'tdx_feedback_gem', media: 'all' %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <%= render 'tdx_feedback_gem/shared/flashes' %>
+    <%= yield %>
+  </body>
+</html>
