@@ -2,6 +2,8 @@
 
 require_relative 'tdx_feedback_gem/version'
 require_relative 'tdx_feedback_gem/configuration'
+require_relative 'tdx_feedback_gem/client'
+require_relative 'tdx_feedback_gem/ticket_creator'
 
 require_relative 'tdx_feedback_gem/engine' if defined?(Rails)
 

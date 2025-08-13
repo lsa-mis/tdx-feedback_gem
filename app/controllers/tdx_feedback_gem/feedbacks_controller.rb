@@ -16,9 +16,23 @@ module TdxFeedbackGem
     def create
       feedback = Feedback.new(feedback_params)
       if feedback.save
+        ticket_id = nil
+        if TdxFeedbackGem.config.enable_ticket_creation
+          email = if respond_to?(:current_user, true) && current_user && current_user.respond_to?(:email)
+                    current_user.email
+                  end
+          result = TicketCreator.new.call(feedback, requestor_email: email)
+          if result.success?
+            ticket_id = result.ticket_id
+            flash[:notice] = 'Thank you for your feedback. A support ticket has been created.' if request.format.html?
+          else
+            Rails.logger.warn("TDX ticket creation failed: #{result.error}")
+            flash[:alert] = 'Thank you for your feedback. (Ticket creation failed.)' if request.format.html?
+          end
+        end
         respond_to do |format|
-          format.html { redirect_to main_app.root_path, notice: 'Thank you for your feedback.' }
-          format.json { render json: { id: feedback.id }, status: :created }
+          format.html { redirect_to main_app.root_path, notice: flash[:notice] || 'Thank you for your feedback.' }
+          format.json { render json: { id: feedback.id, ticket_id: ticket_id }, status: :created }
         end
       else
         respond_to do |format|
