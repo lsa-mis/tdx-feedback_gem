@@ -1,12 +1,12 @@
 Gem::Specification.new do |spec|
   spec.name          = 'tdx_feedback_gem'
   spec.version       = '0.1.0'
-  spec.authors       = ['Your Name']
-  spec.email         = ['your.email@example.com']
+  spec.authors       = ['Rick Smoke']
+  spec.email         = ['rsmoke@umich.edu']
 
   spec.summary       = 'A Ruby gem for collecting feedback, designed for Rails.'
   spec.description   = 'A Ruby gem for collecting and managing user feedback, easily integrated with Rails applications.'
-  spec.homepage      = 'https://github.com/yourusername/tdx_feedback_gem'
+  spec.homepage      = 'https://github.com/lsa-mis/tdx-feedback_gem'
   spec.license       = 'MIT'
 
   spec.files         = Dir['{lib,app}/**/*', 'README.md', 'LICENSE']
