@@ -115,15 +115,7 @@ config/database.yml
 config/secrets.yml
 
 # Ignore spec dummy app files (for gem testing)
-/spec/dummy/log/*
-/spec/dummy/tmp/*
-/spec/dummy/db/*.sqlite3
-/spec/dummy/db/*.sqlite3-journal
-/spec/dummy/db/*.sqlite3-[0-9]*
-/spec/dummy/storage/*
-/spec/dummy/public/assets
-/spec/dummy/public/packs
-/spec/dummy/public/packs-test
+/spec/dummy/*
 
 # Ignore Ruby LSP files
 .ruby-lsp/
