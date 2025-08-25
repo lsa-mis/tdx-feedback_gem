@@ -1,121 +1,260 @@
-# Rails
+# =============================================================================
+# RAILS APPLICATION PATTERNS
+# =============================================================================
+
+# Rails temporary files
 *.rbc
 capybara-*.html
 .rspec
-/db/*.sqlite3
-/db/*.sqlite3-journal
-/db/*.sqlite3-[0-9]*
-/public/system
-/coverage/
-/spec/tmp
 *.orig
 rerun.txt
 pickle-email-*.html
+/spec/tmp
 
-# Ignore all logfiles and tempfiles.
+# Rails logs and temporary directories
 /log/*
 /tmp/*
 !/log/.keep
 !/tmp/.keep
 
-# Ignore pidfiles, but keep the directory.
+# Rails PIDs
 /tmp/pids/*
 !/tmp/pids/
-!/tmp/pids/.keep
+/tmp/pids/.keep
 
-# Ignore uploaded files in development.
+# Rails storage (for Active Storage)
 /storage/*
 !/storage/.keep
 
-# Ignore master key for decrypting credentials and more.
+# Rails system files
+/public/system
+/public/assets
+/public/packs
+/public/packs-test
+
+# Rails cache and performance
+/coverage/
+/spec/tmp
+*.profile
+
+# =============================================================================
+# DATABASE AND CONFIGURATION
+# =============================================================================
+
+# Database files
+/db/*.sqlite3
+/db/*.sqlite3-journal
+/db/*.sqlite3-[0-9]*
+/db/development.sqlite3
+/db/test.sqlite3
+
+# Configuration files
 /config/master.key
-
-# Ignore application configuration
+/config/credentials.yml.enc
 /config/application.yml
+config/database.yml
+config/secrets.yml
 
-# Ignore environment variables
+# Environment variables
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.*.local
 
-# Ignore bundler config
+# =============================================================================
+# DEPENDENCY MANAGEMENT
+# =============================================================================
+
+# Bundler
 /.bundle
 /vendor/bundle
+Gemfile.lock.bak
 
-# Ignore the default SQLite database
-/db/development.sqlite3
-/db/test.sqlite3
-
-# Ignore all .byebug_history files
-.byebug_history
-
-# Ignore node modules
+# Node.js / Yarn
 node_modules/
-
-# Ignore yarn files
 yarn-error.log
 .yarn-integrity
+yarn.lock
+package-lock.json
 
-# Ignore webpacker files
+# Rails asset pipeline and webpacker
 /public/packs
 /public/packs-test
 
-# Ignore Spring files
+# =============================================================================
+# DEVELOPMENT AND TESTING
+# =============================================================================
+
+# Testing and coverage
+/coverage/
+.coveralls.yml
+*.profile
+
+# Debugging
+.byebug_history
+.pry_history
+
+# Spring preloader
 /spring
 
-# Ignore RVM files
-.rvmrc
+# Guard
+.guard_result
 
-# Ignore rbenv files
+# =============================================================================
+# GEM DEVELOPMENT SPECIFIC
+# =============================================================================
+
+# Gem build artifacts
+*.gem
+*.tar.gz
+pkg/
+
+# Spec dummy app files (for gem testing)
+/spec/dummy/*
+
+# Generator templates and cache
+/lib/templates/.cache
+/lib/generators/**/templates/.cache
+
+# =============================================================================
+# VERSION MANAGEMENT
+# =============================================================================
+
+# Ruby version management
 .ruby-version
 .ruby-gemset
+.rvmrc
+.bundle/config
 
-# Ignore macOS files
+# =============================================================================
+# OPERATING SYSTEM FILES
+# =============================================================================
+
+# macOS
 .DS_Store
 .AppleDouble
 .LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Ignore Windows files
+# Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+$RECYCLE.BIN/
 
-# Ignore Linux files
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# =============================================================================
+# EDITOR AND IDE FILES
+# =============================================================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# RubyMine / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.swp
+*.swo
 *~
 
-# Ignore editor files
-.vscode/
-.idea/
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# TextMate
+tmtags
+
+# =============================================================================
+# LANGUAGE SERVER PROTOCOL
+# =============================================================================
+
+# Ruby LSP
+.ruby-lsp/
+.ruby-lsp-*.log
+
+# Solargraph
+.solargraph.yml
+
+# =============================================================================
+# SECURITY AND SENSITIVE DATA
+# =============================================================================
+
+# API keys and secrets
+*.pem
+*.key
+*.p12
+*.pfx
+config/*.key
+config/*.pem
+
+# Password files
+*.password
+
+# =============================================================================
+# MISCELLANEOUS
+# =============================================================================
+
+# Backup files
+*.bak
+*.backup
+*.orig
+*.rej
+
+# Temporary files
+*.tmp
+*.temp
 *.swp
 *.swo
 
-# Ignore test coverage
-/coverage/
-.coveralls.yml
-
-# Ignore gem build artifacts
-*.gem
+# Archive files
+*.zip
 *.tar.gz
+*.rar
+*.7z
 
-# Ignore temporary files
-*.tmp
-*.temp
+# Documentation
+/doc/
+*.pdf
+*.doc
+*.docx
 
-# Ignore backup files
-*.bak
-*.backup
+# =============================================================================
+# OPTIONAL: Uncomment to ignore if you customize these
+# =============================================================================
 
-# Ignore local configuration files
-config/database.yml
-config/secrets.yml
-
-# Ignore spec dummy app files (for gem testing)
-/spec/dummy/*
-
-# Ignore Ruby LSP files
-.ruby-lsp/
-
-# Ignore GitHub specific files (if you want to customize them)
+# GitHub specific files (uncomment if you want to customize them)
 # .github/
+
+# CI/CD files (uncomment if you have custom workflows)
+# .circleci/
+# .travis.yml
+# .gitlab-ci.yml
