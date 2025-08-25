@@ -20,6 +20,9 @@ require 'action_cable/engine'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# Require the engine
+require 'tdx_feedback_gem/engine'
+
 module DummyApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
