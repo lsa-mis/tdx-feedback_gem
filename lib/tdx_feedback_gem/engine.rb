@@ -7,7 +7,9 @@ module TdxFeedbackGem
     # Include the helper module in the main application
     initializer 'tdx_feedback_gem.helpers' do |app|
       app.config.to_prepare do
-        ApplicationController.helper TdxFeedbackGem::ApplicationHelper
+        if defined?(ApplicationController)
+          ApplicationController.helper TdxFeedbackGem::ApplicationHelper
+        end
       end
     end
 

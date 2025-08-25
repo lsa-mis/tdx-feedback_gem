@@ -14,7 +14,7 @@ module TdxFeedbackGem
     def call(feedback, requestor_email: nil, extra_attributes: {})
       return Result.new(false, nil, nil, 'Ticket creation disabled') unless @config.enable_ticket_creation
 
-      title = [@config.title_prefix, feedback.message.to_s.tr('\n', ' ')[0, 80]].compact.join(' ')
+      title = [@config.title_prefix, feedback.message.to_s.tr("\n", " ")[0, 80]].compact.join(' ')
       description = build_description(feedback)
 
       payload = {
