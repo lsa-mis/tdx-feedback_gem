@@ -17,42 +17,44 @@ RSpec.describe 'Feedback flow', type: :request do
     end
   end
 
-  describe 'GET /feedback/tdx_feedback_gem/feedbacks/new' do
+  describe 'GET /feedback/feedbacks/new' do
     it 'shows the feedback form successfully' do
-      get '/feedback/tdx_feedback_gem/feedbacks/new'
+
+
+      get '/feedback/feedbacks/new'
       expect(response).to have_http_status(:ok)
     end
 
     it 'returns JSON response' do
-      get '/feedback/tdx_feedback_gem/feedbacks/new'
+      get '/feedback/feedbacks/new'
       expect(response.content_type).to include('application/json')
     end
 
     it 'initializes a new feedback object' do
-      get '/feedback/tdx_feedback_gem/feedbacks/new'
+      get '/feedback/feedbacks/new'
       json_response = JSON.parse(response.body)
       expect(json_response).to have_key('html')
     end
   end
 
-  describe 'POST /feedback/tdx_feedback_gem/feedbacks' do
+  describe 'POST /feedback/feedbacks' do
     let(:valid_params) { { feedback: { message: 'Great job on the new feature!', context: 'User interface improvements' } } }
     let(:invalid_params) { { feedback: { message: '', context: 'User interface improvements' } } }
 
     context 'with valid parameters' do
       it 'creates a new feedback record' do
         expect {
-          post '/feedback/tdx_feedback_gem/feedbacks', params: valid_params
+          post '/feedback/feedbacks', params: valid_params
         }.to change(TdxFeedbackGem::Feedback, :count).by(1)
       end
 
       it 'returns success response' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: valid_params
+        post '/feedback/feedbacks', params: valid_params
         expect(response).to have_http_status(:created)
       end
 
       it 'returns success JSON' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: valid_params
+        post '/feedback/feedbacks', params: valid_params
         json_response = JSON.parse(response.body)
         expect(json_response['success']).to be true
         expect(json_response['feedback_id']).to be_present
@@ -62,17 +64,17 @@ RSpec.describe 'Feedback flow', type: :request do
     context 'with invalid parameters' do
       it 'does not create a feedback record' do
         expect {
-          post '/feedback/tdx_feedback_gem/feedbacks', params: invalid_params
+          post '/feedback/feedbacks', params: invalid_params
         }.not_to change(TdxFeedbackGem::Feedback, :count)
       end
 
       it 'returns unprocessable entity status' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: invalid_params
+        post '/feedback/feedbacks', params: invalid_params
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'returns error JSON' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: invalid_params
+        post '/feedback/feedbacks', params: invalid_params
         json_response = JSON.parse(response.body)
         expect(json_response['success']).to be false
         expect(json_response['errors']).to include("Message can't be blank")
@@ -90,12 +92,12 @@ RSpec.describe 'Feedback flow', type: :request do
       end
 
       it 'creates a ticket via TicketCreator' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: valid_params
+        post '/feedback/feedbacks', params: valid_params
         expect(ticket_creator).to have_received(:call).with(instance_of(TdxFeedbackGem::Feedback), requestor_email: nil)
       end
 
       it 'returns success response with ticket id' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: valid_params
+        post '/feedback/feedbacks', params: valid_params
         json_response = JSON.parse(response.body)
         expect(json_response['success']).to be true
         expect(json_response['ticket_id']).to eq('123')
@@ -106,12 +108,12 @@ RSpec.describe 'Feedback flow', type: :request do
 
         it 'still creates the feedback record' do
           expect {
-            post '/feedback/tdx_feedback_gem/feedbacks', params: valid_params
+            post '/feedback/feedbacks', params: valid_params
           }.to change(TdxFeedbackGem::Feedback, :count).by(1)
         end
 
         it 'returns success response with failure message' do
-          post '/feedback/tdx_feedback_gem/feedbacks', params: valid_params
+          post '/feedback/feedbacks', params: valid_params
           json_response = JSON.parse(response.body)
           expect(json_response['success']).to be true
           expect(json_response['message']).to include('Ticket creation failed')
@@ -121,12 +123,12 @@ RSpec.describe 'Feedback flow', type: :request do
 
     context 'with malformed parameters' do
       it 'handles missing feedback parameter' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: {}
+        post '/feedback/feedbacks', params: {}
         expect(response).to have_http_status(:bad_request)
       end
 
       it 'handles nil feedback parameter' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: { feedback: nil }
+        post '/feedback/feedbacks', params: { feedback: nil }
         expect(response).to have_http_status(:bad_request)
       end
     end
@@ -139,12 +141,12 @@ RSpec.describe 'Feedback flow', type: :request do
       end
 
       it 'returns unauthorized for new action without authentication' do
-        get '/feedback/tdx_feedback_gem/feedbacks/new'
+        get '/feedback/feedbacks/new'
         expect(response).to have_http_status(:unauthorized)
       end
 
       it 'returns unauthorized for create action without authentication' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: { feedback: { message: 'Test' } }
+        post '/feedback/feedbacks', params: { feedback: { message: 'Test' } }
         expect(response).to have_http_status(:unauthorized)
       end
     end
@@ -155,12 +157,12 @@ RSpec.describe 'Feedback flow', type: :request do
       end
 
       it 'allows access to new action' do
-        get '/feedback/tdx_feedback_gem/feedbacks/new'
+        get '/feedback/feedbacks/new'
         expect(response).to have_http_status(:ok)
       end
 
       it 'allows access to create action' do
-        post '/feedback/tdx_feedback_gem/feedbacks', params: { feedback: { message: 'Test' } }
+        post '/feedback/feedbacks', params: { feedback: { message: 'Test' } }
         expect(response).to have_http_status(:created)
       end
     end
@@ -168,12 +170,12 @@ RSpec.describe 'Feedback flow', type: :request do
 
   describe 'CSRF protection' do
     it 'skips forgery protection for new action' do
-      get '/feedback/tdx_feedback_gem/feedbacks/new'
+      get '/feedback/feedbacks/new'
       expect(response).to have_http_status(:ok)
     end
 
     it 'skips forgery protection for create action' do
-      post '/feedback/tdx_feedback_gem/feedbacks', params: { feedback: { message: 'Test' } }
+      post '/feedback/feedbacks', params: { feedback: { message: 'Test' } }
       expect(response).to have_http_status(:created)
     end
   end
@@ -181,11 +183,11 @@ RSpec.describe 'Feedback flow', type: :request do
   describe 'complete feedback workflow' do
     it 'allows a user to submit feedback and receive confirmation' do
       # First, get the feedback form
-      get '/feedback/tdx_feedback_gem/feedbacks/new'
+      get '/feedback/feedbacks/new'
       expect(response).to have_http_status(:ok)
 
       # Then submit feedback
-      post '/feedback/tdx_feedback_gem/feedbacks', params: { feedback: { message: 'Great work!', context: 'Testing' } }
+      post '/feedback/feedbacks', params: { feedback: { message: 'Great work!', context: 'Testing' } }
       expect(response).to have_http_status(:created)
 
       # Verify the feedback was created
@@ -197,14 +199,14 @@ RSpec.describe 'Feedback flow', type: :request do
 
   describe 'error handling' do
     it 'handles invalid JSON gracefully' do
-      post '/feedback/tdx_feedback_gem/feedbacks',
+      post '/feedback/feedbacks',
            params: 'invalid json',
            headers: { 'CONTENT_TYPE' => 'application/json' }
       expect(response).to have_http_status(:bad_request)
     end
 
     it 'handles missing parameters gracefully' do
-      post '/feedback/tdx_feedback_gem/feedbacks'
+      post '/feedback/feedbacks'
       expect(response).to have_http_status(:bad_request)
     end
   end

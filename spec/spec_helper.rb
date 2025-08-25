@@ -83,6 +83,12 @@ RSpec.configure do |config|
   # Include FactoryBot-like helpers for creating test data
   config.include FactoryBot::Syntax::Methods if defined?(FactoryBot)
 
+  # Ensure request specs have isolated routing
+  config.before(:each, type: :request) do
+    # Force reload of routes for request specs to ensure clean state
+    Rails.application.reload_routes!
+  end
+
   # Clean up database between tests
   config.before(:each) do
     TdxFeedbackGem::Feedback.delete_all
