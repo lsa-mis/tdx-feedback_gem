@@ -9,6 +9,7 @@ group :development, :test do
   gem 'capybara', '~> 3.40'
   gem 'rspec', '~> 3.13'
   gem 'rspec-rails', '~> 6.0'
+  gem 'rails-controller-testing', '~> 1.0'
   gem 'sqlite3', '~> 1.4'
   gem 'webmock', '~> 3.18'
 end

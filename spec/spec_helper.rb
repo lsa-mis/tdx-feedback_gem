@@ -37,6 +37,7 @@ Rails.application.initialize!
 load File.expand_path('dummy/config/routes.rb', __dir__)
 
 require 'rspec/rails'
+require 'rails-controller-testing'
 require 'webmock/rspec'
 
 # Explicitly require model since Rails autoloading isn't active in specs
@@ -73,6 +74,11 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  # Include rails-controller-testing for controller specs
+  config.include Rails::Controller::Testing::TestProcess, type: :controller
+  config.include Rails::Controller::Testing::TemplateAssertions, type: :controller
+  config.include Rails::Controller::Testing::Integration, type: :controller
 
   # Include FactoryBot-like helpers for creating test data
   config.include FactoryBot::Syntax::Methods if defined?(FactoryBot)

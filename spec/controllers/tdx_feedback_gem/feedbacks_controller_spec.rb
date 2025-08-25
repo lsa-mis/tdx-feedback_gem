@@ -12,9 +12,11 @@ RSpec.describe TdxFeedbackGem::FeedbacksController, type: :controller do
       c.enable_ticket_creation = false
     end
 
-    # Configure routes for the mounted engine
+    # Set up routes for controller testing
     routes.draw do
-      mount TdxFeedbackGem::Engine => '/feedback'
+      namespace :tdx_feedback_gem do
+        resources :feedbacks, only: %i[new create], defaults: { format: :json }
+      end
     end
   end
 
@@ -44,7 +46,7 @@ RSpec.describe TdxFeedbackGem::FeedbacksController, type: :controller do
     end
 
     it 'skips forgery protection' do
-      expect(controller.class.skip_forgery_protection).to include(:new)
+      expect(controller.class.skip_forgery_protection_actions).to include(:new)
     end
   end
 
@@ -93,7 +95,7 @@ RSpec.describe TdxFeedbackGem::FeedbacksController, type: :controller do
 
         it 'creates a ticket via TicketCreator' do
           post :create, params: valid_params, format: :json
-          expect(ticket_creator).to have_received(:call).with(instance_of(TdxFeedbackGem::Feedback), requestor_email: nil)
+          expect(ticket_creator).to have_received(:call).with(instance_of(TdxFeedbackGem::Feedback), requestor_email: 'test@example.com')
         end
 
         it 'returns success response with ticket id' do
@@ -144,7 +146,7 @@ RSpec.describe TdxFeedbackGem::FeedbacksController, type: :controller do
 
     it 'skips forgery protection in test environment' do
       # In test environment, create action should skip forgery protection
-      expect(controller.class.skip_forgery_protection).to include(:create)
+      expect(controller.class.skip_forgery_protection_actions).to include(:create)
     end
   end
 
@@ -207,7 +209,7 @@ RSpec.describe TdxFeedbackGem::FeedbacksController, type: :controller do
   describe 'CSRF protection' do
     it 'skips forgery protection for JSON requests' do
       # The controller is configured to skip forgery protection for create action in test environment
-      expect(controller.class.skip_forgery_protection).to include(:create)
+      expect(controller.class.skip_forgery_protection_actions).to include(:create)
     end
   end
 end

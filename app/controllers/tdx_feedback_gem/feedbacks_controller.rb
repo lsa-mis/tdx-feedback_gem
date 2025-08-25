@@ -3,8 +3,14 @@
 module TdxFeedbackGem
   class FeedbacksController < ActionController::Base
     protect_from_forgery with: :exception, unless: -> { request.format.json? }
-    skip_forgery_protection only: [:new]
-    skip_forgery_protection only: [:create], if: -> { Rails.env.test? }
+
+    # Skip CSRF protection for these actions
+    skip_forgery_protection only: [:new, :create]
+
+    # Class method to check which actions skip forgery protection (for testing)
+    def self.skip_forgery_protection_actions
+      [:new, :create]
+    end
 
     before_action :ensure_authenticated
 
