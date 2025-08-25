@@ -17,19 +17,19 @@ RSpec.describe 'Feedback flow', type: :request do
     end
   end
 
-  describe 'GET /feedback' do
+  describe 'GET /feedback/feedbacks/new' do
     it 'shows the feedback form successfully' do
-      get '/feedback'
+      get '/feedback/feedbacks/new'
       expect(response).to have_http_status(:ok)
     end
 
     it 'returns JSON response' do
-      get '/feedback'
+      get '/feedback/feedbacks/new'
       expect(response.content_type).to include('application/json')
     end
 
     it 'initializes a new feedback object' do
-      get '/feedback'
+      get '/feedback/feedbacks/new'
       json_response = JSON.parse(response.body)
       expect(json_response).to have_key('html')
     end
@@ -139,7 +139,7 @@ RSpec.describe 'Feedback flow', type: :request do
       end
 
       it 'returns unauthorized for new action without authentication' do
-        get '/feedback'
+        get '/feedback/feedbacks/new'
         expect(response).to have_http_status(:unauthorized)
       end
 
@@ -155,7 +155,7 @@ RSpec.describe 'Feedback flow', type: :request do
       end
 
       it 'allows access to new action' do
-        get '/feedback'
+        get '/feedback/feedbacks/new'
         expect(response).to have_http_status(:ok)
       end
 
@@ -168,7 +168,7 @@ RSpec.describe 'Feedback flow', type: :request do
 
   describe 'CSRF protection' do
     it 'skips forgery protection for new action' do
-      get '/feedback'
+      get '/feedback/feedbacks/new'
       expect(response).to have_http_status(:ok)
     end
 
@@ -181,7 +181,7 @@ RSpec.describe 'Feedback flow', type: :request do
   describe 'complete feedback workflow' do
     it 'allows a user to submit feedback and receive confirmation' do
       # First, get the feedback form
-      get '/feedback'
+      get '/feedback/feedbacks/new'
       expect(response).to have_http_status(:ok)
 
       # Then submit feedback
