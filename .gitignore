@@ -61,8 +61,6 @@ yarn-error.log
 # Ignore webpacker files
 /public/packs
 /public/packs-test
-/node_modules
-yarn.lock
 
 # Ignore Spring files
 /spring
@@ -92,7 +90,6 @@ Desktop.ini
 .idea/
 *.swp
 *.swo
-*~
 
 # Ignore test coverage
 /coverage/
