@@ -253,3 +253,31 @@ Processing by TdxFeedbackGem::FeedbacksController#new as HTML
 Completed 200 OK in 1ms (Views: 0.5ms | GC: 0.0ms)
 
 
+Started GET "/feedback" for 127.0.0.1 at 2025-08-25 09:36:54 -0400
+Processing by TdxFeedbackGem::FeedbacksController#new as HTML
+  Rendering /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/shared/_flashes.html.erb (Duration: 2.9ms | GC: 0.0ms)
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb (Duration: 13.5ms | GC: 5.7ms)
+Completed 200 OK in 21ms (Views: 21.3ms | GC: 5.7ms)
+
+
+Started POST "/feedback/feedbacks" for 127.0.0.1 at 2025-08-25 09:36:54 -0400
+Processing by TdxFeedbackGem::FeedbacksController#create as HTML
+  Parameters: {"feedback"=>{"message"=>"Great job", "context"=>"from test"}}
+Redirected to http://www.example.com/
+Completed 302 Found in 2ms (GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2025-08-25 09:36:54 -0400
+Redirected to http://www.example.com/feedback
+Completed 301 Moved Permanently in 0ms
+
+
+Started GET "/feedback" for 127.0.0.1 at 2025-08-25 09:36:54 -0400
+Processing by TdxFeedbackGem::FeedbacksController#new as HTML
+  Rendering /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/shared/_flashes.html.erb (Duration: 0.1ms | GC: 0.0ms)
+  Rendered /Users/rsmoke/RailsApps/workspaces/tdx_feedback_gem/app/views/tdx_feedback_gem/feedbacks/new.html.erb (Duration: 0.4ms | GC: 0.0ms)
+Completed 200 OK in 1ms (Views: 0.5ms | GC: 0.0ms)
+
+

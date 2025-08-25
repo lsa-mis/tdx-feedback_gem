@@ -17,8 +17,8 @@ module TdxFeedbackGem
       # Defaults (host app should override via initializer or ENV)
       @tdx_base_url = nil # e.g., https://gw-test.api.it.umich.edu/um/it
       @oauth_token_url = nil # e.g., https://gw-test.api.it.umich.edu/um/it/oauth2/token
-      @client_id = nil
-      @client_secret = nil
+      @client_id = nil # e.g., get client_id from credentials file
+      @client_secret = nil # e.g., get client_secret from credentials file
       @oauth_scope = 'tdxticket'
 
       @enable_ticket_creation = false

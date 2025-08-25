@@ -10,7 +10,9 @@ module TdxFeedbackGem
 
     def new
       @feedback = Feedback.new
-      render :new
+      render json: {
+        html: render_to_string(partial: 'modal', locals: { feedback: @feedback }, formats: [:html])
+      }
     end
 
     def create
@@ -24,24 +26,27 @@ module TdxFeedbackGem
           result = TicketCreator.new.call(feedback, requestor_email: email)
           if result.success?
             ticket_id = result.ticket_id
-            flash[:notice] = 'Thank you for your feedback. A support ticket has been created.' if request.format.html?
+            flash_message = 'Thank you for your feedback. A support ticket has been created.'
           else
             Rails.logger.warn("TDX ticket creation failed: #{result.error}")
-            flash[:alert] = 'Thank you for your feedback. (Ticket creation failed.)' if request.format.html?
+            flash_message = 'Thank you for your feedback. (Ticket creation failed.)'
           end
+        else
+          flash_message = 'Thank you for your feedback.'
         end
-        respond_to do |format|
-          format.html { redirect_to main_app.root_path, notice: flash[:notice] || 'Thank you for your feedback.' }
-          format.json { render json: { id: feedback.id, ticket_id: ticket_id }, status: :created }
-        end
+
+        render json: {
+          success: true,
+          message: flash_message,
+          feedback_id: feedback.id,
+          ticket_id: ticket_id
+        }, status: :created
       else
-        respond_to do |format|
-          format.html do
-            @feedback = feedback
-            render :new, status: :unprocessable_entity
-          end
-          format.json { render json: { errors: feedback.errors.full_messages }, status: :unprocessable_entity }
-        end
+        render json: {
+          success: false,
+          errors: feedback.errors.full_messages,
+          html: render_to_string(partial: 'form', locals: { feedback: feedback }, formats: [:html])
+        }, status: :unprocessable_entity
       end
     end
 
