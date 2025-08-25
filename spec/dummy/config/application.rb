@@ -32,10 +32,10 @@ module DummyApp
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    
+
     # Disable logging in tests
     config.log_level = :fatal
-    
+
     # Disable asset compilation
     config.assets.enabled = false if config.respond_to?(:assets)
   end
