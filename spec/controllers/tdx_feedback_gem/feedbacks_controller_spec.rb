@@ -12,12 +12,8 @@ RSpec.describe TdxFeedbackGem::FeedbacksController, type: :controller do
       c.enable_ticket_creation = false
     end
 
-    # Set up routes for controller testing
-    routes.draw do
-      namespace :tdx_feedback_gem do
-        resources :feedbacks, only: %i[new create], defaults: { format: :json }
-      end
-    end
+    # Use the engine's routes for controller testing
+    routes { TdxFeedbackGem::Engine.routes }
   end
 
   after do
