@@ -19,6 +19,8 @@ module TdxFeedbackGem
 
       payload = {
         'TypeID' => @config.type_id,
+        'FormID' => @config.form_id,
+        'ServiceOfferingID' => @config.service_offering_id,
         'StatusID' => @config.status_id,
         'SourceID' => @config.source_id,
         'ServiceID' => @config.service_id,

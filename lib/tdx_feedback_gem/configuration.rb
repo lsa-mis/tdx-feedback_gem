@@ -8,8 +8,8 @@ module TdxFeedbackGem
     attr_accessor :tdx_base_url, :oauth_token_url, :client_id, :client_secret, :oauth_scope
 
     # Ticket creation toggles and defaults
-    attr_accessor :enable_ticket_creation, :app_id, :type_id, :status_id, :source_id,
-                  :service_id, :responsible_group_id, :title_prefix, :default_requestor_email
+    attr_accessor :enable_ticket_creation, :app_id, :type_id, :form_id, :service_offering_id,
+                  :status_id, :source_id, :service_id, :responsible_group_id, :title_prefix, :default_requestor_email
 
     def initialize
       @require_authentication = false
@@ -24,6 +24,8 @@ module TdxFeedbackGem
       @enable_ticket_creation = false
       @app_id = nil
       @type_id = nil
+      @form_id = nil
+      @service_offering_id = nil
       @status_id = nil
       @source_id = nil
       @service_id = nil

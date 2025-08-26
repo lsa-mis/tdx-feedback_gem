@@ -12,6 +12,8 @@ RSpec.describe TdxFeedbackGem::TicketCreator do
       c.enable_ticket_creation = true
       c.app_id = 31
       c.type_id = 12
+      c.form_id = 45
+      c.service_offering_id = 89
       c.status_id = 77
       c.source_id = 8
       c.service_id = 67
@@ -76,6 +78,8 @@ RSpec.describe TdxFeedbackGem::TicketCreator do
 
         payload = stub_client.last_payload
         expect(payload['TypeID']).to eq(12)
+        expect(payload['FormID']).to eq(45)
+        expect(payload['ServiceOfferingID']).to eq(89)
         expect(payload['StatusID']).to eq(77)
         expect(payload['SourceID']).to eq(8)
         expect(payload['ServiceID']).to eq(67)
