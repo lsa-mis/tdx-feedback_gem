@@ -8,23 +8,22 @@ TdxFeedbackGem.configure do |config|
   # Enable ticket creation via the TDX API when feedback is submitted
   # config.enable_ticket_creation = true
 
-  # API base URL and OAuth token endpoint (automatically resolved from credentials or ENV)
+  # All TDX API settings are automatically resolved from Rails credentials or environment variables
   #
-  # Priority order for URLs:
-  # 1. Rails.application.credentials.tdx[:environment][:base_url] (e.g., tdx.development.base_url)
-  # 2. Rails.application.credentials.tdx.base_url
-  # 3. ENV['TDX_BASE_URL']
-  # 4. Environment-specific defaults (gw-test for dev/staging, gw for production)
+  # Resolution priority (highest to lowest):
+  # 1. Rails.application.credentials.tdx[:environment][:setting] (e.g., tdx.development.client_id)
+  # 2. Rails.application.credentials.tdx_[:setting] (e.g., tdx_client_id)
+  # 3. ENV['TDX_[:SETTING]'] (e.g., TDX_CLIENT_ID)
+  # 4. Built-in defaults (URLs only)
+  #
+  # Examples for environment-specific credentials:
+  # - Development: Rails.application.credentials.tdx[:development][:client_id]
+  # - Staging: Rails.application.credentials.tdx[:staging][:client_id]
+  # - Production: Rails.application.credentials.tdx[:production][:client_id]
   #
   # You can override manually if needed:
   # config.tdx_base_url = 'https://gw-test.api.it.umich.edu/um/it'
   # config.oauth_token_url = 'https://gw-test.api.it.umich.edu/um/oauth2/token'
-
-  # OAuth2 client credentials (automatically resolved from Rails credentials or ENV)
-  # Priority: Rails.application.credentials.tdx_client_id -> ENV['TDX_CLIENT_ID']
-  # Priority: Rails.application.credentials.tdx_client_secret -> ENV['TDX_CLIENT_SECRET']
-  #
-  # You can override manually if needed:
   # config.client_id = 'your_client_id'
   # config.client_secret = 'your_client_secret'
   # config.oauth_scope = 'tdxticket'

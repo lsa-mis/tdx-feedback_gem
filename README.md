@@ -61,12 +61,12 @@ TdxFeedbackGem.configure do |config|
   config.enable_ticket_creation = false
 
   # TDX API base URL and OAuth endpoints
-  config.tdx_base_url = 'https://gw-test.api.it.umich.edu/um/it'
-  config.oauth_token_url = 'https://gw-test.api.it.umich.edu/um/it/oauth2/token'
+  # These are automatically resolved from Rails credentials or environment variables
+  # No manual configuration needed unless you want to override defaults
 
-  # OAuth2 client credentials (use ENV variables for security)
-  config.client_id = ENV['TDX_CLIENT_ID']
-  config.client_secret = ENV['TDX_CLIENT_SECRET']
+  # OAuth2 client credentials
+  # These are automatically resolved from Rails credentials or environment variables
+  # No manual configuration needed unless you want to override
   config.oauth_scope = 'tdxticket'
 
   # === Ticket Configuration ===
@@ -84,15 +84,110 @@ TdxFeedbackGem.configure do |config|
 end
 ```
 
-#### Environment Variables (Recommended)
+#### Configuration Values (Recommended: Rails Credentials)
 
-For better security, use environment variables:
+The gem automatically resolves sensitive configuration values from Rails encrypted credentials with fallback to environment variables. This provides better security than plain environment variables.
+
+**Setup Rails Credentials:**
+
+```bash
+# Edit credentials (creates credentials.yml.enc and master.key)
+bin/rails credentials:edit
+```
+
+**Add to credentials.yml.enc:**
+
+```yaml
+# Environment-specific TDX configuration (recommended for different credentials per environment)
+tdx:
+  development:
+    client_id: dev_client_id_here
+    client_secret: dev_client_secret_here
+    base_url: https://gw-test.api.it.umich.edu/um/it
+    oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+  staging:
+    client_id: staging_client_id_here
+    client_secret: staging_client_secret_here
+    base_url: https://gw-test.api.it.umich.edu/um/it
+    oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+  production:
+    client_id: prod_client_id_here
+    client_secret: prod_client_secret_here
+    base_url: https://gw.api.it.umich.edu/um/it
+    oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
+```
+
+**Or for shared credentials with environment-specific URLs:**
+
+```yaml
+# Global TDX credentials (same for all environments)
+tdx_client_id: your_shared_client_id_here
+tdx_client_secret: your_shared_client_secret_here
+
+# Environment-specific URLs only
+tdx:
+  development:
+    base_url: https://gw-test.api.it.umich.edu/um/it
+    oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+  staging:
+    base_url: https://gw-test.api.it.umich.edu/um/it
+    oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+  production:
+    base_url: https://gw.api.it.umich.edu/um/it
+    oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
+```
+
+**Or for global configuration (not recommended for production):**
+
+```yaml
+# Global TDX configuration (same for all environments)
+tdx_client_id: your_client_id_here
+tdx_client_secret: your_client_secret_here
+tdx:
+  base_url: https://gw-test.api.it.umich.edu/um/it
+  oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+```
+
+#### Environment Variables (Fallback)
+
+If you prefer environment variables or need them for certain deployment scenarios, the gem will automatically fall back to these values:
+
+**For single environment or global configuration:**
 
 ```bash
 # .env or your environment configuration
 TDX_CLIENT_ID=your_client_id_here
 TDX_CLIENT_SECRET=your_client_secret_here
+TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
+TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
 ```
+
+**For environment-specific configuration, you can use different .env files:**
+
+```bash
+# .env.development
+TDX_CLIENT_ID=dev_client_id_here
+TDX_CLIENT_SECRET=dev_client_secret_here
+TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
+TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
+
+# .env.staging
+TDX_CLIENT_ID=staging_client_id_here
+TDX_CLIENT_SECRET=staging_client_secret_here
+TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
+TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
+
+# .env.production
+TDX_CLIENT_ID=prod_client_id_here
+TDX_CLIENT_SECRET=prod_client_secret_here
+TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
+TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
+```
+
+**Resolution Priority:**
+1. Rails credentials (environment-specific first, then global)
+2. Environment variables
+3. Built-in defaults (development: gw-test, production: gw)
 
 ## Usage
 

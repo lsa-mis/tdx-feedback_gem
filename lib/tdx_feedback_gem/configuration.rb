@@ -37,8 +37,16 @@ module TdxFeedbackGem
     private
 
     def resolve_client_id
-      # First check Rails encrypted credentials
+      # First check Rails encrypted credentials for environment-specific values
       if defined?(Rails) && Rails.application&.credentials
+        # Try environment-specific credentials first
+        env_key = environment_key
+        if env_key
+          credential_value = Rails.application.credentials.dig(:tdx, env_key, :client_id)
+          return credential_value if credential_value && !credential_value.empty?
+        end
+
+        # Fall back to general credential
         credential_value = Rails.application.credentials.tdx_client_id
         return credential_value if credential_value && !credential_value.empty?
       end
@@ -48,8 +56,16 @@ module TdxFeedbackGem
     end
 
     def resolve_client_secret
-      # First check Rails encrypted credentials
+      # First check Rails encrypted credentials for environment-specific values
       if defined?(Rails) && Rails.application&.credentials
+        # Try environment-specific credentials first
+        env_key = environment_key
+        if env_key
+          credential_value = Rails.application.credentials.dig(:tdx, env_key, :client_secret)
+          return credential_value if credential_value && !credential_value.empty?
+        end
+
+        # Fall back to general credential
         credential_value = Rails.application.credentials.tdx_client_secret
         return credential_value if credential_value && !credential_value.empty?
       end
