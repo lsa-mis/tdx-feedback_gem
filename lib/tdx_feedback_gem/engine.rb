@@ -30,5 +30,16 @@ module TdxFeedbackGem
         end
       end
     end
+
+    # Automatically include the Rails application name in the title prefix
+    initializer 'tdx_feedback_gem.application_name' do |app|
+      # Get the Rails application module name (e.g., "MyApp" from "MyApp::Application")
+      app_name = Rails.application.class.module_parent_name
+
+      # Update the title_prefix to include the application name
+      if app_name.present? && TdxFeedbackGem.config.title_prefix == '[Feedback]'
+        TdxFeedbackGem.config.title_prefix = "[#{app_name} Feedback]"
+      end
+    end
   end
 end

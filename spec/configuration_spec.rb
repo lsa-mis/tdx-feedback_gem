@@ -9,10 +9,12 @@ RSpec.describe TdxFeedbackGem::Configuration do
   describe '#initialize' do
     it 'sets default values correctly' do
       expect(config.require_authentication).to be false
-      expect(config.tdx_base_url).to be_nil
-      expect(config.oauth_token_url).to be_nil
-      expect(config.client_id).to be_nil
-      expect(config.client_secret).to be_nil
+      # URLs are now automatically resolved from credentials, ENV, or defaults
+      expect(config.tdx_base_url).to be_a(String)
+      expect(config.oauth_token_url).to be_a(String)
+      # client_id and client_secret are resolved from credentials or ENV, so they may not be nil
+      expect(config.client_id).to eq(nil).or eq(ENV['TDX_CLIENT_ID'])
+      expect(config.client_secret).to eq(nil).or eq(ENV['TDX_CLIENT_SECRET'])
       expect(config.oauth_scope).to eq('tdxticket')
       expect(config.enable_ticket_creation).to be false
       expect(config.app_id).to be_nil
@@ -202,7 +204,9 @@ RSpec.describe TdxFeedbackGem::Configuration do
 
         expect(config.require_authentication).to be false
         expect(config.enable_ticket_creation).to be false
-        expect(config.tdx_base_url).to be_nil
+        # URLs are automatically resolved from credentials, ENV, or defaults
+        expect(config.tdx_base_url).to be_a(String)
+        expect(config.oauth_token_url).to be_a(String)
       end
     end
 
@@ -272,6 +276,266 @@ RSpec.describe TdxFeedbackGem::Configuration do
 
       config.enable_ticket_creation = true
       expect(config.object_id).to eq(config_id)
+    end
+  end
+
+  describe 'credential resolution' do
+    let(:original_env_client_id) { ENV['TDX_CLIENT_ID'] }
+    let(:original_env_client_secret) { ENV['TDX_CLIENT_SECRET'] }
+
+    before do
+      ENV['TDX_CLIENT_ID'] = nil
+      ENV['TDX_CLIENT_SECRET'] = nil
+    end
+
+    after do
+      ENV['TDX_CLIENT_ID'] = original_env_client_id
+      ENV['TDX_CLIENT_SECRET'] = original_env_client_secret
+    end
+
+    context 'when Rails credentials are available' do
+      let(:mock_credentials) { double('credentials') }
+
+      before do
+        allow(mock_credentials).to receive(:tdx_client_id).and_return('credentials_client_id')
+        allow(mock_credentials).to receive(:tdx_client_secret).and_return('credentials_client_secret')
+        allow(mock_credentials).to receive(:dig).and_return(nil)
+
+        mock_app = double('application')
+        allow(mock_app).to receive(:credentials).and_return(mock_credentials)
+
+        mock_env = double('env')
+        allow(mock_env).to receive(:production?).and_return(false)
+        allow(mock_env).to receive(:staging?).and_return(false)
+        allow(mock_env).to receive(:test?).and_return(true)
+        allow(mock_env).to receive(:development?).and_return(false)
+
+        stub_const('Rails', double('Rails'))
+        allow(Rails).to receive(:application).and_return(mock_app)
+        allow(Rails).to receive(:env).and_return(mock_env)
+      end
+
+      it 'uses Rails credentials over ENV variables' do
+        ENV['TDX_CLIENT_ID'] = 'env_client_id'
+        ENV['TDX_CLIENT_SECRET'] = 'env_client_secret'
+
+        config = described_class.new
+
+        expect(config.client_id).to eq('credentials_client_id')
+        expect(config.client_secret).to eq('credentials_client_secret')
+      end
+
+      it 'uses Rails credentials when ENV variables are not set' do
+        config = described_class.new
+
+        expect(config.client_id).to eq('credentials_client_id')
+        expect(config.client_secret).to eq('credentials_client_secret')
+      end
+
+      it 'falls back to ENV when Rails credentials return nil' do
+        allow(mock_credentials).to receive(:tdx_client_id).and_return(nil)
+        allow(mock_credentials).to receive(:tdx_client_secret).and_return(nil)
+
+        ENV['TDX_CLIENT_ID'] = 'env_client_id'
+        ENV['TDX_CLIENT_SECRET'] = 'env_client_secret'
+
+        config = described_class.new
+
+        expect(config.client_id).to eq('env_client_id')
+        expect(config.client_secret).to eq('env_client_secret')
+      end
+
+      it 'falls back to ENV when Rails credentials return empty string' do
+        allow(mock_credentials).to receive(:tdx_client_id).and_return('')
+        allow(mock_credentials).to receive(:tdx_client_secret).and_return('')
+
+        ENV['TDX_CLIENT_ID'] = 'env_client_id'
+        ENV['TDX_CLIENT_SECRET'] = 'env_client_secret'
+
+        config = described_class.new
+
+        expect(config.client_id).to eq('env_client_id')
+        expect(config.client_secret).to eq('env_client_secret')
+      end
+    end
+
+    context 'when Rails credentials are not available' do
+      before do
+        # Ensure Rails is not defined
+        if defined?(Rails)
+          hide_const('Rails')
+        end
+      end
+
+      it 'uses ENV variables when Rails is not available' do
+        ENV['TDX_CLIENT_ID'] = 'env_client_id'
+        ENV['TDX_CLIENT_SECRET'] = 'env_client_secret'
+
+        config = described_class.new
+
+        expect(config.client_id).to eq('env_client_id')
+        expect(config.client_secret).to eq('env_client_secret')
+      end
+
+      it 'returns nil when neither Rails credentials nor ENV variables are available' do
+        config = described_class.new
+
+        expect(config.client_id).to be_nil
+        expect(config.client_secret).to be_nil
+      end
+    end
+  end
+
+  describe 'URL resolution' do
+    let(:original_env_base_url) { ENV['TDX_BASE_URL'] }
+    let(:original_env_oauth_url) { ENV['TDX_OAUTH_TOKEN_URL'] }
+
+    before do
+      ENV['TDX_BASE_URL'] = nil
+      ENV['TDX_OAUTH_TOKEN_URL'] = nil
+    end
+
+    after do
+      ENV['TDX_BASE_URL'] = original_env_base_url
+      ENV['TDX_OAUTH_TOKEN_URL'] = original_env_oauth_url
+    end
+
+    context 'when Rails credentials are available' do
+      let(:mock_credentials) { double('credentials') }
+
+      before do
+        allow(mock_credentials).to receive(:tdx_client_id).and_return('credentials_client_id')
+        allow(mock_credentials).to receive(:tdx_client_secret).and_return('credentials_client_secret')
+
+        mock_app = double('application')
+        allow(mock_app).to receive(:credentials).and_return(mock_credentials)
+
+        stub_const('Rails', double('Rails'))
+        allow(Rails).to receive(:application).and_return(mock_app)
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
+      end
+
+      context 'with environment-specific credentials' do
+        before do
+          allow(mock_credentials).to receive(:dig).and_return(nil)
+          allow(mock_credentials).to receive(:dig)
+            .with(:tdx, :development, :base_url)
+            .and_return('https://dev.api.example.com/um/it')
+          allow(mock_credentials).to receive(:dig)
+            .with(:tdx, :development, :oauth_token_url)
+            .and_return('https://dev.api.example.com/um/oauth2/token')
+
+          # Override the parent Rails.env mock for this specific test
+          allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
+        end
+
+        it 'uses environment-specific credentials for development' do
+          config = described_class.new
+          expect(config.tdx_base_url).to eq('https://dev.api.example.com/um/it')
+          expect(config.oauth_token_url).to eq('https://dev.api.example.com/um/oauth2/token')
+        end
+      end
+
+      context 'with general credentials' do
+        before do
+          allow(mock_credentials).to receive(:dig).and_return(nil)
+          allow(mock_credentials).to receive(:dig)
+            .with(:tdx, :base_url)
+            .and_return('https://general.api.example.com/um/it')
+          allow(mock_credentials).to receive(:dig)
+            .with(:tdx, :oauth_token_url)
+            .and_return('https://general.api.example.com/um/oauth2/token')
+        end
+
+        it 'uses general credentials when environment-specific ones are not available' do
+          config = described_class.new
+          expect(config.tdx_base_url).to eq('https://general.api.example.com/um/it')
+          expect(config.oauth_token_url).to eq('https://general.api.example.com/um/oauth2/token')
+        end
+      end
+    end
+
+    context 'when Rails credentials are not available' do
+      before do
+        if defined?(Rails)
+          hide_const('Rails')
+        end
+      end
+
+      it 'uses ENV variables when Rails is not available' do
+        ENV['TDX_BASE_URL'] = 'https://env.api.example.com/um/it'
+        ENV['TDX_OAUTH_TOKEN_URL'] = 'https://env.api.example.com/um/oauth2/token'
+
+        config = described_class.new
+        expect(config.tdx_base_url).to eq('https://env.api.example.com/um/it')
+        expect(config.oauth_token_url).to eq('https://env.api.example.com/um/oauth2/token')
+      end
+
+      it 'uses default URLs when neither credentials nor ENV are available' do
+        config = described_class.new
+        # Since Rails is not defined, it will use the default URL for non-production
+        expect(config.tdx_base_url).to eq('https://gw-test.api.it.umich.edu/um/it')
+        expect(config.oauth_token_url).to eq('https://gw-test.api.it.umich.edu/um/oauth2/token')
+      end
+    end
+
+    context 'environment-specific defaults' do
+      before do
+        if defined?(Rails)
+          hide_const('Rails')
+        end
+      end
+
+      it 'uses test URLs for non-production environments' do
+        # Without Rails defined, it defaults to test URLs
+        config = described_class.new
+        expect(config.tdx_base_url).to eq('https://gw-test.api.it.umich.edu/um/it')
+        expect(config.oauth_token_url).to eq('https://gw-test.api.it.umich.edu/um/oauth2/token')
+      end
+
+      context 'when Rails environment is production' do
+        before do
+          mock_credentials = double('credentials')
+          allow(mock_credentials).to receive(:tdx_client_id).and_return(nil)
+          allow(mock_credentials).to receive(:tdx_client_secret).and_return(nil)
+          allow(mock_credentials).to receive(:dig).and_return(nil)
+
+          mock_app = double('application')
+          allow(mock_app).to receive(:credentials).and_return(mock_credentials)
+
+          stub_const('Rails', double('Rails'))
+          allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
+          allow(Rails).to receive(:application).and_return(mock_app)
+        end
+
+        it 'uses production URLs for production environment' do
+          config = described_class.new
+          expect(config.tdx_base_url).to eq('https://gw.api.it.umich.edu/um/it')
+          expect(config.oauth_token_url).to eq('https://gw.api.it.umich.edu/um/oauth2/token')
+        end
+      end
+
+      context 'when Rails environment is staging' do
+        before do
+          mock_credentials = double('credentials')
+          allow(mock_credentials).to receive(:tdx_client_id).and_return(nil)
+          allow(mock_credentials).to receive(:tdx_client_secret).and_return(nil)
+          allow(mock_credentials).to receive(:dig).and_return(nil)
+
+          mock_app = double('application')
+          allow(mock_app).to receive(:credentials).and_return(mock_credentials)
+
+          stub_const('Rails', double('Rails'))
+          allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('staging'))
+          allow(Rails).to receive(:application).and_return(mock_app)
+        end
+
+        it 'uses test URLs for staging environment' do
+          config = described_class.new
+          expect(config.tdx_base_url).to eq('https://gw-test.api.it.umich.edu/um/it')
+          expect(config.oauth_token_url).to eq('https://gw-test.api.it.umich.edu/um/oauth2/token')
+        end
+      end
     end
   end
 end
