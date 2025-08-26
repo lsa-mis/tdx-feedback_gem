@@ -17,7 +17,7 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'tdx_feedback_gem'
+gem 'tdx_feedback_gem', git: 'https://github.com/lsa-mis/tdx-feedback_gem.git'
 ```
 
 And then execute:
