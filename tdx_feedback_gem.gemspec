@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
 
   # Runtime dependencies for Rails integration
   spec.add_runtime_dependency 'actionpack', '>= 6.1', '< 8.0'
-  spec.add_runtime_dependency 'activerecord', '>= 6.1', '< 8.0'
+  spec.add_runtime_dependency 'activerecord', '>= 6.1', '< 9.0'
   spec.add_runtime_dependency 'railties', '>= 6.1', '< 8.0'
 
   spec.add_development_dependency 'rspec'
