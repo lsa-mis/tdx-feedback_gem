@@ -93,7 +93,7 @@ bundle exec rspec
 
 ## Contributing
 
-Bug reports and pull requests are welcome on [GitHub](https://github.com/lsa-mis/tdx-feedback_gem).
+Bug reports and pull requests are welcome on [GitHub](https://github.com/lsa-mis/tdx-feedback_gem/issues).
 
 ## License
 
