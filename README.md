@@ -39,6 +39,7 @@ TdxFeedbackGem.configure do |config|
   config.require_authentication = true
   config.enable_ticket_creation = false
   config.oauth_scope = 'tdxticket'
+  config.title_prefix = '[Feedback]'
 
   # TDX API credentials (use Rails credentials or environment variables)
   config.app_id = 31
@@ -63,7 +64,7 @@ Add to your layout or views:
 ## Configuration
 
 The gem automatically resolves configuration from:
-1. **Rails Encrypted Credentials** (recommended)
+1. **[Rails Encrypted Credentials** (recommended)](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Configuration-Guide#environment-specific-configuration)
 2. **Environment Variables**
 3. **Built-in defaults**
 
