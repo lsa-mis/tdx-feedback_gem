@@ -64,8 +64,8 @@ Add to your layout or views:
 ## Configuration
 
 The gem automatically resolves configuration from:
-1. **[Rails Encrypted Credentials** (recommended)](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Configuration-Guide#environment-specific-configuration)
-2. **Environment Variables**
+1. **[Rails Encrypted Credentials** (recommended)](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Configuration-Guide#environment-specific-configuration)**
+2. **[Environment Variables]()**
 3. **Built-in defaults**
 
 ### Runtime Toggle
