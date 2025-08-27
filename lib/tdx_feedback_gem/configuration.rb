@@ -21,7 +21,7 @@ module TdxFeedbackGem
       @client_secret = resolve_client_secret
       @oauth_scope = 'tdxticket'
 
-      @enable_ticket_creation = false
+      @enable_ticket_creation = resolve_enable_ticket_creation
       @app_id = nil
       @type_id = nil
       @form_id = nil
@@ -32,6 +32,11 @@ module TdxFeedbackGem
       @responsible_group_id = nil
       @title_prefix = '[Feedback]'
       @default_requestor_email = nil
+    end
+
+    # Allow runtime toggling of ticket creation (useful for testing/emergencies)
+    def enable_ticket_creation=(value)
+      @enable_ticket_creation = value
     end
 
     private
@@ -159,6 +164,29 @@ module TdxFeedbackGem
       else
         'https://gw-test.api.it.umich.edu/um/oauth2/token'
       end
+    end
+
+    def resolve_enable_ticket_creation
+      # First check Rails encrypted credentials for environment-specific values
+      if defined?(Rails) && Rails.application&.credentials
+        # Try environment-specific credentials first
+        env_key = environment_key
+        if env_key
+          credential_value = Rails.application.credentials.dig(:tdx, env_key, :enable_ticket_creation)
+          return credential_value.downcase == 'true' if credential_value && credential_value.respond_to?(:downcase)
+        end
+
+        # Fall back to general credential
+        credential_value = Rails.application.credentials.dig(:tdx, :enable_ticket_creation)
+        return credential_value.downcase == 'true' if credential_value && credential_value.respond_to?(:downcase)
+      end
+
+      # Fall back to ENV variable
+      env_value = ENV['TDX_ENABLE_TICKET_CREATION']
+      return env_value.downcase == 'true' if env_value && !env_value.empty?
+
+      # Fall back to default value
+      false
     end
   end
 
