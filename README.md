@@ -36,8 +36,8 @@ Edit `config/initializers/tdx_feedback_gem.rb`:
 
 ```ruby
 TdxFeedbackGem.configure do |config|
-  config.require_authentication = false
-  config.enable_ticket_creation = true
+  config.require_authentication = true
+  config.enable_ticket_creation = false
 
   # TDX API credentials (use Rails credentials or environment variables)
   config.app_id = 31
