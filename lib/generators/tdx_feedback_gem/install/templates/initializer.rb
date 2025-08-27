@@ -32,7 +32,7 @@ TdxFeedbackGem.configure do |config|
   # config.app_id = 46
   # config.type_id = 644
   # config.form_id = 107
-  # config.service_offering_id: 289
+  # config.service_offering_id = 289
   # config.status_id = 115
   # config.source_id = 8
   # config.service_id = 2314
