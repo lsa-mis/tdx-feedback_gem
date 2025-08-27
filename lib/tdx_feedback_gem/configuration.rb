@@ -167,7 +167,21 @@ module TdxFeedbackGem
     end
 
     def resolve_enable_ticket_creation
-      # Check environment variable first (allows runtime toggling without redeploy)
+      # First check Rails encrypted credentials for environment-specific values
+      if defined?(Rails) && Rails.application&.credentials
+        # Try environment-specific credentials first
+        env_key = environment_key
+        if env_key
+          credential_value = Rails.application.credentials.dig(:tdx, env_key, :enable_ticket_creation)
+          return credential_value.downcase == 'true' if credential_value && credential_value.respond_to?(:downcase)
+        end
+
+        # Fall back to general credential
+        credential_value = Rails.application.credentials.dig(:tdx, :enable_ticket_creation)
+        return credential_value.downcase == 'true' if credential_value && credential_value.respond_to?(:downcase)
+      end
+
+      # Fall back to ENV variable
       env_value = ENV['TDX_ENABLE_TICKET_CREATION']
       return env_value.downcase == 'true' if env_value && !env_value.empty?
 

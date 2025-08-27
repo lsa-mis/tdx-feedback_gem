@@ -123,16 +123,19 @@ tdx:
     client_secret: dev_client_secret_here
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+    enable_ticket_creation: false  # Disable in development
   staging:
     client_id: staging_client_id_here
     client_secret: staging_client_secret_here
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+    enable_ticket_creation: true   # Enable in staging for testing
   production:
     client_id: prod_client_id_here
     client_secret: prod_client_secret_here
     base_url: https://gw.api.it.umich.edu/um/it
     oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
+    enable_ticket_creation: true   # Enable in production
 ```
 
 **Or for shared credentials with environment-specific URLs:**
@@ -147,13 +150,34 @@ tdx:
   development:
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+    enable_ticket_creation: false
   staging:
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+    enable_ticket_creation: true
   production:
     base_url: https://gw.api.it.umich.edu/um/it
     oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
+    enable_ticket_creation: true
 ```
+
+**Overriding Credentials with Environment Variables:**
+
+Sometimes you need to override a credential value temporarily. Environment variables allow this:
+
+```bash
+# Even if credentials.yml.enc has enable_ticket_creation: true
+# This will temporarily disable it:
+export TDX_ENABLE_TICKET_CREATION=false
+
+# Or temporarily change the base URL:
+export TDX_BASE_URL=https://emergency-api.example.com/um/it
+```
+
+This is perfect for:
+- Incident response (quickly disable TDX)
+- Testing different configurations
+- Emergency maintenance windows
 
 **Or for global configuration (not recommended for production):**
 
@@ -205,6 +229,54 @@ export TDX_ENABLE_TICKET_CREATION=false
 # Restart application or reload configuration
 ```
 
+### Hatchbox.io Environment Variables
+
+Hatchbox.io provides a user-friendly interface for managing environment variables. Here's how to configure the TDX Feedback Gem:
+
+#### **1. Access Environment Variables**
+1. Log into your Hatchbox.io dashboard
+2. Navigate to your application
+3. Click on **"Environment Variables"** in the left sidebar
+
+#### **2. Required TDX Configuration Variables**
+Add these variables to enable TDX integration:
+
+| Variable Name | Value | Description |
+|---------------|-------|-------------|
+| `TDX_ENABLE_TICKET_CREATION` | `true` | Enable TDX ticket creation |
+| `TDX_CLIENT_ID` | `your_client_id` | TDX OAuth client ID |
+| `TDX_CLIENT_SECRET` | `your_client_secret` | TDX OAuth client secret |
+| `TDX_BASE_URL` | `https://gw.api.it.umich.edu/um/it` | Production TDX API URL |
+| `TDX_OAUTH_TOKEN_URL` | `https://gw.api.it.umich.edu/um/oauth2/token` | Production OAuth token URL |
+
+#### **3. Development/Staging Variables**
+For non-production environments, use the test URLs:
+
+| Variable Name | Value | Description |
+|---------------|-------|-------------|
+| `TDX_BASE_URL` | `https://gw-test.api.it.umich.edu/um/it` | Test TDX API URL |
+| `TDX_OAUTH_TOKEN_URL` | `https://gw-test.api.it.umich.edu/um/oauth2/token` | Test OAuth token URL |
+
+#### **4. Quick Toggle for Incidents**
+To temporarily disable TDX integration during incidents:
+1. Go to **Environment Variables**
+2. Change `TDX_ENABLE_TICKET_CREATION` from `true` to `false`
+3. Click **"Save"**
+4. Your application will automatically restart with the new setting
+
+#### **5. Environment Variable Priority**
+Hatchbox.io environment variables have **medium priority** in the configuration hierarchy:
+
+**Priority Order:**
+1. **Rails Encrypted Credentials** (highest - set in `credentials.yml.enc`)
+2. **Hatchbox.io Environment Variables** (medium - set in dashboard)
+3. **Built-in Defaults** (lowest - hardcoded in gem)
+
+**Important:** If you set a value in `credentials.yml.enc`, it will override the same setting in Hatchbox.io environment variables. This allows you to:
+- Use credentials for sensitive production values
+- Use Hatchbox.io for runtime toggles and non-sensitive settings
+- Override credentials when needed by setting environment variables
+
 ```bash
 # .env.development
 TDX_CLIENT_ID=dev_client_id_here
@@ -225,14 +297,24 @@ TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
 TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
 ```
 
-**Resolution Priority:**
-1. Rails credentials (environment-specific first, then global)
-2. Environment variables
-3. Built-in defaults (development: gw-test, production: gw)
+**Configuration Resolution Priority (All Variables):**
 
-**TDX Ticket Creation Priority:**
-1. `TDX_ENABLE_TICKET_CREATION` environment variable (runtime toggle)
-2. Default value (false)
+All TDX configuration variables follow this hierarchy:
+
+1. **Rails Encrypted Credentials** (highest priority)
+   - Environment-specific credentials first (e.g., `tdx.production.client_id`)
+   - Then global credentials (e.g., `tdx.client_id`)
+2. **Environment Variables** (medium priority)
+   - `TDX_CLIENT_ID`, `TDX_ENABLE_TICKET_CREATION`, etc.
+3. **Built-in Defaults** (lowest priority)
+   - Development: `https://gw-test.api.it.umich.edu/um/it`
+   - Production: `https://gw.api.it.umich.edu/um/it`
+
+**Example for `enable_ticket_creation`:**
+1. `credentials.yml.enc` → `tdx.production.enable_ticket_creation: true`
+2. `credentials.yml.enc` → `tdx.enable_ticket_creation: false`
+3. `ENV['TDX_ENABLE_TICKET_CREATION']` → `true`
+4. Default: `false`
 
 ## Usage
 
