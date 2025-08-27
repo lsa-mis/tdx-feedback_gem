@@ -50,6 +50,24 @@ $ rails db:migrate
 
 The generator creates a comprehensive configuration file at `config/initializers/tdx_feedback_gem.rb`:
 
+**Runtime Toggle (No Redeploy Required):**
+
+You can enable/disable TDX ticket creation at runtime using an environment variable:
+
+```bash
+# Enable TDX ticket creation
+export TDX_ENABLE_TICKET_CREATION=true
+
+# Disable TDX ticket creation
+export TDX_ENABLE_TICKET_CREATION=false
+```
+
+This is perfect for:
+- Toggling during incidents or maintenance
+- Testing in different environments
+- Container orchestration (Docker, Kubernetes)
+- DevOps/SRE team control without developer involvement
+
 ```ruby
 TdxFeedbackGem.configure do |config|
   # === Authentication ===
@@ -164,6 +182,29 @@ TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
 
 **For environment-specific configuration, you can use different .env files:**
 
+**Runtime TDX Toggle Examples:**
+
+```bash
+# Docker/Kubernetes deployment
+docker run -e TDX_ENABLE_TICKET_CREATION=true your-app
+
+# Kubernetes deployment.yaml
+env:
+- name: TDX_ENABLE_TICKET_CREATION
+  value: "true"
+
+# Heroku
+heroku config:set TDX_ENABLE_TICKET_CREATION=true
+
+# Local development
+export TDX_ENABLE_TICKET_CREATION=true
+rails server
+
+# Production server (temporary disable during incident)
+export TDX_ENABLE_TICKET_CREATION=false
+# Restart application or reload configuration
+```
+
 ```bash
 # .env.development
 TDX_CLIENT_ID=dev_client_id_here
@@ -188,6 +229,10 @@ TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
 1. Rails credentials (environment-specific first, then global)
 2. Environment variables
 3. Built-in defaults (development: gw-test, production: gw)
+
+**TDX Ticket Creation Priority:**
+1. `TDX_ENABLE_TICKET_CREATION` environment variable (runtime toggle)
+2. Default value (false)
 
 ## Usage
 

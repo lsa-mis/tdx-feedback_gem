@@ -21,7 +21,7 @@ module TdxFeedbackGem
       @client_secret = resolve_client_secret
       @oauth_scope = 'tdxticket'
 
-      @enable_ticket_creation = false
+      @enable_ticket_creation = resolve_enable_ticket_creation
       @app_id = nil
       @type_id = nil
       @form_id = nil
@@ -32,6 +32,11 @@ module TdxFeedbackGem
       @responsible_group_id = nil
       @title_prefix = '[Feedback]'
       @default_requestor_email = nil
+    end
+
+    # Allow runtime toggling of ticket creation (useful for testing/emergencies)
+    def enable_ticket_creation=(value)
+      @enable_ticket_creation = value
     end
 
     private
@@ -159,6 +164,15 @@ module TdxFeedbackGem
       else
         'https://gw-test.api.it.umich.edu/um/oauth2/token'
       end
+    end
+
+    def resolve_enable_ticket_creation
+      # Check environment variable first (allows runtime toggling without redeploy)
+      env_value = ENV['TDX_ENABLE_TICKET_CREATION']
+      return env_value.downcase == 'true' if env_value && !env_value.empty?
+
+      # Fall back to default value
+      false
     end
   end
 
