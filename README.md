@@ -793,6 +793,103 @@ Creates a feedback record and optionally a TDX ticket.
 }
 ```
 
+## API Schema Documentation
+
+This gem integrates with the TeamDynamix (TDX) API system. The complete API specifications are included in the `docs/` directory for reference and development purposes.
+
+### Schema Files
+
+#### `docs/tdxticket.yaml` - TDX Ticket API Specification
+**Purpose**: Complete OpenAPI 3.0.1 specification for the TDX ticket management system.
+
+**What it contains**:
+- All available API endpoints for ticket operations
+- Request/response schemas and data models
+- Authentication requirements and error handling
+- Field definitions and validation rules
+
+**Key endpoints documented**:
+- Ticket creation, updates, and management
+- Asset management and search
+- Knowledge base operations
+- User and group management
+- Report generation and access
+
+**How to use it**:
+- **Development**: Reference exact field names, data types, and API structure
+- **Testing**: Generate mock data based on documented schemas
+- **Integration**: Understand required parameters and response formats
+- **Troubleshooting**: Verify API behavior against documented specifications
+
+**Example usage in development**:
+```ruby
+# Reference the schema to understand ticket structure
+# From tdxticket.yaml, we know tickets require:
+# - appId (integer)
+# - typeId (integer)
+# - statusId (integer)
+# - sourceId (integer)
+# - serviceId (integer)
+# - responsibleGroupId (integer)
+
+# This helps ensure your configuration matches the API requirements
+```
+
+#### `docs/oauthtokenprovider.yaml` - OAuth Token Provider API
+**Purpose**: OpenAPI specification for the OAuth2 client credentials flow used for API authentication.
+
+**What it contains**:
+- Token endpoint specifications
+- Required parameters (scope, grant_type)
+- Response schemas (access_token, expires_in, etc.)
+- Error handling and status codes
+
+**How to use it**:
+- **Authentication**: Understand the OAuth flow requirements
+- **Token Management**: Know how to request and handle access tokens
+- **Error Handling**: Properly handle authentication failures
+
+**Example usage in development**:
+```ruby
+# From oauthtokenprovider.yaml, we know the token endpoint requires:
+# - scope: 'tdxticket' (as configured in your gem)
+# - grant_type: 'client_credentials'
+# - Basic auth with client_id/client_secret
+
+# This ensures your OAuth implementation matches the API specification
+```
+
+### Why These Schemas Are Included
+
+1. **Single Source of Truth**: Eliminates the need to hunt through external documentation
+2. **Development Efficiency**: Developers can quickly understand API structure
+3. **Type Safety**: Reference exact field names and data types
+4. **Version Control**: Track API changes over time
+5. **Testing**: Generate accurate mock data and test scenarios
+6. **Onboarding**: New developers understand the external dependencies
+
+### Keeping Schemas Updated
+
+These schemas are provided by the University of Michigan API Directory team. To keep them current:
+
+1. **Monitor for updates** from the official API documentation
+2. **Update the YAML files** when new versions are released
+3. **Test your integration** after schema updates
+4. **Document any breaking changes** in your gem's changelog
+
+### Schema Validation
+
+You can use these OpenAPI schemas with tools like:
+- **Swagger UI**: Visualize and test the APIs
+- **OpenAPI Generator**: Generate client code in various languages
+- **Postman**: Import and test API endpoints
+- **API testing frameworks**: Validate responses against schemas
+
+### Related Documentation
+
+- [TeamDynamix API Documentation](https://docs.google.com/document/d/14G-E5Zb2208cHcE5genW5mW0bVEEEtfCTH1N6erP0gA/edit?usp=sharing)
+- [UMich API Postman Collections](https://drive.google.com/drive/folders/1OdXufmwJJ_Qy-uSJImlmZImCkN-RqBCE)
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests.
