@@ -81,7 +81,7 @@ export TDX_ENABLE_TICKET_CREATION=true
 - **[📚 Wiki](https://github.com/lsa-mis/tdx-feedback_gem/wiki)** - Complete documentation, examples, and guides
 - **[🔧 Integration Examples](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Integration-Examples)** - Rails 5/6/7, authentication systems
 - **[🎨 Styling Guide](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Styling-and-Theming)** - Customization and theming
-- **[🧪 Testing Guide](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Testing)** - Test setup and coverage
+- **[🧪 Testing Guide](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Testing-Guides)** - Test setup and coverage
 - **[📊 API Schemas](https://github.com/lsa-mis/tdx-feedback_gem/wiki/API-Schemas)** - TDX API specifications
 
 ## Development
