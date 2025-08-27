@@ -280,28 +280,28 @@ async function submitFeedbackWithRetry(formData, maxRetries = 3) {
         },
         body: JSON.stringify(formData)
       });
-      
+
       if (response.ok) {
         return await response.json();
       }
-      
+
       // Handle specific error codes
       if (response.status === 422) {
         const errorData = await response.json();
         throw new Error(`Validation failed: ${JSON.stringify(errorData.errors)}`);
       }
-      
+
       if (response.status === 401) {
         throw new Error('Authentication required');
       }
-      
+
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      
+
     } catch (error) {
       if (attempt === maxRetries) {
         throw error;
       }
-      
+
       // Wait before retry (exponential backoff)
       await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
     }
@@ -315,17 +315,17 @@ async function submitFeedbackWithRetry(formData, maxRetries = 3) {
 // Client-side validation before submission
 function validateFeedbackForm(formData) {
   const errors = {};
-  
+
   if (!formData.feedback.message || formData.feedback.message.trim().length === 0) {
     errors.message = ['Message is required'];
   } else if (formData.feedback.message.length > 10000) {
     errors.message = ['Message is too long (maximum is 10000 characters)'];
   }
-  
+
   if (formData.feedback.context && formData.feedback.context.length > 10000) {
     errors.context = ['Context is too long (maximum is 10000 characters)'];
   }
-  
+
   return {
     isValid: Object.keys(errors).length === 0,
     errors: errors
@@ -390,34 +390,34 @@ RSpec.describe 'Feedback API', type: :request do
   describe 'GET /tdx_feedback_gem/feedbacks/new' do
     it 'returns modal HTML' do
       get '/tdx_feedback_gem/feedbacks/new', headers: { 'Accept' => 'application/json' }
-      
+
       expect(response).to be_successful
       json = JSON.parse(response.body)
       expect(json['success']).to be true
       expect(json['html']).to include('tdx-feedback-modal')
     end
   end
-  
+
   describe 'POST /tdx_feedback_gem/feedbacks' do
     context 'with valid data' do
       it 'creates feedback successfully' do
         post '/tdx_feedback_gem/feedbacks', params: {
           feedback: { message: 'Test feedback' }
         }, headers: { 'Accept' => 'application/json' }
-        
+
         expect(response).to have_http_status(:created)
         json = JSON.parse(response.body)
         expect(json['success']).to be true
         expect(json['feedback']['message']).to eq('Test feedback')
       end
     end
-    
+
     context 'with invalid data' do
       it 'returns validation errors' do
         post '/tdx_feedback_gem/feedbacks', params: {
           feedback: { message: '' }
         }, headers: { 'Accept' => 'application/json' }
-        
+
         expect(response).to have_http_status(:unprocessable_entity)
         json = JSON.parse(response.body)
         expect(json['success']).to be false
@@ -463,7 +463,7 @@ class TdxFeedbackGem::FeedbacksController < ApplicationController
     @modal_html = Rails.cache.fetch("feedback_modal_#{current_user&.id}", expires_in: 1.hour) do
       render_to_string(partial: 'modal', layout: false)
     end
-    
+
     render json: { success: true, html: @modal_html }
   end
 end
@@ -477,13 +477,13 @@ def create
   ActiveRecord::Base.transaction do
     @feedback = TdxFeedbackGem::Feedback.new(feedback_params)
     @feedback.user = current_user if current_user
-    
+
     if @feedback.save
       # Create TDX ticket if enabled
       if TdxFeedbackGem.configuration.enable_ticket_creation?
         create_tdx_ticket(@feedback)
       end
-      
+
       render json: { success: true, feedback: @feedback }, status: :created
     else
       render json: { success: false, errors: @feedback.errors }, status: :unprocessable_entity

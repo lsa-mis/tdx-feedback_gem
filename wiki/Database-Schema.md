@@ -44,25 +44,25 @@ module TdxFeedbackGem
   class Feedback < ApplicationRecord
     # Table name configuration
     self.table_name = 'tdx_feedback_gem_feedbacks'
-    
+
     # Associations
     belongs_to :user, optional: true
-    
+
     # Validations
     validates :message, presence: true, length: { maximum: 10000 }
     validates :context, length: { maximum: 10000 }, allow_blank: true
     validates :tdx_ticket_id, length: { maximum: 255 }, allow_blank: true
-    
+
     # Scopes
     scope :recent, -> { order(created_at: :desc) }
     scope :with_tdx_tickets, -> { where.not(tdx_ticket_id: nil) }
     scope :without_tdx_tickets, -> { where(tdx_ticket_id: nil) }
-    
+
     # Instance methods
     def has_tdx_ticket?
       tdx_ticket_id.present?
     end
-    
+
     def tdx_ticket_created?
       has_tdx_ticket?
     end
@@ -77,12 +77,12 @@ end
 class User < ApplicationRecord
   # Optional: Add feedback association
   has_many :feedbacks, class_name: 'TdxFeedbackGem::Feedback'
-  
+
   # Helper methods
   def feedback_count
     feedbacks.count
   end
-  
+
   def recent_feedback(limit = 5)
     feedbacks.recent.limit(limit)
   end
@@ -102,10 +102,10 @@ class CreateTdxFeedbackGemFeedbacks < ActiveRecord::Migration[6.1]
       t.text :context
       t.references :user, null: true, foreign_key: true
       t.string :tdx_ticket_id
-      
+
       t.timestamps
     end
-    
+
     # Indexes for performance
     add_index :tdx_feedback_gem_feedbacks, :user_id
     add_index :tdx_feedback_gem_feedbacks, :tdx_ticket_id
@@ -124,7 +124,7 @@ class AddCustomFieldsToTdxFeedbackGemFeedbacks < ActiveRecord::Migration[6.1]
     add_column :tdx_feedback_gem_feedbacks, :priority, :integer, default: 2
     add_column :tdx_feedback_gem_feedbacks, :page_url, :string
     add_column :tdx_feedback_gem_feedbacks, :user_agent, :string
-    
+
     # Indexes for new fields
     add_index :tdx_feedback_gem_feedbacks, :feedback_type
     add_index :tdx_feedback_gem_feedbacks, :priority
@@ -263,14 +263,14 @@ end
 class FeedbackExporter
   def self.export_to_csv(start_date = nil, end_date = nil)
     feedbacks = TdxFeedbackGem::Feedback.all
-    
+
     if start_date && end_date
       feedbacks = feedbacks.where(created_at: start_date..end_date)
     end
-    
+
     CSV.generate do |csv|
       csv << ['ID', 'Message', 'Context', 'User ID', 'TDX Ticket ID', 'Created At']
-      
+
       feedbacks.each do |feedback|
         csv << [
           feedback.id,
@@ -293,14 +293,14 @@ end
 class FeedbackCleanup
   def self.cleanup_old_feedback(days_to_keep = 365)
     cutoff_date = days_to_keep.days.ago
-    
+
     # Delete old feedback without TDX tickets
     old_feedback = TdxFeedbackGem::Feedback
       .where('created_at < ? AND tdx_ticket_id IS NULL', cutoff_date)
-    
+
     count = old_feedback.count
     old_feedback.destroy_all
-    
+
     count
   end
 end
@@ -320,11 +320,11 @@ production:
   password: your_password
   host: your_host
   port: 5432
-  
+
   # Performance settings
   pool: 25
   timeout: 5000
-  
+
   # Connection settings
   variables:
     statement_timeout: 5000
@@ -343,11 +343,11 @@ production:
   password: your_password
   host: your_host
   port: 3306
-  
+
   # Performance settings
   pool: 25
   timeout: 5000
-  
+
   # MySQL specific settings
   variables:
     sql_mode: "STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO"
@@ -362,7 +362,7 @@ production:
 class AddFeedbackCountToUsers < ActiveRecord::Migration[6.1]
   def change
     add_column :users, :feedbacks_count, :integer, default: 0, null: false
-    
+
     # Update existing counts
     User.find_each do |user|
       User.reset_counters(user.id, :feedbacks)
@@ -373,7 +373,7 @@ end
 # In User model
 class User < ApplicationRecord
   has_many :feedbacks, class_name: 'TdxFeedbackGem::Feedback'
-  
+
   # Counter cache
   has_many :feedbacks, class_name: 'TdxFeedbackGem::Feedback', counter_cache: true
 end
@@ -390,7 +390,7 @@ namespace :feedback do
     count = FeedbackCleanup.cleanup_old_feedback(365)
     puts "Cleaned up #{count} old feedback records"
   end
-  
+
   desc "Reindex feedback table"
   task reindex: :environment do
     puts "Reindexing feedback table..."
