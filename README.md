@@ -894,9 +894,309 @@ You can use these OpenAPI schemas with tools like:
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests.
 
+### Testing
+
+The gem includes a comprehensive test suite covering all major functionality.
+
+#### Running Tests
+
+```bash
+# Run all tests
+bundle exec rspec
+
+# Run specific test files
+bundle exec rspec spec/configuration_spec.rb
+bundle exec rspec spec/client_spec.rb
+bundle exec rspec spec/ticket_creator_spec.rb
+
+# Run tests with coverage report
+COVERAGE=true bundle exec rspec
+```
+
+#### Test Environment Setup
+
+The gem includes a dummy Rails application for testing:
+
+```bash
+# Setup test database
+cd spec/dummy
+bundle exec rails db:create
+bundle exec rails db:migrate
+bundle exec rails db:test:prepare
+```
+
+#### Test Coverage
+
+The test suite covers:
+
+- **Configuration Management** - All configuration options and resolution logic
+- **TDX Client** - API communication, OAuth token management, error handling
+- **Ticket Creation** - TDX ticket creation flow, error scenarios, result handling
+- **Controller Actions** - Form submission, validation, authentication
+- **Model Validation** - Feedback model constraints and validations
+- **Helper Methods** - All view helper functionality
+- **Integration Flow** - Complete feedback submission workflow
+
+#### Test Data
+
+Test configuration uses mock TDX credentials:
+
+```ruby
+# spec/spec_helper.rb
+TdxFeedbackGem.configure do |config|
+  config.enable_ticket_creation = true
+  config.tdx_base_url = 'https://test-api.example.com'
+  config.oauth_token_url = 'https://test-api.example.com/oauth/token'
+  config.client_id = 'test_client_id'
+  config.client_secret = 'test_client_secret'
+  config.app_id = 123
+  config.type_id = 456
+  config.form_id = 789
+  config.service_offering_id = 101
+  config.status_id = 112
+  config.source_id = 131
+  config.service_id = 415
+  config.responsible_group_id = 161
+end
+```
+
+#### Continuous Integration
+
+The gem is configured for CI/CD with:
+
+- RSpec test runner
+- Database setup scripts
+- Environment-specific configurations
+- Coverage reporting
+- Linting and style checks
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/yourusername/tdx_feedback_gem.
+
+## Performance Considerations
+
+### Optimization Tips
+
+#### Asset Optimization
+
+```ruby
+# In production.rb
+config.assets.compress = true
+config.assets.compile = false
+config.assets.digest = true
+
+# Precompile assets
+bundle exec rails assets:precompile
+```
+
+#### Database Optimization
+
+```ruby
+# Minimize database queries in modal render
+# Use includes for associations if needed
+# Consider caching for frequently accessed data
+```
+
+#### TDX API Optimization
+
+```ruby
+# Cache OAuth tokens appropriately
+# Implement retry logic with exponential backoff
+# Monitor API rate limits
+# Use connection pooling for HTTP requests
+```
+
+### CSS Performance
+
+#### Responsive Breakpoints
+
+```css
+/* Mobile first approach */
+.tdx-feedback-modal {
+  /* Base styles for mobile */
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .tdx-feedback-modal {
+    /* Tablet-specific styles */
+  }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+  .tdx-feedback-modal {
+    /* Desktop-specific styles */
+  }
+}
+```
+
+#### Animation Performance
+
+```css
+/* Use transform and opacity for smooth animations */
+.tdx-feedback-modal {
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+.tdx-feedback-modal.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Hardware acceleration for smooth animations */
+.tdx-feedback-modal {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+```
+
+### JavaScript Performance
+
+#### Event Handling
+
+```javascript
+// Use event delegation for dynamic content
+document.addEventListener('click', function(event) {
+  if (event.target.matches('.tdx-feedback-trigger')) {
+    // Handle feedback trigger clicks
+  }
+});
+
+// Debounce form submissions
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+const debouncedSubmit = debounce(submitForm, 300);
+```
+
+#### Memory Management
+
+```javascript
+// Clean up event listeners
+function cleanup() {
+  // Remove event listeners
+  // Clear timeouts
+  // Reset form state
+}
+
+// Call cleanup when modal closes
+document.addEventListener('tdx-feedback:closed', cleanup);
+```
+
+## Integration Examples
+
+### Rails 7 with Import Maps
+
+```ruby
+# config/importmap.rb
+pin "@hotwired/stimulus", to: "stimulus.min.js"
+pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
+pin "tdx_feedback_gem", to: "tdx_feedback_gem.js"
+
+# app/javascript/application.js
+import "@hotwired/stimulus-loading"
+import "tdx_feedback_gem"
+```
+
+### Rails 6 with Webpacker
+
+```javascript
+// app/javascript/packs/application.js
+import '@hotwired/stimulus'
+import 'tdx_feedback_gem'
+```
+
+### Rails 5 with Asset Pipeline
+
+```ruby
+# app/assets/javascripts/application.js
+//= require jquery
+//= require jquery_ujs
+//= require tdx_feedback_gem
+```
+
+### Different Authentication Systems
+
+#### Devise
+
+```ruby
+# app/controllers/application_controller.rb
+class ApplicationController < ActionController::Base
+  def current_user
+    current_user # Devise provides this method
+  end
+end
+
+# config/initializers/tdx_feedback_gem.rb
+TdxFeedbackGem.configure do |config|
+  config.require_authentication = true
+end
+```
+
+#### Custom Authentication
+
+```ruby
+# app/controllers/application_controller.rb
+class ApplicationController < ActionController::Base
+  def current_user
+    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+  end
+end
+```
+
+#### No Authentication
+
+```ruby
+# config/initializers/tdx_feedback_gem.rb
+TdxFeedbackGem.configure do |config|
+  config.require_authentication = false
+end
+```
+
+### Environment-Specific Configurations
+
+#### Development
+
+```ruby
+# config/environments/development.rb
+config.tdx_feedback_gem = {
+  enable_ticket_creation: false,
+  log_level: :debug
+}
+```
+
+#### Staging
+
+```ruby
+# config/environments/staging.rb
+config.tdx_feedback_gem = {
+  enable_ticket_creation: true,
+  log_level: :info
+}
+```
+
+#### Production
+
+```ruby
+# config/environments/production.rb
+config.tdx_feedback_gem = {
+  enable_ticket_creation: true,
+  log_level: :warn
+}
+```
 
 ## License
 
