@@ -1,5 +1,3 @@
-# Advanced Customization
-
 Complete guide to advanced customization of the TDX Feedback Gem, including Stimulus controller extension, custom events, analytics integration, and advanced theming.
 
 ## 📋 Overview

@@ -1,4 +1,4 @@
-# Configuration Guide
+
 
 Complete guide to configuring the TDX Feedback Gem for your Rails application.
 
@@ -28,7 +28,7 @@ end
 ```ruby
 TdxFeedbackGem.configure do |config|
   # === Authentication ===
-  config.require_authentication = false
+  config.require_authentication = true
 
   # === TDX API Integration ===
   config.enable_ticket_creation = false
@@ -43,7 +43,6 @@ TdxFeedbackGem.configure do |config|
 
   # === Customization ===
   config.title_prefix = '[Feedback]'
-  config.default_requestor_email = 'noreply@example.com'
 end
 ```
 
@@ -266,6 +265,12 @@ TDX_ENABLE_TICKET_CREATION=true
 1. Log into your Hatchbox.io dashboard
 2. Navigate to your application
 3. Click on **"Environment Variables"** in the left sidebar
+
+> _Note: Be sure you have a variable declaring the server environment (i.e production or staging )_
+
+|     Name    |   Value   |
+|-------------|-----------|
+| `RAILS_ENV` | `staging` |
 
 #### Required Variables
 

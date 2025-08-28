@@ -1,5 +1,3 @@
-# Testing Guide
-
 Complete guide to testing the TDX Feedback Gem, including test setup, RSpec configuration, test examples, and testing best practices.
 
 ## 📋 Overview

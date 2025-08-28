@@ -1,5 +1,3 @@
-# Getting Started
-
 This guide will walk you through installing and setting up the TDX Feedback Gem in your Rails application.
 
 ## 📋 Prerequisites
@@ -50,7 +48,7 @@ Edit the generated configuration file:
 # config/initializers/tdx_feedback_gem.rb
 TdxFeedbackGem.configure do |config|
   # === Authentication ===
-  config.require_authentication = false  # Set to true if you want user authentication
+  config.require_authentication = true  # Set to true if you want user authentication
 
   # === TDX API Integration ===
   config.enable_ticket_creation = false  # Set to true when ready for production

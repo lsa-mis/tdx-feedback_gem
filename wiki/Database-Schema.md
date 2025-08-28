@@ -1,5 +1,3 @@
-# Database Schema
-
 Complete documentation of the database structure, validations, and migrations for the TDX Feedback Gem.
 
 ## 📊 Overview

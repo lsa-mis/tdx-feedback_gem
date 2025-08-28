@@ -1,5 +1,3 @@
-# Stimulus API Reference
-
 Complete reference for the Stimulus controller used by the TDX Feedback Gem, including all methods, events, targets, and customization options.
 
 ## 📋 Overview

@@ -1,5 +1,3 @@
-# Helper Methods Reference
-
 Complete reference for all available view helper methods provided by the TDX Feedback Gem.
 
 ## 📋 Overview

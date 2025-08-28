@@ -1,5 +1,3 @@
-# Performance Optimization
-
 Complete guide to optimizing the performance of the TDX Feedback Gem, covering assets, database, API calls, and overall application performance.
 
 ## 📊 Performance Overview

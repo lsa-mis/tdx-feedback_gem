@@ -1,5 +1,3 @@
-# Production Deployment
-
 Complete guide to deploying the TDX Feedback Gem in production environments, including security, monitoring, scaling, and maintenance.
 
 ## 🚀 Deployment Overview

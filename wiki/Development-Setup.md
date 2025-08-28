@@ -1,5 +1,3 @@
-# Development Setup
-
 Complete guide to setting up the TDX Feedback Gem for development, including repository setup, test environment, contribution workflow, and code standards.
 
 ## 📋 Overview

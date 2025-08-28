@@ -23,7 +23,7 @@ New to the gem? Start here:
 
 ### Development & Testing
 - **[Development Setup](Development-Setup)** - Repository setup, test environment, contribution workflow
-- **[Testing Guide](Testing)** - Running tests, coverage, debugging, CI/CD
+- **[Testing Guide](Testing-Guide)** - Running tests, coverage, debugging, CI/CD
 
 ### API & Integration
 - **[API Schemas](API-Schemas)** - TDX API specifications and OAuth flow
@@ -35,15 +35,15 @@ New to the gem? Start here:
 - **[Production Deployment](Production-Deployment)** - Environment config, security, monitoring, scaling
 
 ### Support & Troubleshooting
-- **[Troubleshooting Guide](Troubleshooting)** - Common issues, error messages, debug mode
-- **[Migration Guide](Migration-Guide)** - Version upgrades, breaking changes, migrations
+- **[Troubleshooting Guide](Troubleshooting-Guide)** - Common issues, error messages, debug mode
+- **[Migration Guide](Migration-Guide)** - TBD
 
 ### Reference Materials
 - **[Helper Methods Reference](Helper-Methods-Reference)** - All available view helper methods
 - **[Stimulus API Reference](Stimulus-API-Reference)** - Controller methods, events, targets
 
 ### Maintenance & Updates
-- **[Contributing Guidelines](Contributing)** - Code of conduct, development setup, PR process
+- **[Contributing Guidelines](Contributing-Guidelines)** - Code of conduct, development setup, PR process
 - **[Changelog](Changelog)** - Version history, features, bug fixes, breaking changes
 
 ## 🔗 Quick Links

@@ -1,5 +1,3 @@
-# API Schemas
-
 Complete documentation of the TDX API specifications and OAuth flow used by the TDX Feedback Gem.
 
 ## 📊 Overview
