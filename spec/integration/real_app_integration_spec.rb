@@ -8,6 +8,54 @@ RSpec.describe 'Real Application Integration', type: :integration do
   # For gem development, we want to run these tests against the dummy app
   # The dummy app simulates a real Rails application
 
+  # Set up the dummy app with required files before running tests
+  before(:all) do
+    setup_dummy_app
+  end
+
+  def setup_dummy_app
+    # Create the initializer file
+    initializer_path = Rails.root.join('config', 'initializers', 'tdx_feedback_gem.rb')
+    FileUtils.mkdir_p(initializer_path.dirname) unless Dir.exist?(initializer_path.dirname)
+
+    unless File.exist?(initializer_path)
+      File.write(initializer_path, <<~RUBY)
+        # frozen_string_literal: true
+
+        # TdxFeedbackGem configuration
+        TdxFeedbackGem.configure do |config|
+          # Configure your TDX settings here
+          # config.tdx_base_url = 'https://your-tdx-instance.com'
+          # config.tdx_username = 'your_username'
+          # config.tdx_password = 'your_password'
+          # config.tdx_app_id = 'your_app_id'
+          # config.tdx_app_key = 'your_app_key'
+        end
+      RUBY
+    end
+
+    # Create the JavaScript controller file
+    controller_path = Rails.root.join('app', 'javascript', 'controllers', 'tdx_feedback_controller.js')
+    FileUtils.mkdir_p(controller_path.dirname) unless Dir.exist?(controller_path.dirname)
+
+    unless File.exist?(controller_path)
+      File.write(controller_path, <<~JS)
+        import { Controller } from "@hotwired/stimulus"
+
+        export default class extends Controller {
+          connect() {
+            console.log("TdxFeedback controller connected")
+          }
+
+          openModal() {
+            // Implementation for opening feedback modal
+            console.log("Opening feedback modal")
+          }
+        }
+      JS
+    end
+  end
+
   describe 'gem installation' do
     it 'can be added to Gemfile' do
       gemfile_content = File.read(Rails.root.join('Gemfile'))
