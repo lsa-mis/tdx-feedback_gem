@@ -6,6 +6,11 @@ module TdxFeedbackGem
   class Engine < ::Rails::Engine
     isolate_namespace TdxFeedbackGem
 
+    # Register generators
+    generators do
+      require 'generators/tdx_feedback_gem/install/install_generator'
+    end
+
     # Include the helper module in the main application
     initializer 'tdx_feedback_gem.helpers' do |app|
       app.config.to_prepare do
