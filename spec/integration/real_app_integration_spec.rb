@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'spec_helper'
 
 # This spec is designed to be run against a real Rails application
 # to test the full integration of the gem
