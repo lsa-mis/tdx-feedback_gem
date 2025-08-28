@@ -11,6 +11,7 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 - **Customizable styling** - Easy to match your app's design
 - **Authentication support** - Optional user authentication requirement
 - **Stimulus-powered** - Modern JavaScript framework integration
+- **Zero-configuration assets** - JavaScript and CSS automatically included
 
 ## Quick Start
 
@@ -30,9 +31,16 @@ rails generate tdx_feedback_gem:install
 rails db:migrate
 ```
 
-### 3. Configuration
+**That's it!** The gem automatically:
+- ✅ Creates the necessary database migration
+- ✅ Sets up the initializer with default configuration
+- ✅ Copies the Stimulus controller to your app
+- ✅ Includes the CSS styles in your asset pipeline
+- ✅ Registers the helper methods globally
 
-Edit `config/initializers/tdx_feedback_gem.rb`:
+### 3. Configuration (Optional)
+
+Edit `config/initializers/tdx_feedback_gem.rb` if you need custom settings:
 
 ```ruby
 TdxFeedbackGem.configure do |config|

@@ -13,6 +13,7 @@ module TdxFeedbackGem
       options = options.merge(
         href: '#',
         data: {
+          controller: 'tdx-feedback',
           action: 'click->tdx-feedback#open',
           'tdx-feedback-target': 'trigger'
         }.merge(options[:data] || {}),
@@ -27,6 +28,7 @@ module TdxFeedbackGem
       options = options.merge(
         type: 'button',
         data: {
+          controller: 'tdx-feedback',
           action: 'click->tdx-feedback#open',
           'tdx-feedback-target': 'trigger'
         }.merge(options[:data] || {}),
@@ -41,6 +43,7 @@ module TdxFeedbackGem
       options = options.merge(
         href: '#',
         data: {
+          controller: 'tdx-feedback',
           action: 'click->tdx-feedback#open',
           'tdx-feedback-target': 'trigger'
         }.merge(options[:data] || {}),
