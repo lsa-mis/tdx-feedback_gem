@@ -258,3 +258,7 @@ config/*.pem
 # .circleci/
 # .travis.yml
 # .gitlab-ci.yml
+
+
+# OLD Wiki files
+/tdx-feedback_gem.wiki/
