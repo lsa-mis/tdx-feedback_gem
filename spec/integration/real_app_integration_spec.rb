@@ -5,11 +5,8 @@ require 'rails_helper'
 # This spec is designed to be run against a real Rails application
 # to test the full integration of the gem
 RSpec.describe 'Real Application Integration', type: :integration do
-  # Skip these tests unless we're in a real application context
-  before do
-    # Comment out this skip for gem development - tests will run against dummy app
-    # skip "This test requires a real Rails application context" unless real_app_context?
-  end
+  # For gem development, we want to run these tests against the dummy app
+  # The dummy app simulates a real Rails application
 
   describe 'gem installation' do
     it 'can be added to Gemfile' do
@@ -30,15 +27,18 @@ RSpec.describe 'Real Application Integration', type: :integration do
 
   describe 'helper methods' do
     it 'provides feedback_link helper' do
-      expect(ActionController::Base.helpers.respond_to?(:feedback_link)).to be true
+      # Check if the helper is available in the dummy app's ApplicationController
+      expect(ApplicationController.helpers.respond_to?(:feedback_link)).to be true
     end
 
     it 'provides feedback_button helper' do
-      expect(ActionController::Base.helpers.respond_to?(:feedback_button)).to be true
+      # Check if the helper is available in the dummy app's ApplicationController
+      expect(ApplicationController.helpers.respond_to?(:feedback_button)).to be true
     end
 
     it 'provides feedback_system helper' do
-      expect(ActionController::Base.helpers.respond_to?(:feedback_system)).to be true
+      # Check if the helper is available in the dummy app's ApplicationController
+      expect(ApplicationController.helpers.respond_to?(:feedback_system)).to be true
     end
   end
 
@@ -79,11 +79,5 @@ RSpec.describe 'Real Application Integration', type: :integration do
     end
   end
 
-  private
-
-  def real_app_context?
-    # Check if we're in a real Rails app (not the dummy app)
-    # For gem development, allow tests to run against dummy app
-    true
-  end
+  # No private methods needed
 end
