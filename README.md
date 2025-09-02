@@ -1,17 +1,17 @@
 # TDX Feedback Gem
 
-A Rails engine that provides a seamless, modal-based feedback system for any Rails application. Users can submit feedback without leaving your main application, and the system integrates with TDX API for ticket creation.
+A Rails engine that provides a seamless, modal-based feedback system for any Rails application. Users can submit feedback without leaving your main application, and the system can integrate with the TDX API for ticket creation when enabled.
 
 ## Features
 
 - **Modal-based feedback system** - No page navigation required
 - **Seamless integration** - Drop into any Rails application
-- **TDX API integration** - Automatically creates support tickets
+- **TDX API integration** - Optionally creates support tickets (when enabled)
 - **Responsive design** - Works on all device sizes
 - **Customizable styling** - Easy to match your app's design
 - **Authentication support** - Optional user authentication requirement
 - **Stimulus-powered** - Modern JavaScript framework integration
-- **Zero-configuration assets** - JavaScript and CSS automatically included
+- **Generator-wired assets** - Installer adds the JavaScript and CSS for you
 
 ## Quick Start
 
@@ -29,6 +29,13 @@ gem 'tdx_feedback_gem', git: 'https://github.com/lsa-mis/tdx-feedback_gem.git'
 bundle install
 rails generate tdx_feedback_gem:install
 rails db:migrate
+```
+
+Add the engine to your host app routes (recommended mount path shown):
+
+```ruby
+# config/routes.rb
+mount TdxFeedbackGem::Engine => '/tdx_feedback_gem'
 ```
 
 **That's it!** The gem automatically:
@@ -70,12 +77,19 @@ Add to your layout or views:
 <%= feedback_system(trigger: :button, text: 'Send Feedback') %>
 ```
 
+If you mount the engine at a different path than `/tdx_feedback_gem`, either:
+
+- Pass custom URLs via Stimulus values on your trigger element:
+  - `data-tdx-feedback-new-url-value="/feedback/feedbacks/new"`
+  - `data-tdx-feedback-submit-url-value="/feedback/feedbacks"`
+- Or mount at `/tdx_feedback_gem` to use the controller defaults.
+
 ## Configuration
 
 The gem automatically resolves configuration from:
 
-1. **[Rails Encrypted Credentials** (recommended)](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Configuration-Guide#environment-specific-configuration)**
-2. **[Environment Variables](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Configuration-Guide#environment-variables)**
+1. **[Rails Encrypted Credentials (recommended)](wiki/Configuration-Guide.md#environment-specific-configuration)**
+2. **[Environment Variables](wiki/Configuration-Guide.md#environment-variables)**
 3. **Built-in defaults**
 
 ### Runtime Toggle
@@ -88,17 +102,22 @@ export TDX_ENABLE_TICKET_CREATION=true
 
 ## Documentation
 
-- **[📚 Wiki](https://github.com/lsa-mis/tdx-feedback_gem/blob/main/wiki/Home.md)** - Complete documentation, examples, and guides
-- **[🔧 Integration Examples](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Integration-Examples)** - Rails 5/6/7, authentication systems
-- **[🎨 Styling Guide](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Styling-and-Theming)** - Customization and theming
-- **[🧪 Testing Guide](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Testing-Guides)** - Test setup and coverage
-- **[📊 API Schemas](https://github.com/lsa-mis/tdx-feedback_gem/wiki/API-Schemas)** - TDX API specifications
+- **[📚 Wiki](wiki/Home.md)** - Complete documentation, examples, and guides
+- **[� Getting Started](wiki/Getting-Started.md)** - Quick overview and setup details
+- **[⚙️ Configuration Guide](wiki/Configuration-Guide.md)** - Credentials, env vars, and defaults
+- **[🔧 Integration Examples](wiki/Integration-Examples.md)** - Rails 5/6/7, authentication systems
+- **[🎨 Styling and Theming](wiki/Styling-and-Theming.md)** - Customization and theming
+- **[🧪 Testing Guide](wiki/Testing-Guide.md)** - Test setup and coverage
+- **[🩺 Troubleshooting](wiki/Troubleshooting.md)** - Common issues and fixes
+- **[📊 API Schemas](wiki/API-Schemas.md)** - TDX API specifications
+- **[🧰 Helper Methods Reference](wiki/Helper-Methods-Reference.md)** - All view helpers and options
+- **[⚡ Stimulus API Reference](wiki/Stimulus-API-Reference.md)** - Controller events and targets
 
 ## Development
 
 ```bash
 git clone https://github.com/lsa-mis/tdx-feedback_gem.git
-cd tdx_feedback_gem
+cd tdx-feedback_gem
 bundle install
 bundle exec rspec
 ```
