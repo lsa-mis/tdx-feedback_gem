@@ -6,56 +6,56 @@ Welcome to the comprehensive documentation for the TDX Feedback Gem - a Rails en
 
 New to the gem? Start here:
 
-1. **[Getting Started](Getting-Started)** - Installation and basic setup
-2. **[Configuration Guide](Configuration-Guide)** - Configure the gem for your needs
-3. **[Integration Examples](Integration-Examples)** - Rails version-specific setup guides
+1. **[Getting Started](Getting-Started.md)** - Installation and basic setup
+2. **[Configuration Guide](Configuration-Guide.md)** - Configure the gem for your needs
+3. **[Integration Examples](Integration-Examples.md)** - Rails version-specific setup guides
 
 ## 📚 Documentation Index
 
 ### Core Documentation
 
-- **[Getting Started](Getting-Started)** - Installation, setup, and first feedback form
-- **[Configuration Guide](Configuration-Guide)** - Complete configuration options and examples
-- **[Integration Examples](Integration-Examples)** - Rails 5/6/7, authentication systems, deployment platforms
+- **[Getting Started](Getting-Started.md)** - Installation, setup, and first feedback form
+- **[Configuration Guide](Configuration-Guide.md)** - Complete configuration options and examples
+- **[Integration Examples](Integration-Examples.md)** - Rails 5/6/7, authentication systems, deployment platforms
 
 ### Customization & Styling
 
-- **[Styling and Theming](Styling-and-Theming)** - CSS classes, themes, and responsive design
-- **[Advanced Customization](Advanced-Customization)** - Stimulus controller extension, events, analytics
+- **[Styling and Theming](Styling-and-Theming.md)** - CSS classes, themes, and responsive design
+- **[Advanced Customization](Advanced-Customization.md)** - Stimulus controller extension, events, analytics
 
 ### Development & Testing
 
-- **[Development Setup](Development-Setup)** - Repository setup, test environment, contribution workflow
-- **[Testing Guide](Testing-Guide)** - Running tests, coverage, debugging, CI/CD
+- **[Development Setup](Development-Setup.md)** - Repository setup, test environment, contribution workflow
+- **[Testing Guide](Testing-Guide.md)** - Running tests, coverage, debugging, CI/CD
 
 ### API & Integration
 
-- **[API Schemas](API-Schemas)** - TDX API specifications and OAuth flow
-- **[Database Schema](Database-Schema)** - Table structure, validations, migrations
-- **[API Endpoints](API-Endpoints)** - REST API documentation and examples
+- **[API Schemas](API-Schemas.md.md)** - TDX API specifications and OAuth flow
+- **[Database Schema](Database-Schema.md)** - Table structure, validations, migrations
+- **[API Endpoints](API-Endpoints.md)** - REST API documentation and examples
 
 ### Performance & Production
 
-- **[Performance Optimization](Performance-Optimization)** - Asset, database, and API optimization
-- **[Production Deployment](Production-Deployment)** - Environment config, security, monitoring, scaling
+- **[Performance Optimization](Performance-Optimization.md)** - Asset, database, and API optimization
+- **[Production Deployment](Production-Deployment.md)** - Environment config, security, monitoring, scaling
 
 ### Support & Troubleshooting
 
-- **[Troubleshooting Guide](Troubleshooting-Guide)** - Common issues, error messages, debug mode
+- **[Troubleshooting Guide](Troubleshooting-Guide.md)** - Common issues, error messages, debug mode
 
 ### Reference Materials
 
-- **[Helper Methods Reference](Helper-Methods-Reference)** - All available view helper methods
-- **[Stimulus API Reference](Stimulus-API-Reference)** - Controller methods, events, targets
+- **[Helper Methods Reference](Helper-Methods-Reference.md)** - All available view helper methods
+- **[Stimulus API Reference](Stimulus-API-Reference.md)** - Controller methods, events, targets
 
 ### Maintenance & Updates
 
-- **[Contributing Guidelines](Contributing)** - Code of conduct, development setup, PR process
+- **[Contributing Guidelines](Contributing.md)** - Code of conduct, development setup, PR process
 
 ## 🔗 Quick Links
 
 - **[GitHub Repository](https://github.com/lsa-mis/tdx-feedback_gem)**
-- **[README](https://github.com/lsa-mis/tdx-feedback_gem/blob/main/README.md)** - Basic setup and usage
+- **[README](../README.md)** - Basic setup and usage
 - **[Issues](https://github.com/lsa-mis/tdx-feedback_gem/issues)** - Report bugs or request features
 - **[Pull Requests](https://github.com/lsa-mis/tdx-feedback_gem/pulls)** - Contribute to the project
 
