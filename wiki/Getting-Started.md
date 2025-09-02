@@ -31,8 +31,10 @@ rails generate tdx_feedback_gem:install
 ```
 
 This creates:
+
 - `config/initializers/tdx_feedback_gem.rb` - Configuration file
 - `db/migrate/[timestamp]_create_tdx_feedback_gem_feedbacks.rb` - Database migration
+- Copies the Stimulus controller into your app at `app/javascript/controllers/tdx_feedback_controller.js` when Stimulus is detected.
 
 ### Step 4: Run Database Migration
 
@@ -113,15 +115,15 @@ TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
   </head>
 
   <body>
     <%= yield %>
 
-    <!-- Add feedback link to footer -->
-    <%= feedback_footer_link %>
+  <!-- Add feedback system (modal + trigger) near the end of body -->
+  <%= feedback_system(trigger: :button, text: 'Send Feedback') %>
   </body>
 </html>
 ```
@@ -149,7 +151,7 @@ rails server
 
 ### 2. Visit Any Page
 
-Navigate to any page in your application. You should see the feedback link/button.
+Navigate to any page in your application. You should see the feedback trigger (link, button, or icon).
 
 ### 3. Test the Modal
 
@@ -180,20 +182,26 @@ TdxFeedbackGem::Feedback.count
 rails routes | grep tdx_feedback
 ```
 
-You should see:
+You should see JSON-only endpoints:
+
 ```
-tdx_feedback_gem_feedback GET    /tdx_feedback_gem/feedbacks/new(.:format)  tdx_feedback_gem/feedbacks#new
-                         POST   /tdx_feedback_gem/feedbacks(.:format)      tdx_feedback_gem/feedbacks#create
+tdx_feedback_gem_feedbacks GET    /tdx_feedback_gem/feedbacks/new(.:format) tdx_feedback_gem/feedbacks#new {:format=>:json}
+                           POST   /tdx_feedback_gem/feedbacks(.:format)     tdx_feedback_gem/feedbacks#create {:format=>:json}
 ```
 
-### Check Assets
+Note: The engine responds with JSON; the Stimulus controller injects the returned HTML into the DOM.
 
-Ensure the gem's assets are being loaded:
+### Stimulus and Assets
 
-```erb
-<!-- In your layout, you should see these loaded: -->
-<!-- tdx_feedback_gem.css -->
-<!-- tdx_feedback_gem.js -->
+- The engine precompiles `tdx_feedback_gem.css`. If your app uses SCSS, the engine will place `_tdx_feedback_gem.scss` into your app's stylesheets so you can `@import` it from `application.scss`.
+- The Stimulus controller is available at `app/javascript/controllers/tdx_feedback_controller.js`. Ensure it's registered by adding the import to your `controllers/index.js` (or equivalent):
+
+```js
+// app/javascript/controllers/index.js
+import { application } from "./application"
+import TdxFeedbackController from "./tdx_feedback_controller"
+
+application.register("tdx-feedback", TdxFeedbackController)
 ```
 
 ## 🚨 Common Issues
@@ -201,35 +209,43 @@ Ensure the gem's assets are being loaded:
 ### Issue: Modal Not Opening
 
 **Possible Causes:**
+
 - JavaScript not loading
 - CSS conflicts
 - Stimulus not initialized
 
 **Solutions:**
+
 - Check browser console for JavaScript errors
-- Verify Stimulus is properly set up
-- Check if CSS is being loaded
+- Verify Stimulus registration (see Stimulus and Assets above)
+- Check that `/tdx_feedback_gem/feedbacks/new` returns JSON 200 in Network tab
+- Ensure CSS is loaded (`tdx_feedback_gem.css` or imported SCSS)
 
 ### Issue: Form Not Submitting
 
 **Possible Causes:**
+
 - CSRF token issues
 - Database connection problems
 - Validation errors
 
 **Solutions:**
-- Check CSRF token is present
-- Verify database connection
-- Check Rails logs for errors
+
+- Check CSRF token is present (Rails includes it by default)
+- Verify database connection and run migrations
+- Confirm `/tdx_feedback_gem/feedbacks` POST returns JSON 201
+- Check Rails logs for validation errors
 
 ### Issue: TDX Integration Not Working
 
 **Possible Causes:**
+
 - Invalid credentials
 - Network connectivity issues
 - Configuration errors
 
 **Solutions:**
+
 - Verify TDX credentials
 - Check network access to TDX API
 - Review configuration values
@@ -241,7 +257,7 @@ Now that you have the basic setup working:
 1. **[Configuration Guide](Configuration-Guide)** - Learn about all configuration options
 2. **[Styling and Theming](Styling-and-Theming)** - Customize the appearance
 3. **[Integration Examples](Integration-Examples)** - See examples for different Rails versions
-4. **[Testing Guide](Testing)** - Set up testing for your integration
+4. **[Testing Guide](Testing-Guide)** - Set up testing for your integration
 
 ## 🆘 Still Having Issues?
 

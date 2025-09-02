@@ -1,14 +1,15 @@
 
-
 Complete guide to configuring the TDX Feedback Gem for your Rails application.
+
+# Configuration Guide
 
 ## 📋 Configuration Overview
 
 The gem uses a hierarchical configuration system that automatically resolves values from multiple sources:
 
-1. **Rails Encrypted Credentials** (highest priority - recommended for production)
-2. **Environment Variables** (medium priority - good for deployment)
-3. **Built-in Defaults** (lowest priority - fallback values)
+1. **Rails Encrypted Credentials** (highest priority – recommended for production)
+2. **Environment Variables** (medium priority – good for deployment)
+3. **Built-in Defaults** (lowest priority – fallback values)
 
 ## ⚙️ Basic Configuration
 
@@ -55,9 +56,9 @@ config.require_authentication = true  # Requires current_user method
 ```
 
 **Requirements:**
-- Your `ApplicationController` must have a `current_user` method
-- The method should return a user object or `nil`
-- If `nil`, the feedback form will be hidden
+
+- Your `ApplicationController` should expose a `current_user` method
+- When `require_authentication` is true and `current_user` is missing, the engine responds with `401 Unauthorized` to `/feedbacks/new` and `/feedbacks` requests (triggers may still render; protect them in your views if desired)
 
 **Example ApplicationController:**
 
@@ -98,7 +99,8 @@ export TDX_ENABLE_TICKET_CREATION=true
 export TDX_ENABLE_TICKET_CREATION=false
 ```
 
-**Perfect for:**
+Use cases:
+
 - Toggling during incidents or maintenance
 - Testing in different environments
 - Container orchestration (Docker, Kubernetes)
@@ -112,6 +114,7 @@ config.oauth_token_url = 'https://gw.api.it.umich.edu/um/oauth2/token'
 ```
 
 **Default URLs:**
+
 - **Development/Test**: `https://gw-test.api.it.umich.edu/um/it`
 - **Production**: `https://gw.api.it.umich.edu/um/it`
 
@@ -152,13 +155,7 @@ config.title_prefix = '[Feedback]'    # Prefix for ticket titles
 config.default_requestor_email = 'noreply@example.com'  # Fallback email
 ```
 
-### Modal Customization
-
-```ruby
-config.modal_title = 'Send Feedback'  # Modal title
-config.modal_width = '600px'          # Modal width
-config.modal_height = 'auto'          # Modal height
-```
+<!-- Modal-specific configuration options are not provided by the gem; customize via CSS/HTML in your app. -->
 
 ## 🔑 Credential Management
 
@@ -181,19 +178,19 @@ tdx:
     client_secret: dev_client_secret_here
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
-    enable_ticket_creation: false  # Disable in development
+  enable_ticket_creation: 'false'  # Use string 'true'/'false'
   staging:
     client_id: staging_client_id_here
     client_secret: staging_client_secret_here
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
-    enable_ticket_creation: true   # Enable in staging for testing
+  enable_ticket_creation: 'true'   # Use string 'true'/'false'
   production:
     client_id: prod_client_id_here
     client_secret: prod_client_secret_here
     base_url: https://gw.api.it.umich.edu/um/it
     oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
-    enable_ticket_creation: true   # Enable in production
+  enable_ticket_creation: 'true'   # Use string 'true'/'false'
 ```
 
 #### Shared Credentials with Environment-Specific URLs
@@ -208,15 +205,15 @@ tdx:
   development:
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
-    enable_ticket_creation: false
+  enable_ticket_creation: 'false'  # Use string 'true'/'false'
   staging:
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
-    enable_ticket_creation: true
+  enable_ticket_creation: 'true'
   production:
     base_url: https://gw.api.it.umich.edu/um/it
     oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
-    enable_ticket_creation: true
+  enable_ticket_creation: 'true'
 ```
 
 ### Environment Variables
@@ -262,6 +259,7 @@ TDX_ENABLE_TICKET_CREATION=true
 ### Hatchbox.io
 
 #### Access Environment Variables
+
 1. Log into your Hatchbox.io dashboard
 2. Navigate to your application
 3. Click on **"Environment Variables"** in the left sidebar
@@ -290,7 +288,9 @@ TDX_ENABLE_TICKET_CREATION=true
 | `TDX_OAUTH_TOKEN_URL` | `https://gw-test.api.it.umich.edu/um/oauth2/token` | Test OAuth token URL |
 
 #### Quick Toggle for Incidents
+
 To temporarily disable TDX integration during incidents:
+
 1. Go to **Environment Variables**
 2. Change `TDX_ENABLE_TICKET_CREATION` from `true` to `false`
 3. Click **"Save"**
@@ -351,12 +351,15 @@ heroku config:set TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/toke
 ### Example Resolution
 
 For `enable_ticket_creation`:
-1. `credentials.yml.enc` → `tdx.production.enable_ticket_creation: true`
-2. `credentials.yml.enc` → `tdx.enable_ticket_creation: false`
+
+1. `credentials.yml.enc` → `tdx.production.enable_ticket_creation: 'true'`
+2. `credentials.yml.enc` → `tdx.enable_ticket_creation: 'false'`
 3. `ENV['TDX_ENABLE_TICKET_CREATION']` → `true`
 4. Default: `false`
 
-**Result**: `true` (from environment variable)
+Result: `true` (from credentials – environment variables are only used when no credential is set).
+
+Note: Store credential toggles as strings `'true'` or `'false'` to ensure correct detection.
 
 ## 🧪 Testing Configuration
 
@@ -400,23 +403,19 @@ TdxFeedbackGem.configuration.enable_ticket_creation
 TdxFeedbackGem.configuration.tdx_base_url
 ```
 
-### Validate TDX Connection
-
-```ruby
-# Test TDX API connection
-client = TdxFeedbackGem::Client.new
-client.test_connection
-```
+<!-- Validation helper method is not provided; trigger a test ticket in a non-production environment instead. -->
 
 ## 🚨 Common Configuration Issues
 
 ### Issue: Credentials Not Loading
 
 **Symptoms:**
+
 - Configuration values are `nil`
 - TDX API calls fail with authentication errors
 
 **Solutions:**
+
 - Verify `master.key` is present and correct
 - Check credentials file syntax
 - Ensure environment is set correctly
@@ -424,10 +423,12 @@ client.test_connection
 ### Issue: Environment Variables Not Working
 
 **Symptoms:**
+
 - Configuration values don't match environment variables
 - Changes don't take effect after restart
 
 **Solutions:**
+
 - Verify variable names (must start with `TDX_`)
 - Restart the application after setting variables
 - Check for typos in variable names
@@ -435,10 +436,12 @@ client.test_connection
 ### Issue: Configuration Conflicts
 
 **Symptoms:**
+
 - Unexpected configuration values
 - Inconsistent behavior across environments
 
 **Solutions:**
+
 - Review configuration priority order
 - Check for conflicting values in different sources
 - Use `rails console` to inspect current configuration
@@ -460,4 +463,4 @@ Now that you understand configuration:
 
 ---
 
-*For advanced configuration options, see the [Advanced Customization](Advanced-Customization) guide.*
+_For advanced configuration options, see the [Advanced Customization](Advanced-Customization) guide._
