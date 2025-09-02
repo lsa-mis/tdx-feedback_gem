@@ -32,6 +32,7 @@ rails db:migrate
 ```
 
 **That's it!** The gem automatically:
+
 - ✅ Creates the necessary database migration
 - ✅ Sets up the initializer with default configuration
 - ✅ Copies the Stimulus controller to your app
@@ -72,6 +73,7 @@ Add to your layout or views:
 ## Configuration
 
 The gem automatically resolves configuration from:
+
 1. **[Rails Encrypted Credentials** (recommended)](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Configuration-Guide#environment-specific-configuration)**
 2. **[Environment Variables](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Configuration-Guide#environment-variables)**
 3. **Built-in defaults**
@@ -86,7 +88,7 @@ export TDX_ENABLE_TICKET_CREATION=true
 
 ## Documentation
 
-- **[📚 Wiki](https://github.com/lsa-mis/tdx-feedback_gem/wiki)** - Complete documentation, examples, and guides
+- **[📚 Wiki](https://github.com/lsa-mis/tdx-feedback_gem/blob/main/wiki/Home.md)** - Complete documentation, examples, and guides
 - **[🔧 Integration Examples](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Integration-Examples)** - Rails 5/6/7, authentication systems
 - **[🎨 Styling Guide](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Styling-and-Theming)** - Customization and theming
 - **[🧪 Testing Guide](https://github.com/lsa-mis/tdx-feedback_gem/wiki/Testing-Guides)** - Test setup and coverage
