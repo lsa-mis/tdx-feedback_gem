@@ -54,6 +54,20 @@ RSpec.describe 'Real Application Integration', type: :integration do
         }
       JS
     end
+
+    # Copy stylesheet files to dummy app
+    stylesheets_dir = Rails.root.join('app', 'assets', 'stylesheets')
+    FileUtils.mkdir_p(stylesheets_dir) unless Dir.exist?(stylesheets_dir)
+
+    # Copy SCSS file
+    scss_source = File.join(__dir__, '..', '..', 'app', 'assets', 'stylesheets', '_tdx_feedback_gem.scss')
+    scss_dest = stylesheets_dir.join('_tdx_feedback_gem.scss')
+    FileUtils.cp(scss_source, scss_dest) if File.exist?(scss_source) && !File.exist?(scss_dest)
+
+    # Copy CSS file
+    css_source = File.join(__dir__, '..', '..', 'app', 'assets', 'stylesheets', 'tdx_feedback_gem.css')
+    css_dest = stylesheets_dir.join('tdx_feedback_gem.css')
+    FileUtils.cp(css_source, css_dest) if File.exist?(css_source) && !File.exist?(css_dest)
   end
 
   describe 'gem installation' do
