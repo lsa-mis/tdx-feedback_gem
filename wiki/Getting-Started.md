@@ -163,6 +163,23 @@ Click the feedback link/button. A modal should open with the feedback form.
 
 Fill out the form and submit. Check your database to see if the feedback was created.
 
+### 5. Verify the Feedback was Created
+
+```bash
+# Check if the table was created
+rails console
+```
+
+```ruby
+# In Rails console
+TdxFeedbackGem::Feedback.count
+# Should return 0 (or the number of feedbacks you've created)
+```
+
+### 6. Verify the Feedback was Created in TDX
+
+Log onto the [TDX system](https://teamdynamix.umich.edu/SBTDWorkManagement) and check if the feedback was created.
+
 ## ✅ Verify Installation
 
 ### Check Database
