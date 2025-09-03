@@ -30,7 +30,7 @@ New to the gem? Start here:
 
 ### API & Integration
 
-- **[API Schemas](API-Schemas.md.md)** - TDX API specifications and OAuth flow
+- **[API Schemas](API-Schemas.md)** - TDX API specifications and OAuth flow
 - **[Database Schema](Database-Schema.md)** - Table structure, validations, migrations
 - **[API Endpoints](API-Endpoints.md)** - REST API documentation and examples
 
@@ -41,7 +41,7 @@ New to the gem? Start here:
 
 ### Support & Troubleshooting
 
-- **[Troubleshooting Guide](Troubleshooting-Guide.md)** - Common issues, error messages, debug mode
+- **[Troubleshooting Guide](Troubleshooting.md)** - Common issues, error messages, debug mode
 
 ### Reference Materials
 
