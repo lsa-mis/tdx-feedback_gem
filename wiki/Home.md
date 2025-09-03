@@ -77,10 +77,10 @@ New to the gem? Start here:
 
 ## 🆘 Need Help?
 
-- **Setup Issues**: Check the [Getting Started](Getting-Started) guide
-- **Configuration Problems**: Review the [Configuration Guide](Configuration-Guide)
-- **Styling Questions**: See [Styling and Theming](Styling-and-Theming)
-- **Integration Help**: Browse [Integration Examples](Integration-Examples)
+- **Setup Issues**: Check the [Getting Started](Getting-Started.md) guide
+- **Configuration Problems**: Review the [Configuration Guide](Configuration-Guide.md)
+- **Styling Questions**: See [Styling and Theming](Styling-and-Theming.md)
+- **Integration Help**: Browse [Integration Examples](Integration-Examples.md)
 - **Bug Reports**: [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues)
 
 ---
