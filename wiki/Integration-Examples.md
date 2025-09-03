@@ -1,3 +1,5 @@
+# Integration Examples
+
 Complete examples for integrating the TDX Feedback Gem with different Rails versions, authentication systems, and deployment platforms.
 
 ## 🚀 Rails Version Integration

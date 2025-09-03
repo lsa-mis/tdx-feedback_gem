@@ -1,7 +1,7 @@
+# Configuration Guide
 
 Complete guide to configuring the TDX Feedback Gem for your Rails application.
 
-# Configuration Guide
 
 ## 📋 Configuration Overview
 

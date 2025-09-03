@@ -1,3 +1,5 @@
+# API Endpoints
+
 Complete REST API documentation for the TDX Feedback Gem, including endpoints, request/response formats, and authentication requirements.
 
 ## 📋 Overview

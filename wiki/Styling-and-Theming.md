@@ -1,3 +1,5 @@
+# Styling and Theming
+
 Complete guide to customizing the appearance of the TDX Feedback Gem to match your application's design.
 
 ## 🎨 CSS Classes Reference

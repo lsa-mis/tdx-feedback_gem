@@ -1,3 +1,5 @@
+# Getting Started
+
 This guide will walk you through installing and setting up the TDX Feedback Gem in your Rails application.
 
 ## 📋 Prerequisites
