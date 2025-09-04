@@ -108,6 +108,12 @@ export default class extends Controller {
     if (!this.form) return
 
     const submitButton = this.form.querySelector('.tdx-feedback-submit')
+
+    // Prevent multiple submissions
+    if (submitButton.disabled) {
+      return
+    }
+
     const originalText = submitButton.textContent
 
     // Disable form and show loading state
@@ -221,9 +227,23 @@ export default class extends Controller {
   bindModalEvents() {
     if (!this.modal) return
 
+    // Store bound functions for proper cleanup
+    this.boundHandleSubmit = this.handleSubmit.bind(this)
+    this.boundClose = () => this.close()
+    this.boundOverlayClick = (event) => {
+      if (event.target === this.overlay) {
+        this.close()
+      }
+    }
+    this.boundEscapeKey = (event) => {
+      if (event.key === 'Escape' && this.isOpenValue) {
+        this.close()
+      }
+    }
+
     // Bind form submission
     if (this.form) {
-      this.form.addEventListener('submit', this.handleSubmit.bind(this))
+      this.form.addEventListener('submit', this.boundHandleSubmit)
     }
 
     // Bind close button events
@@ -231,61 +251,53 @@ export default class extends Controller {
     const cancelButton = this.modal.querySelector('#tdx-feedback-cancel')
 
     if (closeButton) {
-      closeButton.addEventListener('click', () => this.close())
+      closeButton.addEventListener('click', this.boundClose)
     }
 
     if (cancelButton) {
-      cancelButton.addEventListener('click', () => this.close())
+      cancelButton.addEventListener('click', this.boundClose)
     }
 
     // Bind overlay click event
     if (this.overlay) {
-      this.overlay.addEventListener('click', (event) => {
-        if (event.target === this.overlay) {
-          this.close()
-        }
-      })
+      this.overlay.addEventListener('click', this.boundOverlayClick)
     }
 
     // Bind escape key event
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && this.isOpenValue) {
-        this.close()
-      }
-    })
+    document.addEventListener('keydown', this.boundEscapeKey)
   }
 
   unbindModalEvents() {
     if (!this.modal) return
 
-    // Remove event listeners
-    if (this.form) {
-      this.form.removeEventListener('submit', this.handleSubmit.bind(this))
+    // Remove event listeners using stored bound functions
+    if (this.form && this.boundHandleSubmit) {
+      this.form.removeEventListener('submit', this.boundHandleSubmit)
     }
 
     const closeButton = this.modal.querySelector('#tdx-feedback-modal-close')
     const cancelButton = this.modal.querySelector('#tdx-feedback-cancel')
 
-    if (closeButton) {
-      closeButton.removeEventListener('click', () => this.close())
+    if (closeButton && this.boundClose) {
+      closeButton.removeEventListener('click', this.boundClose)
     }
 
-    if (cancelButton) {
-      cancelButton.removeEventListener('click', () => this.close())
+    if (cancelButton && this.boundClose) {
+      cancelButton.removeEventListener('click', this.boundClose)
     }
 
-    if (this.overlay) {
-      this.overlay.removeEventListener('click', (event) => {
-        if (event.target === this.overlay) {
-          this.close()
-        }
-      })
+    if (this.overlay && this.boundOverlayClick) {
+      this.overlay.removeEventListener('click', this.boundOverlayClick)
     }
 
-    document.removeEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && this.isOpenValue) {
-        this.close()
-      }
-    })
+    if (this.boundEscapeKey) {
+      document.removeEventListener('keydown', this.boundEscapeKey)
+    }
+
+    // Clear bound function references
+    this.boundHandleSubmit = null
+    this.boundClose = null
+    this.boundOverlayClick = null
+    this.boundEscapeKey = null
   }
 }
