@@ -6,7 +6,7 @@ TdxFeedbackGem.configure do |config|
 
   # --- TeamDynamix (TDX) API Settings ---
   # Enable ticket creation via the TDX API when feedback is submitted
-  # config.enable_ticket_creation = true
+  # config.enable_ticket_creation = false
 
   # All TDX API settings are automatically resolved from Rails credentials or environment variables
   #
