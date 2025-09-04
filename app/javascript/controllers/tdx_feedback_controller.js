@@ -14,6 +14,16 @@ export default class extends Controller {
     this.submitUrlValue = this.submitUrlValue || '/tdx_feedback_gem/feedbacks'
     this.newUrlValue = this.newUrlValue || '/tdx_feedback_gem/feedbacks/new'
 
+    // Check if modal already exists in DOM (server-side rendered)
+    const existingModal = document.getElementById('tdx-feedback-modal')
+    if (existingModal) {
+      this.modal = existingModal
+      this.overlay = document.getElementById('tdx-feedback-modal-overlay')
+      this.form = document.getElementById('tdx-feedback-form')
+      this.isOpenValue = existingModal.style.display === 'block'
+      this.bindModalEvents()
+    }
+
     // Bind global function for external access
     window.openTdxFeedbackModal = () => this.open()
   }
@@ -212,7 +222,9 @@ export default class extends Controller {
     if (!this.modal) return
 
     // Bind form submission
-    this.form.addEventListener('submit', this.handleSubmit.bind(this))
+    if (this.form) {
+      this.form.addEventListener('submit', this.handleSubmit.bind(this))
+    }
 
     // Bind close button events
     const closeButton = this.modal.querySelector('#tdx-feedback-modal-close')
@@ -225,13 +237,31 @@ export default class extends Controller {
     if (cancelButton) {
       cancelButton.addEventListener('click', () => this.close())
     }
+
+    // Bind overlay click event
+    if (this.overlay) {
+      this.overlay.addEventListener('click', (event) => {
+        if (event.target === this.overlay) {
+          this.close()
+        }
+      })
+    }
+
+    // Bind escape key event
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && this.isOpenValue) {
+        this.close()
+      }
+    })
   }
 
   unbindModalEvents() {
     if (!this.modal) return
 
     // Remove event listeners
-    this.form.removeEventListener('submit', this.handleSubmit.bind(this))
+    if (this.form) {
+      this.form.removeEventListener('submit', this.handleSubmit.bind(this))
+    }
 
     const closeButton = this.modal.querySelector('#tdx-feedback-modal-close')
     const cancelButton = this.modal.querySelector('#tdx-feedback-cancel')
@@ -243,5 +273,19 @@ export default class extends Controller {
     if (cancelButton) {
       cancelButton.removeEventListener('click', () => this.close())
     }
+
+    if (this.overlay) {
+      this.overlay.removeEventListener('click', (event) => {
+        if (event.target === this.overlay) {
+          this.close()
+        }
+      })
+    }
+
+    document.removeEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && this.isOpenValue) {
+        this.close()
+      }
+    })
   }
 }
