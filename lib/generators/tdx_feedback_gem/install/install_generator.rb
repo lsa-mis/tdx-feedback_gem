@@ -49,7 +49,7 @@ module TdxFeedbackGem
         puts "\n🎉 TdxFeedbackGem has been successfully installed!"
         puts "\n📋 Next steps:"
         puts "1. Run 'rails db:migrate' to create the feedbacks table"
-        puts "2. Add the engine to your host app routes (recommended mount path shown):
+        puts "2. Add the engine to your host app routes (recommended mount path shown):"
         puts "   mount TdxFeedbackGem::Engine => '/tdx_feedback_gem'"
         puts "3. Recompile your assets:"
         puts "   bundle exec rake assets:clobber && bundle exec rake dartsass:build"
