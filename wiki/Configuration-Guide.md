@@ -184,7 +184,7 @@ tdx:
     client_secret: staging_client_secret_here
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
-  enable_ticket_creation: 'true'   # Use string 'true'/'false'
+    enable_ticket_creation: 'true'   # Use string 'true'/'false'
   production:
     client_id: prod_client_id_here
     client_secret: prod_client_secret_here
