@@ -28,7 +28,7 @@ module TdxFeedbackGem
 
       # Include CSS in host app's asset pipeline
       if app.config.respond_to?(:assets)
-        app.config.assets.paths << root.join('app', 'assets', 'stylesheets')
+        app.config.assets.paths << TdxFeedbackGem::Engine.root.join('app', 'assets', 'stylesheets')
       end
     end
 
@@ -38,7 +38,7 @@ module TdxFeedbackGem
         if defined?(Stimulus)
           # Copy Stimulus controller to host app's controllers directory
           # This ensures the controller is available without manual copying
-          controller_source = root.join('app', 'javascript', 'controllers', 'tdx_feedback_controller.js')
+          controller_source = TdxFeedbackGem::Engine.root.join('app', 'javascript', 'controllers', 'tdx_feedback_controller.js')
           controller_dest = app.root.join('app', 'javascript', 'controllers', 'tdx_feedback_controller.js')
 
           # Create controllers directory if it doesn't exist
@@ -55,7 +55,7 @@ module TdxFeedbackGem
     # Include JavaScript in host app's asset pipeline
     initializer 'tdx_feedback_gem.javascript' do |app|
       if app.config.respond_to?(:assets)
-        app.config.assets.paths << root.join('app', 'javascript')
+        app.config.assets.paths << TdxFeedbackGem::Engine.root.join('app', 'javascript')
       end
     end
 
@@ -95,8 +95,8 @@ module TdxFeedbackGem
 
       def provide_scss_version(app)
         # If the host app uses SCSS, provide a SCSS version of our styles
-        css_source = root.join('app', 'assets', 'stylesheets', 'tdx_feedback_gem.css')
-        scss_source = root.join('app', 'assets', 'stylesheets', '_tdx_feedback_gem.scss')
+        css_source = TdxFeedbackGem::Engine.root.join('app', 'assets', 'stylesheets', 'tdx_feedback_gem.css')
+        scss_source = TdxFeedbackGem::Engine.root.join('app', 'assets', 'stylesheets', '_tdx_feedback_gem.scss')
         scss_dest = app.root.join('app', 'assets', 'stylesheets', '_tdx_feedback_gem.scss')
 
         # Only copy if it doesn't exist or is older
