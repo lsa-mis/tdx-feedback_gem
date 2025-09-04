@@ -138,6 +138,8 @@ TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
 
 <!-- Custom button -->
 <%= feedback_system(trigger: :button, text: 'Send Feedback', class: 'btn-primary') %>
+-or-
+<%= feedback_system(trigger: :link, text: 'Feedback', class: 'tdx-feedback-footer-link') %>
 
 <!-- Icon only -->
 <%= feedback_icon(class: 'header-icon') %>
