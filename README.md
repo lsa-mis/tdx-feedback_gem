@@ -38,6 +38,12 @@ Add the engine to your host app routes (recommended mount path shown):
 mount TdxFeedbackGem::Engine => '/tdx_feedback_gem'
 ```
 
+Recompile your assets:
+```bash
+bundle exec rake assets:clobber && bundle exec rake dartsass:build
+bundle exec rake assets:precompile
+```
+
 **That's it!** The gem automatically:
 
 - ✅ Creates the necessary database migration
@@ -72,9 +78,10 @@ end
 Add to your layout or views:
 
 ```erb
+<%= feedback_system(trigger: :link, text: 'Feedback', class: 'tdx-feedback-footer-link') %>
+<%= feedback_system(trigger: :button, text: 'Send Feedback') %>
 <%= feedback_footer_link %>
 <%= feedback_header_button %>
-<%= feedback_system(trigger: :button, text: 'Send Feedback') %>
 ```
 
 If you mount the engine at a different path than `/tdx_feedback_gem`, either:
