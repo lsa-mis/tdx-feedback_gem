@@ -53,11 +53,11 @@ module TdxFeedbackGem
     end
 
     # Include JavaScript in host app's asset pipeline
-    initializer 'tdx_feedback_gem.javascript' do |app|
-      if app.config.respond_to?(:assets)
-        app.config.assets.paths << TdxFeedbackGem::Engine.root.join('app', 'javascript')
-      end
-    end
+    # initializer 'tdx_feedback_gem.javascript' do |app|
+    #   if app.config.respond_to?(:assets)
+    #     app.config.assets.paths << TdxFeedbackGem::Engine.root.join('app', 'javascript')
+    #   end
+    # end
 
     # Automatically include the Rails application name in the title prefix
     initializer 'tdx_feedback_gem.application_name' do |app|
