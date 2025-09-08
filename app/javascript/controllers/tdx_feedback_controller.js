@@ -82,7 +82,16 @@ export default class extends Controller {
 
   // Close the feedback modal
   close() {
-    if (!this.isOpenValue || !this.modal) return
+    // If modal reference is lost, try to find it again
+    if (!this.modal) {
+      this.modal = document.getElementById('tdx-feedback-modal')
+      this.overlay = document.getElementById('tdx-feedback-modal-overlay')
+      this.form = document.getElementById('tdx-feedback-form')
+    }
+
+    if (!this.modal) {
+      return
+    }
 
     // Remove open class for animations
     this.modal.classList.remove('tdx-feedback-modal-open')
