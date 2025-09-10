@@ -111,8 +111,16 @@ package-lock.json
 *.tar.gz
 pkg/
 
-# Spec dummy app files (for gem testing)
-/spec/dummy/*
+# Spec dummy app: allow source, ignore runtime artifacts
+/spec/dummy/log/*
+!/spec/dummy/log/.keep
+/spec/dummy/tmp/*
+!/spec/dummy/tmp/.keep
+/spec/dummy/storage/*
+!/spec/dummy/storage/.keep
+# Keep SQLite databases for tests ignored if created
+/spec/dummy/db/*.sqlite3
+/spec/dummy/db/*.sqlite3-journal
 
 # Generator templates and cache
 /lib/templates/.cache
