@@ -1,0 +1,10 @@
+<% if notice.present? || alert.present? %>
+  <div class="tdx-flashes">
+    <% if notice.present? %>
+      <div class="tdx-flash tdx-flash--notice"><%= notice %></div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="tdx-flash tdx-flash--alert"><%= alert %></div>
+    <% end %>
+  </div>
+<% end %>

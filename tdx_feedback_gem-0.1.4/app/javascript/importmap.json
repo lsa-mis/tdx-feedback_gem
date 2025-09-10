@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "controllers/tdx_feedback_controller": "controllers/tdx_feedback_controller.js"
+  }
+}

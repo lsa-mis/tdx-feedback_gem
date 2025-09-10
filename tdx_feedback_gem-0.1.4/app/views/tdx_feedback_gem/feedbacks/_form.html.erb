@@ -1,0 +1,46 @@
+<%= form_with model: feedback, url: tdx_feedback_gem.feedbacks_path,
+              local: false,
+              html: {
+                id: 'tdx-feedback-form',
+                class: 'tdx-feedback-form',
+                data: {
+                  'tdx-feedback-target': 'form',
+                  action: 'submit->tdx-feedback#handleSubmit'
+                }
+              } do |form| %>
+
+  <% if feedback.errors.any? %>
+    <div class="tdx-feedback-errors">
+      <ul>
+        <% feedback.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="tdx-feedback-field">
+    <%= form.label :message, "Your Feedback", class: "tdx-feedback-label" %>
+    <%= form.text_area :message,
+                       rows: 4,
+                       placeholder: "Please describe your feedback, suggestion, or issue...",
+                       class: "tdx-feedback-textarea",
+                       required: true %>
+  </div>
+
+  <div class="tdx-feedback-field">
+    <%= form.label :context, "Additional Context (Optional)", class: "tdx-feedback-label" %>
+    <%= form.text_field :context,
+                        placeholder: "e.g., page URL, user action, etc.",
+                        class: "tdx-feedback-input" %>
+  </div>
+
+  <div class="tdx-feedback-actions">
+    <button type="button" class="tdx-feedback-cancel" id="tdx-feedback-cancel"
+            data-tdx-feedback-target="cancelButton"
+            data-action="click->tdx-feedback#close">Cancel</button>
+    <%= form.submit "Send Feedback",
+                    class: "tdx-feedback-submit",
+                    data: { 'tdx-feedback-target': 'submitButton' } %>
+  </div>
+<% end %>
