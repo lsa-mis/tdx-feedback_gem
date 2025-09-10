@@ -11,6 +11,9 @@ module TdxFeedbackGem
     attr_accessor :enable_ticket_creation, :app_id, :type_id, :form_id, :service_offering_id,
                   :status_id, :source_id, :service_id, :responsible_group_id, :title_prefix, :default_requestor_email
 
+    # Front-end / integration behavior toggles
+    attr_accessor :auto_pin_importmap, :runtime_scss_copy
+
     def initialize
       @require_authentication = false
 
@@ -32,6 +35,10 @@ module TdxFeedbackGem
       @responsible_group_id = nil
       @title_prefix = '[Feedback]'
       @default_requestor_email = nil
+
+    # New toggles with precedence (credentials -> ENV -> default)
+    @auto_pin_importmap = resolve_auto_pin_importmap
+    @runtime_scss_copy  = resolve_runtime_scss_copy
     end
 
     # Allow runtime toggling of ticket creation (useful for testing/emergencies)
@@ -186,6 +193,52 @@ module TdxFeedbackGem
       return env_value.downcase == 'true' if env_value && !env_value.empty?
 
       # Fall back to default value
+      false
+    end
+
+    def resolve_auto_pin_importmap
+      # Credentials lookup (environment-specific then general)
+      if defined?(Rails) && Rails.application&.credentials
+        env_key = environment_key
+        if env_key
+          cred_val = Rails.application.credentials.dig(:tdx, env_key, :auto_pin_importmap)
+          return truthy?(cred_val) unless cred_val.nil?
+        end
+        cred_val = Rails.application.credentials.dig(:tdx, :auto_pin_importmap)
+        return truthy?(cred_val) unless cred_val.nil?
+      end
+
+      # ENV override
+      env_val = ENV['TDX_FEEDBACK_GEM_AUTO_PIN']
+      return truthy?(env_val) unless env_val.nil? || env_val.empty?
+
+      # Default
+      true
+    end
+
+    def resolve_runtime_scss_copy
+      # Credentials
+      if defined?(Rails) && Rails.application&.credentials
+        env_key = environment_key
+        if env_key
+          cred_val = Rails.application.credentials.dig(:tdx, env_key, :runtime_scss_copy)
+          return truthy?(cred_val) unless cred_val.nil?
+        end
+        cred_val = Rails.application.credentials.dig(:tdx, :runtime_scss_copy)
+        return truthy?(cred_val) unless cred_val.nil?
+      end
+
+      # ENV
+      env_val = ENV['TDX_FEEDBACK_GEM_RUNTIME_SCSS_COPY']
+      return truthy?(env_val) unless env_val.nil? || env_val.empty?
+
+      # Default: only in development & test for safety
+      development? || staging? # allow in test/staging-like envs for easier iteration
+    end
+
+    def truthy?(value)
+      return value if value == true || value == false
+      return true if value.respond_to?(:downcase) && %w[1 true yes on].include?(value.downcase)
       false
     end
   end

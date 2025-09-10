@@ -5,12 +5,14 @@ This guide outlines the best practices for testing the TdxFeedbackGem during dev
 ## Testing Strategy Overview
 
 ### 1. **Dummy App Testing (Primary Development Method)**
+
 - **Best for**: Daily development, unit tests, integration tests
 - **Location**: `spec/dummy/` directory
 - **Speed**: Fast
 - **Isolation**: Complete
 
 ### 2. **Real Application Testing (Integration Validation)**
+
 - **Best for**: Final validation, real-world scenarios
 - **Location**: External Rails applications
 - **Speed**: Slower but more realistic
@@ -71,24 +73,29 @@ rails server
 ## Test Categories
 
 ### 1. **Unit Tests**
+
 - Model validations and methods
 - Controller actions
 - Helper methods
 - Configuration options
 
 ### 2. **Integration Tests**
+
 - Request flows (form submission, AJAX calls)
 - Database operations
 - Asset compilation
 - JavaScript functionality
+  - Importmap auto-pin behavior (see `spec/integration/importmap_auto_pin_spec.rb`)
 
 ### 3. **Generator Tests**
+
 - File creation
 - Content validation
 - Asset inclusion
 - Migration generation
 
 ### 4. **Real Application Tests**
+
 - Full installation process
 - Asset pipeline integration
 - JavaScript loading
@@ -97,23 +104,42 @@ rails server
 ## Best Practices
 
 ### For Development
+
 1. **Use the dummy app for 90% of testing**
    - It's faster and more isolated
    - Perfect for iterative development
    - No risk of affecting real applications
 
 2. **Run tests frequently**
+
    ```bash
    bundle exec rspec --watch  # Auto-rerun on file changes
    ```
 
 3. **Test the generator after changes**
+
    ```bash
    cd spec/dummy
    rails generate tdx_feedback_gem:install --force
    ```
 
+4. **Validate Importmap auto-pin (drop-in assurance)**
+   The gem auto-pins its Stimulus controller for Importmap users when `auto_pin_importmap` is enabled (default). The dedicated spec ensures:
+   - The controller is pinned exactly once
+   - Re-running the initializer is idempotent (no duplicate pin entries)
+
+   Run just this spec:
+
+   ```bash
+   bundle exec rspec spec/integration/importmap_auto_pin_spec.rb
+   ```
+
+   Troubleshooting:
+   - If the spec is skipped or fails due to missing Importmap constants, ensure `importmap-rails` is in your development/test dependencies.
+   - The spec emulates minimal Importmap behavior if the full railtie isn't active, so a green test indicates the engine initializer logic is functioning.
+
 ### For Release Preparation
+
 1. **Test in multiple Rails versions**
    - Create test apps with different Rails versions
    - Test with both SCSS and CSS setups
@@ -132,6 +158,7 @@ rails server
 ## Troubleshooting Common Issues
 
 ### Generator Not Working
+
 ```bash
 # Check if generator is properly registered
 rails generate --help | grep tdx_feedback_gem
@@ -141,6 +168,7 @@ ls -la lib/generators/tdx_feedback_gem/install/
 ```
 
 ### Assets Not Loading
+
 ```bash
 # Check asset paths
 ls -la app/assets/stylesheets/
@@ -152,6 +180,7 @@ cat app/javascript/application.js
 ```
 
 ### Database Issues
+
 ```bash
 # Check migration
 rails db:migrate:status
@@ -199,6 +228,7 @@ rails console
 ## Browser Testing
 
 For JavaScript functionality:
+
 - Test in multiple browsers
 - Test with JavaScript disabled
 - Test on mobile devices
@@ -207,16 +237,19 @@ For JavaScript functionality:
 ## Recommended Testing Schedule
 
 ### Daily Development
+
 - Run unit tests before committing
 - Test generator after changes
 - Run integration tests before pushing
 
 ### Weekly
+
 - Test in dummy app with fresh install
 - Run full test suite
 - Check for regressions
 
 ### Before Release
+
 - Test in real applications
 - Test with different Rails versions
 - Test with different asset configurations

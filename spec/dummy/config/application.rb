@@ -14,6 +14,8 @@ require 'action_mailbox/engine'
 require 'action_text/engine'
 require 'action_view/railtie'
 require 'action_cable/engine'
+# Importmap support for testing auto-pin initializer
+require 'importmap-rails'
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems

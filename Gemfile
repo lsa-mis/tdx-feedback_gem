@@ -12,4 +12,6 @@ group :development, :test do
   gem 'rails-controller-testing', '~> 1.0'
   gem 'sqlite3', '~> 1.4'
   gem 'webmock', '~> 3.18'
+  # Provide Importmap support so we can test auto-pin initializer behavior
+  gem 'importmap-rails', '~> 2.0'
 end

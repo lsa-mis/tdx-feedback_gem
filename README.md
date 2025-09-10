@@ -12,6 +12,8 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 - **Authentication support** - Optional user authentication requirement
 - **Stimulus-powered** - Modern JavaScript framework integration
 - **Generator-wired assets** - Installer adds the JavaScript and CSS for you
+- **Automatic Importmap pinning** - Controller auto-pinned (can be disabled)
+- **Optional runtime SCSS copy (dev/test)** - Avoids mutating production builds
 
 ## Quick Start
 
@@ -39,6 +41,7 @@ mount TdxFeedbackGem::Engine => '/tdx_feedback_gem'
 ```
 
 Recompile your assets:
+
 ```bash
 bundle exec rake assets:clobber && bundle exec rake dartsass:build
 bundle exec rake assets:precompile
@@ -62,6 +65,11 @@ TdxFeedbackGem.configure do |config|
   config.enable_ticket_creation = false
   config.oauth_scope = 'tdxticket'
   config.title_prefix = '[Feedback]'
+  # Front-end behavior toggles
+  # Auto-pin Stimulus controller for Importmap (credentials/env/initializer overrideable)
+  config.auto_pin_importmap = true
+  # Allow runtime SCSS partial copy (dev/test convenience). Disable in immutable prod builds.
+  config.runtime_scss_copy = Rails.env.development?
 
   # TDX API credentials (use Rails credentials or environment variables)
   config.app_id = 31
@@ -105,6 +113,26 @@ Enable/disable TDX ticket creation without redeploying:
 
 ```bash
 export TDX_ENABLE_TICKET_CREATION=true
+```
+
+### Front-end Behavior Flags
+
+Disable automatic Importmap pinning (if you prefer manual control):
+
+```bash
+export TDX_FEEDBACK_GEM_AUTO_PIN=false
+```
+
+Disable runtime SCSS copying (normally already false in production):
+
+```bash
+export TDX_FEEDBACK_GEM_RUNTIME_SCSS_COPY=false
+```
+
+Update assets (after gem upgrade) to refresh the SCSS partial & controller:
+
+```bash
+rails g tdx_feedback_gem:update_assets
 ```
 
 ## Documentation

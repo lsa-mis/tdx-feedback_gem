@@ -1,111 +1,109 @@
+# lib/tdx_feedback_gem/engine.rb
 # frozen_string_literal: true
-
-require 'fileutils'
 
 module TdxFeedbackGem
   class Engine < ::Rails::Engine
     isolate_namespace TdxFeedbackGem
 
+    # Configuration-driven behavior (see Configuration class for precedence rules)
+    def self.auto_pin_importmap?
+      TdxFeedbackGem.config.auto_pin_importmap
+    end
+
+    def self.runtime_scss_copy?
+      TdxFeedbackGem.config.runtime_scss_copy
+    end
+
     # Register generators
     generators do
-      require 'generators/tdx_feedback_gem/install/install_generator'
+      require "generators/tdx_feedback_gem/install/install_generator"
     end
 
     # Include the helper module in the main application
-    initializer 'tdx_feedback_gem.helpers' do |app|
-      app.config.to_prepare do
-        if defined?(ApplicationController)
-          ApplicationController.helper TdxFeedbackGem::ApplicationHelper
-        end
+    initializer "tdx_feedback_gem.helpers" do |_app|
+      ActiveSupport.on_load(:action_controller) do
+        helper TdxFeedbackGem::ApplicationHelper
       end
     end
 
-    initializer 'tdx_feedback_gem.assets' do |app|
-      # Precompile engine styles for host apps when Sprockets is available
+    # Make stylesheets available to host apps
+    initializer "tdx_feedback_gem.assets" do |app|
       if app.config.respond_to?(:assets) && app.config.assets.respond_to?(:precompile)
         app.config.assets.precompile += %w[tdx_feedback_gem.css]
       end
 
-      # Include CSS in host app's asset pipeline
       if app.config.respond_to?(:assets)
-        app.config.assets.paths << TdxFeedbackGem::Engine.root.join('app', 'assets', 'stylesheets')
+        app.config.assets.paths << root.join("app", "assets", "stylesheets")
       end
     end
 
-    # Ensure Stimulus controllers are available
-    initializer 'tdx_feedback_gem.stimulus' do |app|
-      app.config.to_prepare do
-        if defined?(Stimulus)
-          # Copy Stimulus controller to host app's controllers directory
-          # This ensures the controller is available without manual copying
-          controller_source = TdxFeedbackGem::Engine.root.join('app', 'javascript', 'controllers', 'tdx_feedback_controller.js')
-          controller_dest = app.root.join('app', 'javascript', 'controllers', 'tdx_feedback_controller.js')
+    # Ensure Stimulus controllers are available for importmap users
+    initializer "tdx_feedback_gem.importmap", before: "importmap" do |app|
+      if defined?(Importmap)
+        app.config.importmap.paths << root.join("app/javascript")
+        app.config.importmap.cache_sweepers << root.join("app/javascript")
+      end
+    end
 
-          # Create controllers directory if it doesn't exist
-          FileUtils.mkdir_p(controller_dest.dirname) unless Dir.exist?(controller_dest.dirname)
-
-          # Copy controller file if it doesn't exist or is older
-          unless File.exist?(controller_dest) && File.mtime(controller_dest) >= File.mtime(controller_source)
-            FileUtils.cp(controller_source, controller_dest)
-          end
+    # Auto-pin the Stimulus controller for Importmap users so the gem is truly "drop in".
+    # This runs after the host app's importmap has been drawn so we can safely append
+    # only if not already pinned. Can be disabled with TDX_FEEDBACK_GEM_AUTO_PIN=0.
+    initializer "tdx_feedback_gem.auto_pin_controller", after: "importmap" do |app|
+      next unless ::TdxFeedbackGem::Engine.auto_pin_importmap?
+      next unless defined?(Importmap) && app.respond_to?(:importmap)
+      begin
+        # If the host already pinned controllers (e.g. pin_all_from ... under: "controllers")
+        # then this individual pin is unnecessary. We check first to avoid duplicates.
+        unless app.importmap.pinned?("controllers/tdx_feedback_controller")
+          # Because we added the engine path to importmap.paths earlier, this logical path
+            # will resolve either to the host app's controller (if they overrode it) or
+            # the engine's copy.
+          app.importmap.pin "controllers/tdx_feedback_controller", to: "controllers/tdx_feedback_controller.js", preload: true
         end
+      rescue => e
+        Rails.logger.debug("[tdx_feedback_gem] importmap auto-pin skipped: #{e.class}: #{e.message}")
       end
     end
 
-    # Include JavaScript in host app's asset pipeline
-    # initializer 'tdx_feedback_gem.javascript' do |app|
-    #   if app.config.respond_to?(:assets)
-    #     app.config.assets.paths << TdxFeedbackGem::Engine.root.join('app', 'javascript')
-    #   end
-    # end
-
-    # Automatically include the Rails application name in the title prefix
-    initializer 'tdx_feedback_gem.application_name' do |app|
-      # Get the Rails application module name (e.g., "MyApp" from "MyApp::Application")
+    # Update the default title prefix to include the host app's name
+    initializer "tdx_feedback_gem.application_name" do |_app|
       app_name = Rails.application.class.module_parent_name
-
-      # Update the title_prefix to include the application name
-      if app_name.present? && TdxFeedbackGem.config.title_prefix == '[Feedback]'
+      if app_name.present? && TdxFeedbackGem.config.title_prefix == "[Feedback]"
         TdxFeedbackGem.config.title_prefix = "[#{app_name} Feedback]"
       end
     end
 
-    # Provide flexible asset inclusion for different scenarios
-    initializer 'tdx_feedback_gem.flexible_assets' do |app|
-      app.config.to_prepare do
-        # Check if we need to provide SCSS version for SCSS-based apps
-        if TdxFeedbackGem::Engine.host_app_uses_scss?(app)
-          TdxFeedbackGem::Engine.provide_scss_version(app)
+    # Provide flexible asset inclusion for different scenarios (SCSS support)
+    initializer "tdx_feedback_gem.flexible_assets" do |app|
+      # Only copy SCSS partial dynamically if configuration allows (typically dev/test)
+      if ::TdxFeedbackGem::Engine.runtime_scss_copy?
+        app.config.to_prepare do
+          if TdxFeedbackGem::Engine.host_app_uses_scss?(app)
+            TdxFeedbackGem::Engine.provide_scss_version(app)
+          end
         end
       end
     end
 
     class << self
       def host_app_uses_scss?(app)
-        # Check if the host app has SCSS files
-        scss_files = Dir.glob(app.root.join('app', 'assets', 'stylesheets', '*.scss'))
-        sass_files = Dir.glob(app.root.join('app', 'assets', 'stylesheets', '*.sass'))
-
-        # Also check for application.scss or application.sass
-        app_scss = app.root.join('app', 'assets', 'stylesheets', 'application.scss')
-        app_sass = app.root.join('app', 'assets', 'stylesheets', 'application.sass')
+        scss_files = Dir.glob(app.root.join("app", "assets", "stylesheets", "*.scss"))
+        sass_files = Dir.glob(app.root.join("app", "assets", "stylesheets", "*.sass"))
+        app_scss   = app.root.join("app", "assets", "stylesheets", "application.scss")
+        app_sass   = app.root.join("app", "assets", "stylesheets", "application.sass")
 
         !scss_files.empty? || !sass_files.empty? || File.exist?(app_scss) || File.exist?(app_sass)
       end
 
       def provide_scss_version(app)
-        # If the host app uses SCSS, provide a SCSS version of our styles
-        css_source = TdxFeedbackGem::Engine.root.join('app', 'assets', 'stylesheets', 'tdx_feedback_gem.css')
-        scss_source = TdxFeedbackGem::Engine.root.join('app', 'assets', 'stylesheets', '_tdx_feedback_gem.scss')
-        scss_dest = app.root.join('app', 'assets', 'stylesheets', '_tdx_feedback_gem.scss')
+        css_source  = root.join("app", "assets", "stylesheets", "tdx_feedback_gem.css")
+        scss_source = root.join("app", "assets", "stylesheets", "_tdx_feedback_gem.scss")
+        scss_dest   = app.root.join("app", "assets", "stylesheets", "_tdx_feedback_gem.scss")
 
-        # Only copy if it doesn't exist or is older
         unless File.exist?(scss_dest) && File.mtime(scss_dest) >= File.mtime(css_source)
-          # Use SCSS version if it exists, otherwise convert CSS
           if File.exist?(scss_source)
             FileUtils.cp(scss_source, scss_dest)
           else
-            # Fallback: convert CSS to SCSS (simple conversion - just change extension and add partial prefix)
             css_content = File.read(css_source)
             File.write(scss_dest, css_content)
           end

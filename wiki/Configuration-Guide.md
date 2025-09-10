@@ -2,7 +2,6 @@
 
 Complete guide to configuring the TDX Feedback Gem for your Rails application.
 
-
 ## 📋 Configuration Overview
 
 The gem uses a hierarchical configuration system that automatically resolves values from multiple sources:
@@ -153,6 +152,10 @@ config.service_offering_id = 456      # Service offering ID
 ```ruby
 config.title_prefix = '[Feedback]'    # Prefix for ticket titles
 config.default_requestor_email = 'noreply@example.com'  # Fallback email
+
+# Front-end behavior (Importmap & asset handling)
+config.auto_pin_importmap = true      # Automatically pin Stimulus controller for Importmap users
+config.runtime_scss_copy = Rails.env.development?  # Copy SCSS partial at runtime (dev/test convenience)
 ```
 
 <!-- Modal-specific configuration options are not provided by the gem; customize via CSS/HTML in your app. -->
@@ -227,6 +230,8 @@ TDX_CLIENT_SECRET=your_client_secret_here
 TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
 TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
 TDX_ENABLE_TICKET_CREATION=false
+TDX_FEEDBACK_GEM_AUTO_PIN=true
+TDX_FEEDBACK_GEM_RUNTIME_SCSS_COPY=false
 ```
 
 #### Environment-Specific .env Files
@@ -286,6 +291,8 @@ TDX_ENABLE_TICKET_CREATION=true
 |---------------|-------|-------------|
 | `TDX_BASE_URL` | `https://gw-test.api.it.umich.edu/um/it` | Test TDX API URL |
 | `TDX_OAUTH_TOKEN_URL` | `https://gw-test.api.it.umich.edu/um/oauth2/token` | Test OAuth token URL |
+| `TDX_FEEDBACK_GEM_AUTO_PIN` | `true` | Auto-pin Stimulus controller (Importmap) |
+| `TDX_FEEDBACK_GEM_RUNTIME_SCSS_COPY` | `false` | Allow runtime SCSS partial copying |
 
 #### Quick Toggle for Incidents
 
