@@ -22,7 +22,7 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 Add to your Gemfile:
 
 ```ruby
-gem 'tdx_feedback_gem', '~> 0.1.2'
+gem 'tdx_feedback_gem', '~> 0.1.3'
 ```
 
 ### 2. Setup
@@ -54,6 +54,23 @@ bundle exec rake assets:precompile
 - ✅ Copies the Stimulus controller to your app
 - ✅ Includes the CSS styles in your asset pipeline
 - ✅ Registers the helper methods globally
+- ✅ Validates configuration at boot and logs non-fatal warnings (missing IDs, unsafe flags, missing importmap)
+
+### Importmap Notes
+
+If your app uses Importmap the engine will automatically attempt to pin its Stimulus controller when `auto_pin_importmap` is enabled (default). The engine only adds its `app/javascript` path to Importmap when an `importmap.json` file is present (avoids mutating frozen configs in some setups).
+
+Disable auto pinning (manual control):
+
+```bash
+export TDX_FEEDBACK_GEM_AUTO_PIN=false
+```
+
+Then ensure you have a manual pin in `config/importmap.rb`:
+
+```ruby
+pin_all_from 'app/javascript/controllers', under: 'controllers'
+```
 
 ### 3. Configuration (Optional)
 
@@ -135,10 +152,20 @@ Update assets (after gem upgrade) to refresh the SCSS partial & controller:
 rails g tdx_feedback_gem:update_assets
 ```
 
+## Upgrade
+
+After bumping the gem version:
+
+1. Run `bundle install`
+2. (Optional) Re-run the installer if you want newly added initializer comments: `rails g tdx_feedback_gem:install`
+3. Refresh front-end assets (controller / SCSS) if desired: `rails g tdx_feedback_gem:update_assets`
+4. Review the CHANGELOG for behavioral changes
+5. Check application logs on boot for any `tdx_feedback_gem configuration warning` messages
+
 ## Documentation
 
 - **[📚 Wiki](wiki/Home.md)** - Complete documentation, examples, and guides
-- **[� Getting Started](wiki/Getting-Started.md)** - Quick overview and setup details
+- **[🚀 Getting Started](wiki/Getting-Started.md)** - Quick overview and setup details
 - **[⚙️ Configuration Guide](wiki/Configuration-Guide.md)** - Credentials, env vars, and defaults
 - **[🔧 Integration Examples](wiki/Integration-Examples.md)** - Rails 5/6/7, authentication systems
 - **[🎨 Styling and Theming](wiki/Styling-and-Theming.md)** - Customization and theming

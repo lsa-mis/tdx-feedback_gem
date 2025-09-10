@@ -5,13 +5,34 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-### Added (since 0.1.1)
+## [0.1.3] - 2025-09-10
+
+### Fixed
+- Prevent FrozenError by guarding importmap path registration (only add engine JS path when importmap.json exists; always allowed in test env).
+
+### Added
+- Configuration validation (`validate_configuration!`) emitting non-fatal warnings (misconfigured ticket IDs, unsafe production flags, missing Importmap).
+- Safer install generator: automatically mounts engine, optional importmap pin_all_from snippet, clearer instructions.
+- `app/javascript/importmap.json` shipped for importmap detection.
+
+### Changed
+- Importmap auto-pin logic hardened (idempotent forced pin; resilient when pinned? semantics vary in host or test stubs).
+- Helper inclusion and asset logic wrapped with error handling & debug logging via Rails.logger only (temporary puts removed).
+- Default behavior: runtime SCSS copy & auto-pin remain configurable while avoiding unintended production mutations.
+
+### Internal
+- Added late fallback initializer for auto-pin in atypical initialization orders (tests / custom boot flows).
+- Removed temporary debug STDOUT instrumentation.
+
+## [0.1.2] - 2025-09-09
+
+### Added
 
 - Importmap auto-pin integration spec (`spec/integration/importmap_auto_pin_spec.rb`) to verify Stimulus controller is pinned exactly once and initializer is idempotent.
 - `auto_pin_importmap` and `runtime_scss_copy` configuration flags with credential → ENV → default precedence.
 - `tdx_feedback_gem:update_assets` generator for refreshing SCSS partial and Stimulus controller copies in host apps.
 
-### Changed (since 0.1.1)
+### Changed
 
 - `lib/tdx_feedback_gem/engine.rb`: Refactored to:
   - Add auto importmap pin initializer (`tdx_feedback_gem.auto_pin_controller`).
@@ -21,11 +42,11 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `lib/generators/tdx_feedback_gem/update_assets/update_assets_generator.rb`: New generator introduced (ensures asset refresh without runtime mutation).
 - `Gemfile`: Added `importmap-rails` to development/test dependencies to support and test auto-pin behavior.
 
-### Documentation (since 0.1.1)
+### Documentation
 
 - Updated README and Testing Guide with auto-pin behavior, configuration flags, and update-assets generator usage.
 
-### Internal (since 0.1.1)
+### Internal
 
 - Adjusted integration test scaffolding (dummy app assets, Gemfile) to stabilize test suite under new engine behavior.
 
