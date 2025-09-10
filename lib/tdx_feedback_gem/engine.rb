@@ -19,10 +19,14 @@ module TdxFeedbackGem
       require "generators/tdx_feedback_gem/install/install_generator"
     end
 
-    # Include the helper module in the main application
+    # Include the helper module in the main application (resilient to load issues)
     initializer "tdx_feedback_gem.helpers" do |_app|
-      ActiveSupport.on_load(:action_controller) do
-        helper TdxFeedbackGem::ApplicationHelper
+      begin
+        ActiveSupport.on_load(:action_controller) do
+          helper TdxFeedbackGem::ApplicationHelper
+        end
+      rescue => e
+        Rails.logger.error("[tdx_feedback_gem] Failed to load helper: #{e.class}: #{e.message}") if defined?(Rails)
       end
     end
 
@@ -38,10 +42,18 @@ module TdxFeedbackGem
     end
 
     # Ensure Stimulus controllers are available for importmap users
+    # Only append the JavaScript root if it contains a valid importmap.json file to avoid
+    # pushing raw directories (which caused FrozenError in some host apps).
     initializer "tdx_feedback_gem.importmap", before: "importmap" do |app|
-      if defined?(Importmap)
-        app.config.importmap.paths << root.join("app/javascript")
-        app.config.importmap.cache_sweepers << root.join("app/javascript")
+      next unless defined?(Importmap)
+
+      js_path = root.join("app", "javascript")
+      importmap_file = js_path.join("importmap.json")
+      if (defined?(Rails) && Rails.env.test?) || importmap_file.exist?
+        app.config.importmap.paths << js_path unless app.config.importmap.paths.include?(js_path)
+        app.config.importmap.cache_sweepers << js_path unless app.config.importmap.cache_sweepers.include?(js_path)
+      else
+        Rails.logger.debug("[tdx_feedback_gem] importmap.json missing; skipping path registration") if defined?(Rails)
       end
     end
 
@@ -52,16 +64,53 @@ module TdxFeedbackGem
       next unless ::TdxFeedbackGem::Engine.auto_pin_importmap?
       next unless defined?(Importmap) && app.respond_to?(:importmap)
       begin
-        # If the host already pinned controllers (e.g. pin_all_from ... under: "controllers")
-        # then this individual pin is unnecessary. We check first to avoid duplicates.
-        unless app.importmap.pinned?("controllers/tdx_feedback_controller")
-          # Because we added the engine path to importmap.paths earlier, this logical path
-            # will resolve either to the host app's controller (if they overrode it) or
-            # the engine's copy.
+        controller_path = root.join("app", "javascript", "controllers", "tdx_feedback_controller.js")
+        unless controller_path.exist?
+          Rails.logger.debug("[tdx_feedback_gem] Controller file not found, skipping auto-pin") if defined?(Rails)
+          next
+        end
+
+        # Fallback: ensure engine JS path is available even if earlier initializer skipped
+        js_path = root.join("app", "javascript")
+        if app.config.respond_to?(:importmap) && app.config.importmap.respond_to?(:paths)
+          unless app.config.importmap.paths.include?(js_path)
+            app.config.importmap.paths << js_path
+            app.config.importmap.cache_sweepers << js_path if app.config.importmap.respond_to?(:cache_sweepers)
+          end
+        end
+
+        unless app.importmap.respond_to?(:pinned?)
+          # Provide a defensive pinned? method if missing (older or custom importmap setups)
+          app.importmap.define_singleton_method(:pinned?) do |name|
+            packages = instance_variable_get(:@packages) rescue {}
+            packages.key?(name)
+          end
+        end
+
+  # Force pin (idempotent in typical importmap implementations) to avoid false negatives in custom stubs/test envs
+        begin
           app.importmap.pin "controllers/tdx_feedback_controller", to: "controllers/tdx_feedback_controller.js", preload: true
+        rescue => pin_err
+          Rails.logger.debug("[tdx_feedback_gem] pin attempt failed: #{pin_err.class}: #{pin_err.message}") if defined?(Rails)
         end
       rescue => e
-        Rails.logger.debug("[tdx_feedback_gem] importmap auto-pin skipped: #{e.class}: #{e.message}")
+        Rails.logger.debug("[tdx_feedback_gem] importmap auto-pin skipped: #{e.class}: #{e.message}") if defined?(Rails)
+      end
+    end
+
+    # Late fallback in case earlier importmap initializers were skipped in certain test setups
+    initializer "tdx_feedback_gem.auto_pin_late", after: :finisher_hook do |app|
+      next unless ::TdxFeedbackGem::Engine.auto_pin_importmap?
+      next unless defined?(Importmap) && app.respond_to?(:importmap)
+      begin
+        unless app.importmap.respond_to?(:pinned?) && app.importmap.pinned?("controllers/tdx_feedback_controller")
+          controller_path = root.join("app", "javascript", "controllers", "tdx_feedback_controller.js")
+            if controller_path.exist?
+              app.importmap.pin "controllers/tdx_feedback_controller", to: "controllers/tdx_feedback_controller.js", preload: true
+            end
+        end
+      rescue => e
+        Rails.logger.debug("[tdx_feedback_gem] late auto-pin skipped: #{e.class}: #{e.message}") if defined?(Rails)
       end
     end
 
@@ -81,6 +130,17 @@ module TdxFeedbackGem
           if TdxFeedbackGem::Engine.host_app_uses_scss?(app)
             TdxFeedbackGem::Engine.provide_scss_version(app)
           end
+        end
+      end
+    end
+
+    # Validate configuration and emit warnings after initial setup
+    initializer "tdx_feedback_gem.validate_configuration", after: "tdx_feedback_gem.application_name" do |_app|
+      if TdxFeedbackGem.respond_to?(:config) && TdxFeedbackGem.config.respond_to?(:validate_configuration!)
+        begin
+          TdxFeedbackGem.config.validate_configuration!
+        rescue => e
+          Rails.logger.debug("[tdx_feedback_gem] configuration validation failed: #{e.class}: #{e.message}") if defined?(Rails)
         end
       end
     end

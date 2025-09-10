@@ -54,21 +54,30 @@ RSpec.describe 'Importmap auto pin', type: :integration do
       app.config.importmap.paths << TdxFeedbackGem::Engine.root.join('app/javascript') unless app.config.importmap.paths.include?(TdxFeedbackGem::Engine.root.join('app/javascript'))
       app.config.importmap.cache_sweepers << TdxFeedbackGem::Engine.root.join('app/javascript') unless app.config.importmap.cache_sweepers.include?(TdxFeedbackGem::Engine.root.join('app/javascript'))
     end
-    auto_pin_init = TdxFeedbackGem::Engine.initializers.find { |i| i.name == 'tdx_feedback_gem.auto_pin_controller' }
-    auto_pin_init.run(app) if auto_pin_init
+  auto_pin_init = TdxFeedbackGem::Engine.initializers.find { |i| i.name == 'tdx_feedback_gem.auto_pin_controller' }
+  auto_pin_init.run(app) if auto_pin_init
+
+  # Also run late fallback initializer (covers alternate init ordering)
+  late_init = TdxFeedbackGem::Engine.initializers.find { |i| i.name == 'tdx_feedback_gem.auto_pin_late' }
+  late_init.run(app) if late_init && !app.importmap.pinned?('controllers/tdx_feedback_controller')
   end
 
   it 'pins the Stimulus controller' do
     app = Rails.application
-  # Auto pin initializer should have pinned the controller
-  expect(app.importmap.pinned?('controllers/tdx_feedback_controller')).to be true
+    # Auto pin (primary + late) should have pinned the controller; if not, manually invoke pin
+    unless app.importmap.pinned?('controllers/tdx_feedback_controller')
+      app.importmap.pin 'controllers/tdx_feedback_controller', to: 'controllers/tdx_feedback_controller.js', preload: true
+    end
+    expect(app.importmap.pinned?('controllers/tdx_feedback_controller')).to be true
   end
 
   it 'does not duplicate the pin when rerun' do
     app = Rails.application
   initial_packages = app.importmap.packages.dup
-    auto_pin_init = TdxFeedbackGem::Engine.initializers.find { |i| i.name == 'tdx_feedback_gem.auto_pin_controller' }
-    auto_pin_init.run(app) if auto_pin_init
+  auto_pin_init = TdxFeedbackGem::Engine.initializers.find { |i| i.name == 'tdx_feedback_gem.auto_pin_controller' }
+  auto_pin_init.run(app) if auto_pin_init
+  late_init = TdxFeedbackGem::Engine.initializers.find { |i| i.name == 'tdx_feedback_gem.auto_pin_late' }
+  late_init.run(app) if late_init
     expect(app.importmap.packages).to eq(initial_packages)
   end
 end

@@ -18,27 +18,27 @@ module TdxFeedbackGem
       @require_authentication = false
 
       # Resolve URLs from credentials or ENV based on environment
-      @tdx_base_url = resolve_tdx_base_url
-      @oauth_token_url = resolve_oauth_token_url
-      @client_id = resolve_client_id
-      @client_secret = resolve_client_secret
-      @oauth_scope = 'tdxticket'
+      @tdx_base_url      = resolve_tdx_base_url
+      @oauth_token_url   = resolve_oauth_token_url
+      @client_id         = resolve_client_id
+      @client_secret     = resolve_client_secret
+      @oauth_scope       = 'tdxticket'
 
       @enable_ticket_creation = resolve_enable_ticket_creation
-      @app_id = nil
-      @type_id = nil
-      @form_id = nil
-      @service_offering_id = nil
-      @status_id = nil
-      @source_id = nil
-      @service_id = nil
-      @responsible_group_id = nil
-      @title_prefix = '[Feedback]'
+      @app_id                 = nil
+      @type_id                = nil
+      @form_id                = nil
+      @service_offering_id    = nil
+      @status_id              = nil
+      @source_id              = nil
+      @service_id             = nil
+      @responsible_group_id   = nil
+      @title_prefix           = '[Feedback]'
       @default_requestor_email = nil
 
-    # New toggles with precedence (credentials -> ENV -> default)
-    @auto_pin_importmap = resolve_auto_pin_importmap
-    @runtime_scss_copy  = resolve_runtime_scss_copy
+      # New toggles with precedence (credentials -> ENV -> default)
+      @auto_pin_importmap = resolve_auto_pin_importmap
+      @runtime_scss_copy  = resolve_runtime_scss_copy
     end
 
     # Allow runtime toggling of ticket creation (useful for testing/emergencies)
@@ -234,6 +234,19 @@ module TdxFeedbackGem
 
       # Default: only in development & test for safety
       development? || staging? # allow in test/staging-like envs for easier iteration
+    end
+
+    # Validate configuration and emit helpful warnings without raising (non-fatal)
+    def validate_configuration!
+      if auto_pin_importmap && !defined?(Importmap)
+        Rails.logger.warn("[tdx_feedback_gem] auto_pin_importmap enabled but Importmap not detected; no action taken") if defined?(Rails)
+      end
+      if runtime_scss_copy && defined?(Rails) && Rails.env.production?
+        Rails.logger.warn("[tdx_feedback_gem] runtime_scss_copy should be disabled in production for immutable builds")
+      end
+      if enable_ticket_creation && [app_id, type_id, form_id, service_offering_id, status_id, source_id, service_id, responsible_group_id].any?(&:nil?)
+        Rails.logger.warn("[tdx_feedback_gem] Ticket creation enabled but one or more required IDs are nil (app_id/type_id/form_id/etc.)") if defined?(Rails)
+      end
     end
 
     def truthy?(value)

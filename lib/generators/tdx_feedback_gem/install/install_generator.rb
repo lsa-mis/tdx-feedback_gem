@@ -8,7 +8,7 @@ module TdxFeedbackGem
     class InstallGenerator < Rails::Generators::Base
       source_root File.expand_path('templates', __dir__)
 
-      desc 'Installs TdxFeedbackGem by creating migration, initializer, and including assets.'
+      desc 'Installs TdxFeedbackGem by creating migration, initializer, assets, and optional importmap pins.'
 
       def copy_migration
         timestamp = Time.now.utc.strftime('%Y%m%d%H%M%S')
@@ -45,24 +45,32 @@ module TdxFeedbackGem
         end
       end
 
+      def add_routes
+        return if File.read('config/routes.rb').include?('TdxFeedbackGem::Engine')
+        route "mount TdxFeedbackGem::Engine => '/tdx_feedback_gem'"
+      end
+
+      def add_importmap_pin
+        return unless defined?(Importmap)
+        importmap_rb = 'config/importmap.rb'
+        return unless File.exist?(importmap_rb)
+        content = File.read(importmap_rb)
+        pin_line = "pin_all_from 'tdx_feedback_gem/app/javascript/controllers', under: 'controllers'"
+        unless content.include?(pin_line)
+          append_to_file importmap_rb do
+            "\n# TDX Feedback Gem controllers\n#{pin_line}\n"
+          end
+        end
+      end
+
       def show_instructions
-        puts "\n🎉 TdxFeedbackGem has been successfully installed!"
-        puts "\n📋 Next steps:"
-        puts "1. Run 'rails db:migrate' to create the feedbacks table"
-        puts "2. Add the engine to your host app routes (recommended mount path shown):"
-        puts "   mount TdxFeedbackGem::Engine => '/tdx_feedback_gem'"
-        puts "3. Recompile your assets:"
-        puts "   bundle exec rake assets:clobber && bundle exec rake dartsass:build"
-        puts "   bundle exec rake assets:precompile"
-        puts "4. Edit config/initializers/tdx_feedback_gem.rb"
-        puts "5. Restart your Rails server"
-        puts "6. Use the helper methods in your views:"
-        puts "   - <%= feedback_system(trigger: :link, text: 'Feedback', class: 'tdx-feedback-footer-link') %>"
-        puts "   - <%= feedback_button('Send Feedback') %>"
-        puts "   - <%= feedback_system(trigger: :button, text: 'Send Feedback') %>"
-        puts "\n📚 For more information, check the documentation at:"
-        puts "   https://github.com/your-username/tdx_feedback_gem"
-        puts "\n✨ The gem is now ready to use!"
+        say "\nTDX Feedback Gem installed successfully!", :green
+        say "\nNext steps:", :yellow
+        say "1. rails db:migrate"
+        say "2. Review config/initializers/tdx_feedback_gem.rb"
+        say "3. (Optional) Customize feedback trigger in your layout footer: <%= feedback_system(trigger: :link, text: 'Feedback') %>"
+        say "4. Restart your server"
+        say "5. Verify modal loads and submissions create tickets (if enabled)."
       end
 
       private

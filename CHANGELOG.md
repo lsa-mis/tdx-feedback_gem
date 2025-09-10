@@ -8,19 +8,23 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [0.1.3] - 2025-09-10
 
 ### Fixed
+
 - Prevent FrozenError by guarding importmap path registration (only add engine JS path when importmap.json exists; always allowed in test env).
 
 ### Added
+
 - Configuration validation (`validate_configuration!`) emitting non-fatal warnings (misconfigured ticket IDs, unsafe production flags, missing Importmap).
 - Safer install generator: automatically mounts engine, optional importmap pin_all_from snippet, clearer instructions.
 - `app/javascript/importmap.json` shipped for importmap detection.
 
 ### Changed
+
 - Importmap auto-pin logic hardened (idempotent forced pin; resilient when pinned? semantics vary in host or test stubs).
 - Helper inclusion and asset logic wrapped with error handling & debug logging via Rails.logger only (temporary puts removed).
 - Default behavior: runtime SCSS copy & auto-pin remain configurable while avoiding unintended production mutations.
 
 ### Internal
+
 - Added late fallback initializer for auto-pin in atypical initialization orders (tests / custom boot flows).
 - Removed temporary debug STDOUT instrumentation.
 
