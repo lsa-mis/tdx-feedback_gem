@@ -5,6 +5,16 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.4] - 2025-09-10
+
+### Fixed
+
+- Critical fix: importmap path registration now adds the engine's `importmap.json` file instead of the directory, preventing `Errno::EISDIR` ("Is a directory") exceptions during host app initialization (as reported when running the install generator on 0.1.3).
+
+### Upgrade Notes
+
+- No action required other than updating the gem version. Host apps that applied a workaround (manually removing the directory path from `config.importmap.paths`) can remove that code after upgrading.
+
 ## [0.1.3] - 2025-09-10
 
 ### Fixed

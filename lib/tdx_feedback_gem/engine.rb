@@ -50,8 +50,14 @@ module TdxFeedbackGem
       js_path = root.join("app", "javascript")
       importmap_file = js_path.join("importmap.json")
       if (defined?(Rails) && Rails.env.test?) || importmap_file.exist?
-        app.config.importmap.paths << js_path unless app.config.importmap.paths.include?(js_path)
-        app.config.importmap.cache_sweepers << js_path unless app.config.importmap.cache_sweepers.include?(js_path)
+        # importmap-rails expects entries in config.importmap.paths to be FILES (JSON/RB), not directories
+        unless app.config.importmap.paths.include?(importmap_file)
+          app.config.importmap.paths << importmap_file
+        end
+        # cache sweepers can safely point at the directory for change detection
+        unless app.config.importmap.cache_sweepers.include?(js_path)
+          app.config.importmap.cache_sweepers << js_path
+        end
       else
         Rails.logger.debug("[tdx_feedback_gem] importmap.json missing; skipping path registration") if defined?(Rails)
       end
@@ -72,9 +78,10 @@ module TdxFeedbackGem
 
         # Fallback: ensure engine JS path is available even if earlier initializer skipped
         js_path = root.join("app", "javascript")
+        importmap_file = js_path.join("importmap.json")
         if app.config.respond_to?(:importmap) && app.config.importmap.respond_to?(:paths)
-          unless app.config.importmap.paths.include?(js_path)
-            app.config.importmap.paths << js_path
+          unless app.config.importmap.paths.include?(importmap_file)
+            app.config.importmap.paths << importmap_file
             app.config.importmap.cache_sweepers << js_path if app.config.importmap.respond_to?(:cache_sweepers)
           end
         end

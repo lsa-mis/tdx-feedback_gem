@@ -51,8 +51,10 @@ RSpec.describe 'Importmap auto pin', type: :integration do
 
     # Manually emulate the importmap path initializer to avoid context issues with root inside engine
     if app.config.respond_to?(:importmap)
-      app.config.importmap.paths << TdxFeedbackGem::Engine.root.join('app/javascript') unless app.config.importmap.paths.include?(TdxFeedbackGem::Engine.root.join('app/javascript'))
-      app.config.importmap.cache_sweepers << TdxFeedbackGem::Engine.root.join('app/javascript') unless app.config.importmap.cache_sweepers.include?(TdxFeedbackGem::Engine.root.join('app/javascript'))
+      js_dir = TdxFeedbackGem::Engine.root.join('app/javascript')
+      importmap_file = js_dir.join('importmap.json')
+      app.config.importmap.paths << importmap_file unless app.config.importmap.paths.include?(importmap_file)
+      app.config.importmap.cache_sweepers << js_dir unless app.config.importmap.cache_sweepers.include?(js_dir)
     end
   auto_pin_init = TdxFeedbackGem::Engine.initializers.find { |i| i.name == 'tdx_feedback_gem.auto_pin_controller' }
   auto_pin_init.run(app) if auto_pin_init
