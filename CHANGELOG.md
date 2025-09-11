@@ -5,6 +5,20 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.1.6] - 2025-01-27
+
+### Added
+
+- Optional AccountID support for ticket organization
+- Configuration option `account_id` to specify account ID when creating tickets
+- AccountID is automatically included in ticket payload when configured
+
+### Documentation
+
+- Updated README.md with AccountID configuration details
+- Enhanced Configuration Guide with AccountID setup instructions
+- Updated Getting Started guide with AccountID usage examples
+
 ## [0.1.5] - 2025-01-27
 
 ### Changed
