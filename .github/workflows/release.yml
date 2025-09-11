@@ -1,0 +1,83 @@
+name: Release Gem
+
+on:
+  push:
+    tags:
+      - 'v*'   # only run on version tags like v0.1.5
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need full history for git log
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3' # match your gemspec version
+
+      - name: Install dependencies
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Build gem
+        run: gem build tdx_feedback_gem.gemspec
+
+      - name: Get gem version
+        id: gem_version
+        run: |
+          VERSION=$(ruby -r ./lib/tdx_feedback_gem/version.rb -e "puts TdxFeedbackGem::VERSION")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if version already exists on RubyGems
+        run: |
+          if gem info tdx_feedback_gem -r -v ${{ steps.gem_version.outputs.version }} > /dev/null 2>&1; then
+            echo "Version ${{ steps.gem_version.outputs.version }} already exists on RubyGems. Skipping release."
+            exit 0
+          fi
+
+      - name: Extract release notes (CHANGELOG or commits)
+        id: changelog
+        run: |
+          VERSION=${{ steps.gem_version.outputs.version }}
+          NOTES=$(awk "/^## \\[?${VERSION}\\]?/{flag=1;next}/^## /{flag=0}flag" CHANGELOG.md || true)
+
+          if [ -z "$NOTES" ]; then
+            echo "No changelog entry found for $VERSION, falling back to git log."
+            LAST_TAG=$(git describe --tags --abbrev=0 $(git rev-list --tags --skip=1  --max-count=1) 2>/dev/null || echo "")
+            if [ -n "$LAST_TAG" ]; then
+              NOTES=$(git log $LAST_TAG..HEAD --pretty=format:"- %s")
+            else
+              NOTES=$(git log --pretty=format:"- %s")
+            fi
+          fi
+
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Push gem to RubyGems
+        if: success()
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+        run: |
+          mkdir -p ~/.gem
+          echo -e "---\n:rubygems_api_key: ${RUBYGEMS_API_KEY}" > ~/.gem/credentials
+          chmod 0600 ~/.gem/credentials
+          gem push *.gem
+
+      - name: Create GitHub Release
+        if: success()
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ steps.gem_version.outputs.version }}
+          body: |
+            ## Changes in this release
+            ${{ steps.changelog.outputs.notes }}
+
+            Gem has been pushed to [RubyGems.org](https://rubygems.org/gems/tdx_feedback_gem).
+          files: "*.gem"
