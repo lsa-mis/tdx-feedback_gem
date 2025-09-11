@@ -5,7 +5,19 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-## [0.1.4] - 2025-09-10
+## [0.1.5] - 2025-01-27
+
+### Changed
+
+- **BREAKING**: Versions 0.1.2, 0.1.3, and 0.1.4 have been removed due to design issues
+- Reset to version 0.1.5 based on the stable 0.1.1 codebase
+- Users should upgrade directly from 0.1.1 to 0.1.5, skipping the problematic versions
+
+### Deprecated
+
+- Versions 0.1.2, 0.1.3, and 0.1.4 are no longer available and should not be used
+
+## [0.1.4] - 2025-09-10 [DEPRECATED - DO NOT USE]
 
 ### Fixed
 
