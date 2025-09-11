@@ -7,6 +7,7 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 - **Modal-based feedback system** - No page navigation required
 - **Seamless integration** - Drop into any Rails application
 - **TDX API integration** - Optionally creates support tickets (when enabled)
+- **Account/department organization** - Optional AccountID support for ticket routing
 - **Responsive design** - Works on all device sizes
 - **Customizable styling** - Easy to match your app's design
 - **Authentication support** - Optional user authentication requirement
@@ -14,6 +15,12 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 - **Generator-wired assets** - Installer adds the JavaScript and CSS for you
 - **Automatic Importmap pinning** - Controller auto-pinned (can be disabled)
 - **Optional runtime SCSS copy (dev/test)** - Avoids mutating production builds
+
+## Requirements
+
+- **Ruby 3.0+** (required by gemspec)
+- **Rails 6.1+** (tested with Rails 6.x and 7.x)
+- **Database** (PostgreSQL, MySQL, SQLite3 supported)
 
 ## Quick Start
 
@@ -95,6 +102,9 @@ TdxFeedbackGem.configure do |config|
   config.source_id = 8
   config.service_id = 67
   config.responsible_group_id = 631
+
+  # Optional TDX configuration
+  config.account_id = 2  # Account/department ID for ticket organization
 end
 ```
 

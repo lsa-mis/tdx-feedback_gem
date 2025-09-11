@@ -143,6 +143,7 @@ config.responsible_group_id = 631     # Responsible group ID
 ```ruby
 config.form_id = 123                  # Form ID (if using custom forms)
 config.service_offering_id = 456      # Service offering ID
+config.account_id = 2                 # Account/department ID for ticket organization
 ```
 
 ## 🎨 Customization Options

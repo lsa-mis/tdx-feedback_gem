@@ -38,6 +38,9 @@ TdxFeedbackGem.configure do |config|
   # config.service_id = 2314
   # config.responsible_group_id = 388
 
+  # Optional ticket configuration
+  # config.account_id = 2  # Sets the account/department ID for ticket organization
+
   # Optional UI/labeling
   # config.title_prefix = '[Feedback]'
   # config.default_requestor_email = 'noreply@example.com'

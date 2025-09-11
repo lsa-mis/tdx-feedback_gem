@@ -18,6 +18,7 @@ RSpec.describe TdxFeedbackGem::TicketCreator do
       c.source_id = 8
       c.service_id = 67
       c.responsible_group_id = 631
+      c.account_id = 2
       c.title_prefix = '[Feedback]'
       c.default_requestor_email = 'noreply@example.com'
       c.tdx_base_url = 'https://example.test'
@@ -84,6 +85,7 @@ RSpec.describe TdxFeedbackGem::TicketCreator do
         expect(payload['SourceID']).to eq(8)
         expect(payload['ServiceID']).to eq(67)
         expect(payload['ResponsibleGroupID']).to eq(631)
+        expect(payload['AccountID']).to eq(2)
         expect(payload['Title']).to start_with('[Feedback]')
         expect(payload['Description']).to include('Hello world')
         expect(payload['Description']).to include('ctx')
@@ -208,6 +210,24 @@ RSpec.describe TdxFeedbackGem::TicketCreator do
 
         # Should not affect the payload
         expect(stub_client.last_payload['Title']).to be_present
+      end
+
+      it 'includes AccountID when configured' do
+        result = creator.call(feedback)
+        expect(result.success?).to be true
+
+        payload = stub_client.last_payload
+        expect(payload['AccountID']).to eq(2)
+      end
+
+      it 'excludes AccountID when not configured' do
+        config.account_id = nil
+
+        result = creator.call(feedback)
+        expect(result.success?).to be true
+
+        payload = stub_client.last_payload
+        expect(payload).not_to have_key('AccountID')
       end
     end
 

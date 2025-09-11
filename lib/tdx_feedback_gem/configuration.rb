@@ -9,7 +9,7 @@ module TdxFeedbackGem
 
     # Ticket creation toggles and defaults
     attr_accessor :enable_ticket_creation, :app_id, :type_id, :form_id, :service_offering_id,
-                  :status_id, :source_id, :service_id, :responsible_group_id, :title_prefix, :default_requestor_email
+                  :status_id, :source_id, :service_id, :responsible_group_id, :account_id, :title_prefix, :default_requestor_email
 
     # Front-end / integration behavior toggles
     attr_accessor :auto_pin_importmap, :runtime_scss_copy
@@ -33,6 +33,7 @@ module TdxFeedbackGem
       @source_id              = nil
       @service_id             = nil
       @responsible_group_id   = nil
+      @account_id             = nil
       @title_prefix           = '[Feedback]'
       @default_requestor_email = nil
 

@@ -30,6 +30,9 @@ module TdxFeedbackGem
         'IsRichHtml' => false
       }
 
+      # Add AccountID if configured (optional field)
+      payload['AccountID'] = @config.account_id if @config.account_id
+
       req_email = requestor_email || @config.default_requestor_email
       payload['RequestorEmail'] = req_email if req_email
 
