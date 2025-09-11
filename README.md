@@ -29,7 +29,7 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 Add to your Gemfile:
 
 ```ruby
-gem 'tdx_feedback_gem', '~> 0.1.5'
+gem 'tdx_feedback_gem', '~> 0.1.6'
 ```
 
 ### 2. Setup
