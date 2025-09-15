@@ -69,7 +69,20 @@ module TdxFeedbackGem
     end
 
     def stringify_keys(hash)
-      hash.each_with_object({}) { |(k, v), h| h[k.to_s] = v }
+      return {} if hash.nil? || hash.empty?
+
+      hash.each_with_object({}) do |(key, value), result|
+        string_key = key.to_s
+        string_value = case value
+                       when Hash
+                         stringify_keys(value)
+                       when Array
+                         value.map { |element| element.is_a?(Hash) ? stringify_keys(element) : element }
+                       else
+                         value
+                       end
+        result[string_key] = string_value
+      end
     end
   end
 end
