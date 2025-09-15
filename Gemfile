@@ -15,3 +15,8 @@ group :development, :test do
   # Provide Importmap support so we can test auto-pin initializer behavior
   gem 'importmap-rails', '~> 2.0'
 end
+
+group :development do
+  gem "ruby-lsp"
+  gem "rubocop", require: false
+end
