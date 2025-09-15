@@ -336,13 +336,13 @@ RSpec.describe TdxFeedbackGem::TicketCreator do
 
     describe '#stringify_keys' do
       it 'converts symbol keys to strings' do
-        hash = { :key1 => 'value1', :key2 => 'value2' }
+        hash = { key1: 'value1', key2: 'value2' }
         result = creator.send(:stringify_keys, hash)
         expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2' })
       end
 
       it 'handles mixed key types' do
-        hash = { :symbol_key => 'value1', 'string_key' => 'value2', 123 => 'value3' }
+        hash = { symbol_key: 'value1', 'string_key' => 'value2', 123 => 'value3' }
         result = creator.send(:stringify_keys, hash)
         expect(result).to eq({ 'symbol_key' => 'value1', 'string_key' => 'value2', '123' => 'value3' })
       end
