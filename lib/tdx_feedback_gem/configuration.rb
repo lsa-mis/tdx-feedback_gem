@@ -33,7 +33,7 @@ module TdxFeedbackGem
       @source_id              = nil
       @service_id             = nil
       @responsible_group_id   = nil
-      @account_id             = nil
+      @account_id             = resolve_account_id
       @title_prefix           = '[Feedback]'
       @default_requestor_email = nil
 
@@ -197,6 +197,29 @@ module TdxFeedbackGem
       false
     end
 
+    def resolve_account_id
+      # First check Rails encrypted credentials for environment-specific values
+      if defined?(Rails) && Rails.application&.credentials
+        # Try environment-specific credentials first
+        env_key = environment_key
+        if env_key
+          credential_value = Rails.application.credentials.dig(:tdx, env_key, :account_id)
+          return credential_value.to_i if credential_value
+        end
+
+        # Fall back to general credential
+        credential_value = Rails.application.credentials.dig(:tdx, :account_id)
+        return credential_value.to_i if credential_value
+      end
+
+      # Fall back to ENV variable
+      env_value = ENV['TDX_ACCOUNT_ID']
+      return env_value.to_i if env_value && !env_value.empty?
+
+      # Fall back to default value
+      nil
+    end
+
     def resolve_auto_pin_importmap
       # Credentials lookup (environment-specific then general)
       if defined?(Rails) && Rails.application&.credentials
@@ -255,6 +278,21 @@ module TdxFeedbackGem
       return true if value.respond_to?(:downcase) && %w[1 true yes on].include?(value.downcase)
       false
     end
+
+    # Re-resolve credentials after Rails initialization
+    # This ensures credentials are properly read even when the gem is loaded early
+    def resolve_credentials_after_initialization!
+      @enable_ticket_creation = resolve_enable_ticket_creation
+      @account_id = resolve_account_id
+
+      # Log the resolution for debugging
+      if defined?(Rails) && Rails.logger
+        Rails.logger.info "TDX Feedback Gem: Resolved enable_ticket_creation=#{@enable_ticket_creation} from credentials/ENV"
+        Rails.logger.info "TDX Feedback Gem: Resolved account_id=#{@account_id} from credentials/ENV" if @account_id
+      end
+    end
+
+    public :resolve_credentials_after_initialization!
   end
 
   class << self

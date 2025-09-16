@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'json'
+
 module TdxFeedbackGem
   class TicketCreator
     Result = Struct.new(:success?, :ticket_id, :response, :error)
@@ -38,6 +40,12 @@ module TdxFeedbackGem
 
       # Merge any extra attributes (e.g., Attributes array etc.)
       payload.merge!(stringify_keys(extra_attributes)) if extra_attributes && !extra_attributes.empty?
+
+      # Log the JSON payload being sent to TDX API for debugging
+      if defined?(Rails) && Rails.logger
+        Rails.logger.info "TDX API Request - App ID: #{@config.app_id}"
+        Rails.logger.info "TDX API Request - Payload: #{JSON.pretty_generate(payload)}"
+      end
 
       resp = @client.create_ticket(app_id: @config.app_id, payload: payload)
       ticket_id = resp['ID'] || resp.dig('data', 'ID')

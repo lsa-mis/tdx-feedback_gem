@@ -353,4 +353,55 @@ RSpec.describe TdxFeedbackGem::TicketCreator do
       end
     end
   end
+
+  describe 'JSON logging' do
+    let(:feedback) { TdxFeedbackGem::Feedback.new(message: 'Test message', context: 'Test context') }
+    let(:logger) { double('logger') }
+    let(:client) { double('client') }
+    let(:creator) { described_class.new(config: config, client: client) }
+
+    before do
+      allow(Rails).to receive(:logger).and_return(logger)
+      allow(logger).to receive(:info)
+    end
+
+    it 'logs TDX API request details when creating a ticket' do
+      allow(client).to receive(:create_ticket).and_return({ 'ID' => 12345 })
+
+      expect(logger).to receive(:info).with('TDX API Request - App ID: 31')
+      expect(logger).to receive(:info).with(/TDX API Request - Payload:/)
+
+      creator.call(feedback, requestor_email: 'test@example.com')
+    end
+
+    it 'includes AccountID in the logged payload when configured' do
+      allow(client).to receive(:create_ticket).and_return({ 'ID' => 12345 })
+
+      expect(logger).to receive(:info).with(/TDX API Request - Payload:/) do |message|
+        payload = JSON.parse(message.split('TDX API Request - Payload: ')[1])
+        expect(payload['AccountID']).to eq(2)
+      end
+
+      creator.call(feedback, requestor_email: 'test@example.com')
+    end
+
+    it 'includes RequestorEmail in the logged payload' do
+      allow(client).to receive(:create_ticket).and_return({ 'ID' => 12345 })
+
+      expect(logger).to receive(:info).with(/TDX API Request - Payload:/) do |message|
+        payload = JSON.parse(message.split('TDX API Request - Payload: ')[1])
+        expect(payload['RequestorEmail']).to eq('test@example.com')
+      end
+
+      creator.call(feedback, requestor_email: 'test@example.com')
+    end
+
+    it 'does not log when ticket creation is disabled' do
+      config.enable_ticket_creation = false
+
+      expect(logger).not_to receive(:info).with(/TDX API Request/)
+
+      creator.call(feedback, requestor_email: 'test@example.com')
+    end
+  end
 end

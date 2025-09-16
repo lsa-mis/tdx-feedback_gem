@@ -68,9 +68,17 @@ module TdxFeedbackGem
         say "\nNext steps:", :yellow
         say "1. rails db:migrate"
         say "2. Review config/initializers/tdx_feedback_gem.rb"
-        say "3. (Optional) Customize feedback trigger in your layout footer: <%= feedback_system(trigger: :link, text: 'Feedback') %>"
-        say "4. Restart your server"
-        say "5. Verify modal loads and submissions create tickets (if enabled)."
+        say "3. Configure TDX settings via Rails credentials or environment variables:"
+        say "   - Credentials: tdx.development.enable_ticket_creation: 'true'"
+        say "   - Environment: TDX_ENABLE_TICKET_CREATION=true"
+        say "   - Account ID: tdx.development.account_id: 21 or TDX_ACCOUNT_ID=21"
+        say "4. (Optional) Customize feedback trigger in your layout footer: <%= feedback_system(trigger: :link, text: 'Feedback') %>"
+        say "5. Restart your server"
+        say "6. Verify modal loads and submissions create tickets (if enabled)."
+        say "\nNew features:", :cyan
+        say "• Enhanced credentials resolution - settings properly read from credentials/ENV"
+        say "• JSON payload logging - detailed TDX API request logging for debugging"
+        say "• Account ID support - configure via credentials or environment variables"
       end
 
       private

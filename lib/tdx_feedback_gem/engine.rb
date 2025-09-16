@@ -141,6 +141,17 @@ module TdxFeedbackGem
       end
     end
 
+    # Re-resolve credentials after Rails initialization to ensure proper reading
+    initializer 'tdx_feedback_gem.resolve_credentials', after: :finisher_hook do |_app|
+      if TdxFeedbackGem.respond_to?(:config) && TdxFeedbackGem.config.respond_to?(:resolve_credentials_after_initialization!)
+        begin
+          TdxFeedbackGem.config.resolve_credentials_after_initialization!
+        rescue => e
+          Rails.logger.debug("[tdx_feedback_gem] credentials resolution failed: #{e.class}: #{e.message}") if defined?(Rails)
+        end
+      end
+    end
+
     # Validate configuration and emit warnings after initial setup
     initializer 'tdx_feedback_gem.validate_configuration', after: 'tdx_feedback_gem.application_name' do |_app|
       if TdxFeedbackGem.respond_to?(:config) && TdxFeedbackGem.config.respond_to?(:validate_configuration!)

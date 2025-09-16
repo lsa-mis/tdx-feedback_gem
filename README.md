@@ -8,6 +8,8 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 - **Seamless integration** - Drop into any Rails application
 - **TDX API integration** - Optionally creates support tickets (when enabled)
 - **Account/department organization** - Optional AccountID support for ticket routing
+- **Enhanced credentials resolution** - Properly reads Rails credentials after initialization
+- **JSON payload logging** - Debug TDX API requests with detailed logging
 - **Responsive design** - Works on all device sizes
 - **Customizable styling** - Easy to match your app's design
 - **Authentication support** - Optional user authentication requirement
@@ -101,6 +103,55 @@ TdxFeedbackGem.configure do |config|
   # Optional TDX configuration
   config.account_id = 2  # Account/department ID for ticket organization
 end
+```
+
+### Enhanced Configuration Resolution
+
+The gem now properly resolves configuration from multiple sources with improved timing:
+
+1. **Rails Encrypted Credentials** (highest priority)
+2. **Environment Variables** (medium priority)
+3. **Initializer Settings** (lowest priority)
+
+**Account ID Configuration:**
+```ruby
+# In credentials.yml.enc
+tdx:
+  development:
+    account_id: 21
+    enable_ticket_creation: 'true'  # Note: string values
+  production:
+    account_id: 21
+    enable_ticket_creation: 'true'
+```
+
+**Environment Variables:**
+```bash
+export TDX_ACCOUNT_ID=21
+export TDX_ENABLE_TICKET_CREATION=true
+```
+
+### Debug Logging
+
+The gem now includes detailed JSON payload logging for TDX API requests:
+
+```
+TDX API Request - App ID: 46
+TDX API Request - Payload: {
+  "TypeID": 644,
+  "FormID": 107,
+  "ServiceOfferingID": 289,
+  "StatusID": 115,
+  "SourceID": 8,
+  "ServiceID": 2314,
+  "ResponsibleGroupID": 388,
+  "Title": "[MyApp Feedback] User feedback message",
+  "Description": "User feedback message\n--- Context ---\nAdditional context",
+  "IsRichHtml": false,
+  "RequestorEmail": "user@example.com",
+  "AccountID": 21
+}
+```
 ```
 
 ### 4. Usage

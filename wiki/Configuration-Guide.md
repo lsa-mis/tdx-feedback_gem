@@ -146,6 +146,10 @@ config.service_offering_id = 456      # Service offering ID
 config.account_id = 2                 # Account/department ID for ticket organization
 ```
 
+**Note:** `account_id` can be configured via credentials or environment variables:
+- Credentials: `tdx.development.account_id: 21`
+- Environment: `TDX_ACCOUNT_ID=21`
+
 ## 🎨 Customization Options
 
 ### Ticket Appearance
@@ -368,6 +372,39 @@ For `enable_ticket_creation`:
 Result: `true` (from credentials – environment variables are only used when no credential is set).
 
 Note: Store credential toggles as strings `'true'` or `'false'` to ensure correct detection.
+
+## 🐛 Debug Logging
+
+### TDX API Request Logging
+
+The gem now includes detailed logging of TDX API requests for debugging:
+
+```
+TDX API Request - App ID: 46
+TDX API Request - Payload: {
+  "TypeID": 644,
+  "FormID": 107,
+  "ServiceOfferingID": 289,
+  "StatusID": 115,
+  "SourceID": 8,
+  "ServiceID": 2314,
+  "ResponsibleGroupID": 388,
+  "Title": "[MyApp Feedback] User feedback message",
+  "Description": "User feedback message\n--- Context ---\nAdditional context",
+  "IsRichHtml": false,
+  "RequestorEmail": "user@example.com",
+  "AccountID": 21
+}
+```
+
+### Configuration Resolution Logging
+
+The gem logs when credentials are resolved:
+
+```
+TDX Feedback Gem: Resolved enable_ticket_creation=true from credentials/ENV
+TDX Feedback Gem: Resolved account_id=21 from credentials/ENV
+```
 
 ## 🧪 Testing Configuration
 

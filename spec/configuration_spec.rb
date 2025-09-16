@@ -25,6 +25,7 @@ RSpec.describe TdxFeedbackGem::Configuration do
       expect(config.responsible_group_id).to be_nil
       expect(config.title_prefix).to eq('[Feedback]')
       expect(config.default_requestor_email).to be_nil
+      expect(config.account_id).to eq(nil).or eq(ENV['TDX_ACCOUNT_ID']&.to_i)
     end
   end
 
@@ -536,6 +537,76 @@ RSpec.describe TdxFeedbackGem::Configuration do
           expect(config.oauth_token_url).to eq('https://gw-test.api.it.umich.edu/um/oauth2/token')
         end
       end
+    end
+  end
+
+  describe '#resolve_credentials_after_initialization!' do
+    before do
+      # Mock Rails.application.credentials to return nil by default
+      allow(Rails.application.credentials).to receive(:dig).and_return(nil)
+      allow(Rails).to receive(:logger).and_return(double(info: nil))
+    end
+
+    it 're-resolves enable_ticket_creation from credentials' do
+      allow(Rails.application.credentials).to receive(:dig).with(:tdx, :development, :enable_ticket_creation).and_return('true')
+
+      config.resolve_credentials_after_initialization!
+
+      expect(config.enable_ticket_creation).to be true
+    end
+
+    it 're-resolves account_id from credentials' do
+      allow(Rails.application.credentials).to receive(:dig).with(:tdx, :development, :account_id).and_return('21')
+
+      config.resolve_credentials_after_initialization!
+
+      expect(config.account_id).to eq(21)
+    end
+
+    it 'logs the resolution results' do
+      logger = double('logger')
+      allow(Rails).to receive(:logger).and_return(logger)
+      allow(Rails.application.credentials).to receive(:dig).with(:tdx, :development, :enable_ticket_creation).and_return('true')
+      allow(Rails.application.credentials).to receive(:dig).with(:tdx, :development, :account_id).and_return('21')
+
+      expect(logger).to receive(:info).with('TDX Feedback Gem: Resolved enable_ticket_creation=true from credentials/ENV')
+      expect(logger).to receive(:info).with('TDX Feedback Gem: Resolved account_id=21 from credentials/ENV')
+
+      config.resolve_credentials_after_initialization!
+    end
+  end
+
+  describe 'account_id resolution' do
+    before do
+      allow(Rails).to receive(:env).and_return(double(development?: true, production?: false, staging?: false, test?: false))
+      allow(Rails.application.credentials).to receive(:dig).and_return(nil)
+      allow(ENV).to receive(:[]).and_return(nil)
+    end
+
+    it 'resolves account_id from environment-specific credentials' do
+      allow(Rails.application.credentials).to receive(:dig).with(:tdx, :development, :account_id).and_return('21')
+
+      account_id = config.send(:resolve_account_id)
+      expect(account_id).to eq(21)
+    end
+
+    it 'resolves account_id from general credentials' do
+      allow(Rails.application.credentials).to receive(:dig).with(:tdx, :account_id).and_return('42')
+
+      account_id = config.send(:resolve_account_id)
+      expect(account_id).to eq(42)
+    end
+
+    it 'resolves account_id from environment variable' do
+      allow(ENV).to receive(:[]).with('TDX_ACCOUNT_ID').and_return('99')
+
+      account_id = config.send(:resolve_account_id)
+      expect(account_id).to eq(99)
+    end
+
+    it 'returns nil when no account_id is configured' do
+      account_id = config.send(:resolve_account_id)
+      expect(account_id).to be_nil
     end
   end
 end

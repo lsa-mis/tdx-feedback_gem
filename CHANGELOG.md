@@ -5,6 +5,29 @@ This project follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- **Enhanced credentials resolution** - Fixed timing issue where credentials weren't properly read after Rails initialization
+- **Account ID resolution from credentials/ENV** - `account_id` can now be configured via Rails credentials or environment variables
+- **JSON payload logging** - Added detailed logging of TDX API requests for debugging purposes
+- **Configuration resolution logging** - Logs when credentials are successfully resolved from various sources
+
+### Fixed
+
+- **Credentials timing issue** - Credentials are now properly resolved after Rails initialization completes
+- **Account ID configuration** - `account_id` now supports the same resolution priority as other settings (credentials → ENV → defaults)
+
+### Changed
+
+- **Improved configuration resolution** - Added `resolve_credentials_after_initialization!` method to ensure proper credential reading
+- **Enhanced logging** - TDX API requests now include complete JSON payload in logs for debugging
+
+### Documentation
+
+- Updated README.md with new features and configuration examples
+- Enhanced Configuration Guide with debug logging section
+- Added troubleshooting information for credentials resolution
+
 ## [0.1.6] - 2025-01-27
 
 ### Added
