@@ -86,14 +86,9 @@ Edit `config/initializers/tdx_feedback_gem.rb` if you need custom settings:
 ```ruby
 TdxFeedbackGem.configure do |config|
   config.require_authentication = true
-  config.enable_ticket_creation = false
+  # config.enable_ticket_creation = false
   config.oauth_scope = 'tdxticket'
   config.title_prefix = '[Feedback]'
-  # Front-end behavior toggles
-  # Auto-pin Stimulus controller for Importmap (credentials/env/initializer overrideable)
-  config.auto_pin_importmap = true
-  # Allow runtime SCSS partial copy (dev/test convenience). Disable in immutable prod builds.
-  config.runtime_scss_copy = Rails.env.development?
 
   # TDX API credentials (use Rails credentials or environment variables)
   config.app_id = 31
