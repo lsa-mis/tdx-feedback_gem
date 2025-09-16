@@ -187,18 +187,21 @@ tdx:
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
     enable_ticket_creation: 'false'  # Use string 'true'/'false'
+    account_id: 2
   staging:
     client_id: staging_client_id_here
     client_secret: staging_client_secret_here
     base_url: https://gw-test.api.it.umich.edu/um/it
     oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
     enable_ticket_creation: 'true'   # Use string 'true'/'false'
+    account_id: 2
   production:
     client_id: prod_client_id_here
     client_secret: prod_client_secret_here
     base_url: https://gw.api.it.umich.edu/um/it
     oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
     enable_ticket_creation: 'true'   # Use string 'true'/'false'
+    account_id: 2
 ```
 
 #### Shared Credentials with Environment-Specific URLs
@@ -248,6 +251,7 @@ TDX_CLIENT_SECRET=dev_client_secret_here
 TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
 TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
 TDX_ENABLE_TICKET_CREATION=false
+TDX_ACCOUNT_ID=2
 
 # .env.staging
 TDX_CLIENT_ID=staging_client_id_here
@@ -255,6 +259,7 @@ TDX_CLIENT_SECRET=staging_client_secret_here
 TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
 TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
 TDX_ENABLE_TICKET_CREATION=true
+TDX_ACCOUNT_ID=2
 
 # .env.production
 TDX_CLIENT_ID=prod_client_id_here
@@ -262,6 +267,7 @@ TDX_CLIENT_SECRET=prod_client_secret_here
 TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
 TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
 TDX_ENABLE_TICKET_CREATION=true
+TDX_ACCOUNT_ID=2
 ```
 
 ## 🚀 Deployment Platform Configuration
@@ -289,6 +295,7 @@ TDX_ENABLE_TICKET_CREATION=true
 | `TDX_CLIENT_SECRET` | `your_client_secret` | TDX OAuth client secret |
 | `TDX_BASE_URL` | `https://gw.api.it.umich.edu/um/it` | Production TDX API URL |
 | `TDX_OAUTH_TOKEN_URL` | `https://gw.api.it.umich.edu/um/oauth2/token` | Production OAuth token URL |
+| `TDX_ACCOUNT_ID` | `2` | Production Account ID |
 
 #### Development/Staging Variables
 
@@ -298,6 +305,7 @@ TDX_ENABLE_TICKET_CREATION=true
 | `TDX_OAUTH_TOKEN_URL` | `https://gw-test.api.it.umich.edu/um/oauth2/token` | Test OAuth token URL |
 | `TDX_FEEDBACK_GEM_AUTO_PIN` | `true` | Auto-pin Stimulus controller (Importmap) |
 | `TDX_FEEDBACK_GEM_RUNTIME_SCSS_COPY` | `false` | Allow runtime SCSS partial copying |
+| `TDX_ACCOUNT_ID` | `2` | Account ID |
 
 #### Quick Toggle for Incidents
 
@@ -318,6 +326,7 @@ environment:
   - TDX_CLIENT_SECRET=your_client_secret
   - TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
   - TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
+  - TDX_ACCOUNT_ID=2
 ```
 
 ```yaml
@@ -335,6 +344,8 @@ env:
     secretKeyRef:
       name: tdx-secrets
       key: client-secret
+- name: TDX_ACCOUNT_ID
+  value: "2"
 ```
 
 ### Heroku
@@ -345,6 +356,7 @@ heroku config:set TDX_CLIENT_ID=your_client_id
 heroku config:set TDX_CLIENT_SECRET=your_client_secret
 heroku config:set TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
 heroku config:set TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
+heroku config:set TDX_ACCOUNT_ID=2
 ```
 
 ## 🔄 Configuration Resolution Priority
@@ -358,7 +370,12 @@ heroku config:set TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/toke
    - `TDX_CLIENT_ID`, `TDX_ENABLE_TICKET_CREATION`, etc.
 3. **Built-in Defaults** (lowest priority)
    - Development: `https://gw-test.api.it.umich.edu/um/it`
+   - Staging: `https://gw-test.api.it.umich.edu/um/it`
    - Production: `https://gw.api.it.umich.edu/um/it`
+4. **Built-in Defaults** (lowest priority)
+   - Development: `2`
+   - Staging: `2`
+   - Production: `2`
 
 ### Example Resolution
 
@@ -382,18 +399,18 @@ The gem now includes detailed logging of TDX API requests for debugging:
 ```
 TDX API Request - App ID: 46
 TDX API Request - Payload: {
-  "TypeID": 644,
+  "TypeID": 12,
   "FormID": 107,
-  "ServiceOfferingID": 289,
+  "ServiceOfferingID": 29,
   "StatusID": 115,
   "SourceID": 8,
-  "ServiceID": 2314,
-  "ResponsibleGroupID": 388,
+  "ServiceID": 2345,
+  "ResponsibleGroupID": 631,
   "Title": "[MyApp Feedback] User feedback message",
   "Description": "User feedback message\n--- Context ---\nAdditional context",
   "IsRichHtml": false,
   "RequestorEmail": "user@example.com",
-  "AccountID": 21
+  "AccountID": 2
 }
 ```
 
@@ -403,7 +420,7 @@ The gem logs when credentials are resolved:
 
 ```
 TDX Feedback Gem: Resolved enable_ticket_creation=true from credentials/ENV
-TDX Feedback Gem: Resolved account_id=21 from credentials/ENV
+TDX Feedback Gem: Resolved account_id=2 from credentials/ENV
 ```
 
 ## 🧪 Testing Configuration
@@ -418,12 +435,12 @@ TdxFeedbackGem.configure do |config|
   config.oauth_token_url = 'https://test-api.example.com/oauth/token'
   config.client_id = 'test_client_id'
   config.client_secret = 'test_client_secret'
-  config.app_id = 123
-  config.type_id = 456
+  config.app_id = 31
+  config.type_id = 12
   config.status_id = 112
-  config.source_id = 131
-  config.service_id = 415
-  config.responsible_group_id = 161
+  config.source_id = 8
+  config.service_id = 67
+  config.responsible_group_id = 631
 end
 ```
 
