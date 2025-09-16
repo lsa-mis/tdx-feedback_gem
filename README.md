@@ -31,7 +31,7 @@ A Rails engine that provides a seamless, modal-based feedback system for any Rai
 Add to your Gemfile:
 
 ```ruby
-gem 'tdx_feedback_gem', '~> 0.1.6'
+gem 'tdx_feedback_gem', '~> 0.2.0'
 ```
 
 ### 2. Setup
@@ -101,7 +101,7 @@ TdxFeedbackGem.configure do |config|
   config.responsible_group_id = 631
 
   # Optional TDX configuration
-  config.account_id = 2  # Account/department ID for ticket organization
+  config.account_id = 1  # Account/department ID for ticket organization
 end
 ```
 
@@ -118,16 +118,19 @@ The gem now properly resolves configuration from multiple sources with improved 
 # In credentials.yml.enc
 tdx:
   development:
-    account_id: 21
+    account_id: 2
     enable_ticket_creation: 'true'  # Note: string values
-  production:
-    account_id: 21
+  staging:
+    account_id: 2
+    enable_ticket_creation: 'true'
+production:
+    account_id: 2
     enable_ticket_creation: 'true'
 ```
 
 **Environment Variables:**
 ```bash
-export TDX_ACCOUNT_ID=21
+export TDX_ACCOUNT_ID=2
 export TDX_ENABLE_TICKET_CREATION=true
 ```
 
@@ -136,20 +139,20 @@ export TDX_ENABLE_TICKET_CREATION=true
 The gem now includes detailed JSON payload logging for TDX API requests:
 
 ```
-TDX API Request - App ID: 46
+TDX API Request - App ID: 31
 TDX API Request - Payload: {
-  "TypeID": 644,
-  "FormID": 107,
-  "ServiceOfferingID": 289,
+  "TypeID": 12,
+  "FormID": 10,
+  "ServiceOfferingID": 29,
   "StatusID": 115,
   "SourceID": 8,
-  "ServiceID": 2314,
-  "ResponsibleGroupID": 388,
+  "ServiceID": 2345,
+  "ResponsibleGroupID": 631,
   "Title": "[MyApp Feedback] User feedback message",
   "Description": "User feedback message\n--- Context ---\nAdditional context",
   "IsRichHtml": false,
   "RequestorEmail": "user@example.com",
-  "AccountID": 21
+  "AccountID": 2
 }
 ```
 ```
