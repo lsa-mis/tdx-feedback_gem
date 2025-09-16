@@ -4,8 +4,8 @@ This guide will walk you through installing and setting up the TDX Feedback Gem 
 
 ## 📋 Prerequisites
 
-- **Rails 5.2+** (tested with Rails 5.2, 6.x, and 7.x)
-- **Ruby 2.6+** (recommended: Ruby 3.0+)
+- **Rails 6.1+** (tested with Rails 6.x and 7.x)
+- **Ruby 3.0+**
 - **Database** (PostgreSQL, MySQL, SQLite3 supported)
 - **TDX API Access** (client ID, client secret, and configuration values)
 
@@ -17,7 +17,7 @@ Add the gem to your application's Gemfile:
 
 ```ruby
 # Gemfile
-gem 'tdx_feedback_gem', git: 'https://github.com/lsa-mis/tdx-feedback_gem.git'
+gem 'tdx_feedback_gem', '~> 0.2.0'
 ```
 
 ### Step 2: Install Dependencies
@@ -37,6 +37,22 @@ This creates:
 - `config/initializers/tdx_feedback_gem.rb` - Configuration file
 - `db/migrate/[timestamp]_create_tdx_feedback_gem_feedbacks.rb` - Database migration
 - Copies the Stimulus controller into your app at `app/javascript/controllers/tdx_feedback_controller.js` when Stimulus is detected.
+
+#### Importmap note
+
+If your app uses Importmap, the gem auto-pins its Stimulus controller by default. To disable auto-pinning:
+
+```bash
+export TDX_FEEDBACK_GEM_AUTO_PIN=false
+```
+
+If you disable it, add a manual pin in `config/importmap.rb`:
+
+```ruby
+pin_all_from 'tdx_feedback_gem/app/javascript/controllers', under: 'controllers'
+# or explicitly:
+pin 'controllers/tdx_feedback_controller', to: 'controllers/tdx_feedback_controller.js', preload: true
+```
 
 ### Step 4: Run Database Migration
 
@@ -105,6 +121,8 @@ TDX_CLIENT_ID=your_client_id_here
 TDX_CLIENT_SECRET=your_client_secret_here
 TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
 TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
+TDX_ENABLE_TICKET_CREATION=false
+TDX_ACCOUNT_ID=2
 ```
 
 ## 🎯 First Feedback Form
