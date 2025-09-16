@@ -114,6 +114,7 @@ The gem now properly resolves configuration from multiple sources with improved 
 3. **Initializer Settings** (lowest priority)
 
 **Account ID Configuration:**
+
 ```ruby
 # In credentials.yml.enc
 tdx:
@@ -129,6 +130,7 @@ production:
 ```
 
 **Environment Variables:**
+
 ```bash
 export TDX_ACCOUNT_ID=2
 export TDX_ENABLE_TICKET_CREATION=true
@@ -138,7 +140,7 @@ export TDX_ENABLE_TICKET_CREATION=true
 
 The gem now includes detailed JSON payload logging for TDX API requests:
 
-```
+```bash
 TDX API Request - App ID: 31
 TDX API Request - Payload: {
   "TypeID": 12,
@@ -154,7 +156,6 @@ TDX API Request - Payload: {
   "RequestorEmail": "user@example.com",
   "AccountID": 2
 }
-```
 ```
 
 ### 4. Usage
