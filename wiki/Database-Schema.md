@@ -457,17 +457,17 @@ end
 
 Now that you understand the database schema:
 
-1. **[API Endpoints](API-Endpoints)** - REST API documentation and examples
-2. **[Performance Optimization](Performance-Optimization)** - Database and query optimization
-3. **[Production Deployment](Production-Deployment)** - Database configuration and maintenance
+1. **[API Endpoints](API-Endpoints.md)** - REST API documentation and examples
+2. **[Performance Optimization](Performance-Optimization.md)** - Database and query optimization
+3. **[Production Deployment](Production-Deployment.md)** - Database configuration and maintenance
 4. **[Testing Guide](Testing)** - Test your database setup
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Configuration Guide](Configuration-Guide) for setup details
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Configuration Guide](Configuration-Guide.md) for setup details
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 
 ---
 
-*For more details about the API endpoints, see the [API Endpoints](API-Endpoints) guide.*
+*For more details about the API endpoints, see the [API Endpoints](API-Endpoints.md) guide.*

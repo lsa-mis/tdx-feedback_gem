@@ -65,7 +65,7 @@ New to the gem? Start here:
 
 - **v0.1.0** - Initial release with TDX API integration
 - **Features**: Modal feedback system, TDX ticket creation, responsive design
-- **Support**: Rails 5.2+, Stimulus integration, customizable styling
+- **Support**: Rails 6.1+, Stimulus integration, customizable styling
 
 ### What's New
 

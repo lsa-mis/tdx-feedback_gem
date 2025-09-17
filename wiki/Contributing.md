@@ -594,7 +594,7 @@ Now that you understand the contribution process:
 
 ## 🆘 Need Help?
 
-- Check the [Getting Started](Getting-Started) guide
+- Check the [Getting Started](Getting-Started.md) guide
 - Review [Testing Guide](Testing) for test setup
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 - Join [GitHub Discussions](https://github.com/lsa-mis/tdx-feedback_gem/discussions)

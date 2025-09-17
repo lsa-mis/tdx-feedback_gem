@@ -1115,18 +1115,18 @@ export default class extends Controller {
 
 Now that you understand advanced customization:
 
-1. **[Stimulus API Reference](Stimulus-API-Reference)** - Learn the full API
-2. **[Development Setup](Development-Setup)** - Set up your development environment
-3. **[Contributing Guidelines](Contributing)** - Contribute your customizations
-4. **[Performance Optimization](Performance-Optimization)** - Optimize your custom code
+1. **[Stimulus API Reference](Stimulus-API-Reference.md)** - Learn the full API
+2. **[Development Setup](Development-Setup.md)** - Set up your development environment
+3. **[Contributing Guidelines](Contributing.md)** - Contribute your customizations
+4. **[Performance Optimization](Performance-Optimization.md)** - Optimize your custom code
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Stimulus API Reference](Stimulus-API-Reference) for controller details
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Stimulus API Reference](Stimulus-API-Reference.md) for controller details
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 - Join the development discussion
 
 ---
 
-*For more details about the Stimulus API, see the [Stimulus API Reference](Stimulus-API-Reference) guide.*
+*For more details about the Stimulus API, see the [Stimulus API Reference](Stimulus-API-Reference.md) guide.*

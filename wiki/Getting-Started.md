@@ -296,18 +296,18 @@ application.register("tdx-feedback", TdxFeedbackController)
 
 Now that you have the basic setup working:
 
-1. **[Configuration Guide](Configuration-Guide)** - Learn about all configuration options
-2. **[Styling and Theming](Styling-and-Theming)** - Customize the appearance
-3. **[Integration Examples](Integration-Examples)** - See examples for different Rails versions
-4. **[Testing Guide](Testing-Guide)** - Set up testing for your integration
+1. **[Configuration Guide](Configuration-Guide.md)** - Learn about all configuration options
+2. **[Styling and Theming](Styling-and-Theming.md)** - Customize the appearance
+3. **[Integration Examples](Integration-Examples.md)** - See examples for different Rails versions
+4. **[Testing Guide](Testing-Guide.md)** - Set up testing for your integration
 
 ## 🆘 Still Having Issues?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review the [Configuration Guide](Configuration-Guide)
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review the [Configuration Guide](Configuration-Guide.md)
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 - Check the [README](https://github.com/lsa-mis/tdx-feedback_gem/blob/main/README.md) for basic information
 
 ---
 
-*Need help with a specific step? Check the [Configuration Guide](Configuration-Guide) for detailed configuration options.*
+*Need help with a specific step? Check the [Configuration Guide](Configuration-Guide.md) for detailed configuration options.*

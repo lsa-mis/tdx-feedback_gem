@@ -727,18 +727,18 @@ jobs:
 
 Now that you have your development environment set up:
 
-1. **[Contributing Guidelines](Contributing)** - Learn about contribution standards
+1. **[Contributing Guidelines](Contributing.md)** - Learn about contribution standards
 2. **[Testing Guide](Testing)** - Write and run tests
-3. **[Code Standards](Contributing)** - Follow coding conventions
-4. **[Pull Request Process](Contributing)** - Submit your contributions
+3. **[Code Standards](Contributing.md)** - Follow coding conventions
+4. **[Pull Request Process](Contributing.md)** - Submit your contributions
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Contributing Guidelines](Contributing) for contribution details
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Contributing Guidelines](Contributing.md) for contribution details
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 - Join the development discussion
 
 ---
 
-*For more details about contributing, see the [Contributing Guidelines](Contributing) guide.*
+*For more details about contributing, see the [Contributing Guidelines](Contributing.md) guide.*

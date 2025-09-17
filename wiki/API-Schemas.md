@@ -469,15 +469,15 @@ You can use these OpenAPI schemas with tools like:
 
 Now that you understand the API schemas:
 
-1. **[Configuration Guide](Configuration-Guide)** - Configure the gem with correct values
+1. **[Configuration Guide](Configuration-Guide.md)** - Configure the gem with correct values
 2. **[Testing Guide](Testing)** - Test your API integration
-3. **[Production Deployment](Production-Deployment)** - Deploy with confidence
-4. **[Troubleshooting Guide](Troubleshooting)** - Solve API-related issues
+3. **[Production Deployment](Production-Deployment.md)** - Deploy with confidence
+4. **[Troubleshooting Guide](Troubleshooting.md)** - Solve API-related issues
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Configuration Guide](Configuration-Guide) for setup details
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Configuration Guide](Configuration-Guide.md) for setup details
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 
 ---

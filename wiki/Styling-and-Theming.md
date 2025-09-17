@@ -783,17 +783,17 @@ Complete guide to customizing the appearance of the TDX Feedback Gem to match yo
 
 Now that you understand styling and theming:
 
-1. **[Advanced Customization](Advanced-Customization)** - Extend functionality with JavaScript
+1. **[Advanced Customization](Advanced-Customization.md)** - Extend functionality with JavaScript
 2. **[Testing Guide](Testing)** - Test your custom styles
-3. **[Performance Optimization](Performance-Optimization)** - Optimize CSS performance
-4. **[Production Deployment](Production-Deployment)** - Deploy with custom styling
+3. **[Performance Optimization](Performance-Optimization.md)** - Optimize CSS performance
+4. **[Production Deployment](Production-Deployment.md)** - Deploy with custom styling
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Configuration Guide](Configuration-Guide) for setup details
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Configuration Guide](Configuration-Guide.md) for setup details
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 
 ---
 
-*For advanced JavaScript customization, see the [Advanced Customization](Advanced-Customization) guide.*
+*For advanced JavaScript customization, see the [Advanced Customization](Advanced-Customization.md) guide.*

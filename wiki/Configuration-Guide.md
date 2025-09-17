@@ -504,17 +504,17 @@ TdxFeedbackGem.configuration.tdx_base_url
 
 Now that you understand configuration:
 
-1. **[Integration Examples](Integration-Examples)** - See configuration in action
-2. **[Styling and Theming](Styling-and-Theming)** - Customize the appearance
+1. **[Integration Examples](Integration-Examples.md)** - See configuration in action
+2. **[Styling and Theming](Styling-and-Theming.md)** - Customize the appearance
 3. **[Testing Guide](Testing)** - Test your configuration
-4. **[Production Deployment](Production-Deployment)** - Deploy with confidence
+4. **[Production Deployment](Production-Deployment.md)** - Deploy with confidence
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Getting Started](Getting-Started) for basic setup
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Getting Started](Getting-Started.md) for basic setup
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 
 ---
 
-_For advanced configuration options, see the [Advanced Customization](Advanced-Customization) guide._
+_For advanced configuration options, see the [Advanced Customization](Advanced-Customization.md) guide._

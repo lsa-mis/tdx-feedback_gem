@@ -498,17 +498,17 @@ end
 
 Now that you understand the API endpoints:
 
-1. **[Performance Optimization](Performance-Optimization)** - Optimize API performance
-2. **[Production Deployment](Production-Deployment)** - Deploy with API security
+1. **[Performance Optimization](Performance-Optimization.md)** - Optimize API performance
+2. **[Production Deployment](Production-Deployment.md)** - Deploy with API security
 3. **[Testing Guide](Testing)** - Test your API integration
-4. **[Database Schema](Database-Schema)** - Understand the data structure
+4. **[Database Schema](Database-Schema.md)** - Understand the data structure
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Configuration Guide](Configuration-Guide) for setup details
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Configuration Guide](Configuration-Guide.md) for setup details
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 
 ---
 
-*For more details about the database structure, see the [Database Schema](Database-Schema) guide.*
+*For more details about the database structure, see the [Database Schema](Database-Schema.md) guide.*

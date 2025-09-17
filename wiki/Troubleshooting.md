@@ -536,15 +536,15 @@ When reporting an issue, include:
 
 Now that you've troubleshooted your issue:
 
-1. **[Configuration Guide](Configuration-Guide)** - Review configuration if needed
+1. **[Configuration Guide](Configuration-Guide.md)** - Review configuration if needed
 2. **[Testing Guide](Testing)** - Test your fix
-3. **[Performance Optimization](Performance-Optimization)** - Optimize after fixing
-4. **[Production Deployment](Production-Deployment)** - Deploy with confidence
+3. **[Performance Optimization](Performance-Optimization.md)** - Optimize after fixing
+4. **[Production Deployment](Production-Deployment.md)** - Deploy with confidence
 
 ## 🆘 Still Having Issues?
 
-- Check the [Configuration Guide](Configuration-Guide) for setup details
-- Review [Getting Started](Getting-Started) for basic setup
+- Check the [Configuration Guide](Configuration-Guide.md) for setup details
+- Review [Getting Started](Getting-Started.md) for basic setup
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub with detailed information
 
 ---

@@ -75,6 +75,6 @@ application.register("tdx-feedback", TdxFeedbackController)
 
 ## Next Steps
 
-1. [Getting Started](Getting-Started)
-2. [Styling and Theming](Styling-and-Theming)
-3. [Helper Methods Reference](Helper-Methods-Reference)
+1. [Getting Started](Getting-Started.md)
+2. [Styling and Theming](Styling-and-Theming.md)
+3. [Helper Methods Reference](Helper-Methods-Reference.md)

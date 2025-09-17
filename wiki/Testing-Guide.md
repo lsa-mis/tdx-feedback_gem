@@ -1090,18 +1090,18 @@ jobs:
 
 Now that you understand testing:
 
-1. **[Development Setup](Development-Setup)** - Set up your development environment
-2. **[Contributing Guidelines](Contributing)** - Learn contribution standards
-3. **[Performance Optimization](Performance-Optimization)** - Optimize test performance
-4. **[Advanced Customization](Advanced-Customization)** - Test custom features
+1. **[Development Setup](Development-Setup.md)** - Set up your development environment
+2. **[Contributing Guidelines](Contributing.md)** - Learn contribution standards
+3. **[Performance Optimization](Performance-Optimization.md)** - Optimize test performance
+4. **[Advanced Customization](Advanced-Customization.md)** - Test custom features
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Development Setup](Development-Setup) for test environment setup
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Development Setup](Development-Setup.md) for test environment setup
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 - Join the development discussion
 
 ---
 
-*For more details about development setup, see the [Development Setup](Development-Setup) guide.*
+*For more details about development setup, see the [Development Setup](Development-Setup.md) guide.*

@@ -707,17 +707,17 @@ end
 
 Now that you have integration examples:
 
-1. **[Styling and Theming](Styling-and-Theming)** - Customize the appearance
-2. **[Advanced Customization](Advanced-Customization)** - Extend functionality
+1. **[Styling and Theming](Styling-and-Theming.md)** - Customize the appearance
+2. **[Advanced Customization](Advanced-Customization.md)** - Extend functionality
 3. **[Testing Guide](Testing)** - Test your integration
-4. **[Production Deployment](Production-Deployment)** - Deploy with confidence
+4. **[Production Deployment](Production-Deployment.md)** - Deploy with confidence
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Configuration Guide](Configuration-Guide) for setup details
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Configuration Guide](Configuration-Guide.md) for setup details
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 
 ---
 
-*For more advanced integration patterns, see the [Advanced Customization](Advanced-Customization) guide.*
+*For more advanced integration patterns, see the [Advanced Customization](Advanced-Customization.md) guide.*

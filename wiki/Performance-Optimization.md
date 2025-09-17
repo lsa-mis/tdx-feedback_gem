@@ -776,17 +776,17 @@ end
 
 Now that you understand performance optimization:
 
-1. **[Production Deployment](Production-Deployment)** - Deploy with optimized performance
+1. **[Production Deployment](Production-Deployment.md)** - Deploy with optimized performance
 2. **[Testing Guide](Testing)** - Test your performance optimizations
-3. **[Database Schema](Database-Schema)** - Optimize your database structure
-4. **[API Endpoints](API-Endpoints)** - Optimize your API performance
+3. **[Database Schema](Database-Schema.md)** - Optimize your database structure
+4. **[API Endpoints](API-Endpoints.md)** - Optimize your API performance
 
 ## 🆘 Need Help?
 
-- Check the [Troubleshooting Guide](Troubleshooting)
-- Review [Configuration Guide](Configuration-Guide) for setup details
+- Check the [Troubleshooting Guide](Troubleshooting.md)
+- Review [Configuration Guide](Configuration-Guide.md) for setup details
 - [Open an issue](https://github.com/lsa-mis/tdx-feedback_gem/issues) on GitHub
 
 ---
 
-*For more details about production deployment, see the [Production Deployment](Production-Deployment) guide.*
+*For more details about production deployment, see the [Production Deployment](Production-Deployment.md) guide.*

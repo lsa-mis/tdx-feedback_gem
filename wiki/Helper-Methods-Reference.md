@@ -128,5 +128,5 @@ Tip: If your app uses SCSS, import `_tdx_feedback_gem.scss` (the engine can copy
 ## Notes
 
 - Triggers call the Stimulus controller to load and display the modal.
-- See [Stimulus API Reference](Stimulus-API-Reference) for controller details.
-- For integration issues, see [Troubleshooting Guide](Troubleshooting-Guide) and [Testing Guide](Testing-Guide).
+- See [Stimulus API Reference](Stimulus-API-Reference.md) for controller details.
+- For integration issues, see [Troubleshooting Guide](Troubleshooting-Guide) and [Testing Guide](Testing-Guide.md).
