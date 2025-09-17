@@ -109,8 +109,8 @@ Add to your credentials:
 tdx:
   client_id: your_client_id_here
   client_secret: your_client_secret_here
-  base_url: https://gw-test.api.it.umich.edu/um/it
-  oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+  base_url: https://api.example.com/
+  oauth_token_url: https://api.example.com/
 ```
 
 ### Option 2: Environment Variables
@@ -119,8 +119,8 @@ tdx:
 # .env or your environment configuration
 TDX_CLIENT_ID=your_client_id_here
 TDX_CLIENT_SECRET=your_client_secret_here
-TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
-TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
+TDX_BASE_URL=https://api.example.com/
+TDX_OAUTH_TOKEN_URL=https://api.example.com/
 TDX_ENABLE_TICKET_CREATION=false
 TDX_ACCOUNT_ID=2
 ```

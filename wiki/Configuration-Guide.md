@@ -296,8 +296,8 @@ TDX_ACCOUNT_ID=2
 
 | Variable Name | Value | Description |
 |---------------|-------|-------------|
-| `TDX_BASE_URL` | `https://gw-test.api.it.umich.edu/um/it` | Test TDX API URL |
-| `TDX_OAUTH_TOKEN_URL` | `https://gw-test.api.it.umich.edu/um/oauth2/token` | Test OAuth token URL |
+| `TDX_BASE_URL` | `https://api.example.com/` | Test TDX API URL |
+| `TDX_OAUTH_TOKEN_URL` | `https://api.example.com/` | Test OAuth token URL |
 | `TDX_FEEDBACK_GEM_AUTO_PIN` | `true` | Auto-pin Stimulus controller (Importmap) |
 | `TDX_FEEDBACK_GEM_RUNTIME_SCSS_COPY` | `false` | Allow runtime SCSS partial copying |
 | `TDX_ACCOUNT_ID` | `2` | Account ID |

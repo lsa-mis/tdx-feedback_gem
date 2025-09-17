@@ -250,6 +250,7 @@ config/*.pem
 *.7z
 
 # Documentation
+/docs/
 /doc/
 *.pdf
 *.doc
