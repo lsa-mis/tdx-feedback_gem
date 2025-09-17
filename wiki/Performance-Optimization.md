@@ -777,7 +777,7 @@ end
 Now that you understand performance optimization:
 
 1. **[Production Deployment](Production-Deployment.md)** - Deploy with optimized performance
-2. **[Testing Guide](Testing)** - Test your performance optimizations
+2. **[Testing Guide](Testing-Guide.md)** - Test your performance optimizations
 3. **[Database Schema](Database-Schema.md)** - Optimize your database structure
 4. **[API Endpoints](API-Endpoints.md)** - Optimize your API performance
 

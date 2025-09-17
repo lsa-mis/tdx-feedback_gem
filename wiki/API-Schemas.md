@@ -470,7 +470,7 @@ You can use these OpenAPI schemas with tools like:
 Now that you understand the API schemas:
 
 1. **[Configuration Guide](Configuration-Guide.md)** - Configure the gem with correct values
-2. **[Testing Guide](Testing)** - Test your API integration
+2. **[Testing Guide](Testing-Guide.md)** - Test your API integration
 3. **[Production Deployment](Production-Deployment.md)** - Deploy with confidence
 4. **[Troubleshooting Guide](Troubleshooting.md)** - Solve API-related issues
 

@@ -709,7 +709,7 @@ Now that you have integration examples:
 
 1. **[Styling and Theming](Styling-and-Theming.md)** - Customize the appearance
 2. **[Advanced Customization](Advanced-Customization.md)** - Extend functionality
-3. **[Testing Guide](Testing)** - Test your integration
+3. **[Testing Guide](Testing-Guide.md)** - Test your integration
 4. **[Production Deployment](Production-Deployment.md)** - Deploy with confidence
 
 ## 🆘 Need Help?

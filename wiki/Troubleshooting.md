@@ -537,7 +537,7 @@ When reporting an issue, include:
 Now that you've troubleshooted your issue:
 
 1. **[Configuration Guide](Configuration-Guide.md)** - Review configuration if needed
-2. **[Testing Guide](Testing)** - Test your fix
+2. **[Testing Guide](Testing-Guide.md)** - Test your fix
 3. **[Performance Optimization](Performance-Optimization.md)** - Optimize after fixing
 4. **[Production Deployment](Production-Deployment.md)** - Deploy with confidence
 

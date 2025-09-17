@@ -951,7 +951,7 @@ end
 Now that you understand production deployment:
 
 1. **[Performance Optimization](Performance-Optimization.md)** - Optimize your production deployment
-2. **[Testing Guide](Testing)** - Test your production setup
+2. **[Testing Guide](Testing-Guide.md)** - Test your production setup
 3. **[Database Schema](Database-Schema.md)** - Optimize your database for production
 4. **[API Endpoints](API-Endpoints.md)** - Secure your API endpoints
 

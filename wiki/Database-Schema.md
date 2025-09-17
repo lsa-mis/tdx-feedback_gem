@@ -460,7 +460,7 @@ Now that you understand the database schema:
 1. **[API Endpoints](API-Endpoints.md)** - REST API documentation and examples
 2. **[Performance Optimization](Performance-Optimization.md)** - Database and query optimization
 3. **[Production Deployment](Production-Deployment.md)** - Database configuration and maintenance
-4. **[Testing Guide](Testing)** - Test your database setup
+4. **[Testing Guide](Testing-Guide.md)** - Test your database setup
 
 ## 🆘 Need Help?
 

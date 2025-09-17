@@ -506,7 +506,7 @@ Now that you understand configuration:
 
 1. **[Integration Examples](Integration-Examples.md)** - See configuration in action
 2. **[Styling and Theming](Styling-and-Theming.md)** - Customize the appearance
-3. **[Testing Guide](Testing)** - Test your configuration
+3. **[Testing Guide](Testing-Guide.md)** - Test your configuration
 4. **[Production Deployment](Production-Deployment.md)** - Deploy with confidence
 
 ## 🆘 Need Help?

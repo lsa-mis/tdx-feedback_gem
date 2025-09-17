@@ -500,7 +500,7 @@ Now that you understand the API endpoints:
 
 1. **[Performance Optimization](Performance-Optimization.md)** - Optimize API performance
 2. **[Production Deployment](Production-Deployment.md)** - Deploy with API security
-3. **[Testing Guide](Testing)** - Test your API integration
+3. **[Testing Guide](Testing-Guide.md)** - Test your API integration
 4. **[Database Schema](Database-Schema.md)** - Understand the data structure
 
 ## 🆘 Need Help?

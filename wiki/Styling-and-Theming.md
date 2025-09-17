@@ -784,7 +784,7 @@ Complete guide to customizing the appearance of the TDX Feedback Gem to match yo
 Now that you understand styling and theming:
 
 1. **[Advanced Customization](Advanced-Customization.md)** - Extend functionality with JavaScript
-2. **[Testing Guide](Testing)** - Test your custom styles
+2. **[Testing Guide](Testing-Guide.md)** - Test your custom styles
 3. **[Performance Optimization](Performance-Optimization.md)** - Optimize CSS performance
 4. **[Production Deployment](Production-Deployment.md)** - Deploy with custom styling
 
