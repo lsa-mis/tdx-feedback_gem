@@ -33,6 +33,10 @@ if defined?(TdxFeedbackGem)
 
     # UI label prefix for created tickets
     # config.title_prefix = '[Feedback]'
+
+    # Example placeholders for API endpoints (configure via credentials/ENV or here):
+    # config.tdx_base_url = 'https://api.example.com/'
+    # config.oauth_token_url = 'https://api.example.com/'
   end
 
   # Configuration Resolution Priority:

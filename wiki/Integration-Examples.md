@@ -428,11 +428,11 @@ volumes:
 #### Environment File
 
 ```bash
-# .env
+# .env (example)
 TDX_CLIENT_ID=your_client_id_here
 TDX_CLIENT_SECRET=your_client_secret_here
-TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
-TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
+TDX_BASE_URL=https://api.example.com/
+TDX_OAUTH_TOKEN_URL=https://api.example.com/
 TDX_ENABLE_TICKET_CREATION=true
 DATABASE_PASSWORD=your_database_password
 ```
@@ -480,9 +480,9 @@ spec:
               name: tdx-secrets
               key: client-secret
         - name: TDX_BASE_URL
-          value: "https://gw.api.it.umich.edu/um/it"
+          value: "https://api.example.com/"
         - name: TDX_OAUTH_TOKEN_URL
-          value: "https://gw.api.it.umich.edu/um/oauth2/token"
+          value: "https://api.example.com/"
         resources:
           requests:
             memory: "256Mi"
@@ -569,8 +569,8 @@ spec:
 heroku config:set TDX_ENABLE_TICKET_CREATION=true
 heroku config:set TDX_CLIENT_ID=your_client_id
 heroku config:set TDX_CLIENT_SECRET=your_client_secret
-heroku config:set TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
-heroku config:set TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
+heroku config:set TDX_BASE_URL=https://api.example.com/
+heroku config:set TDX_OAUTH_TOKEN_URL=https://api.example.com/
 heroku config:set RAILS_ENV=production
 ```
 

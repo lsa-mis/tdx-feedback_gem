@@ -9,9 +9,9 @@ RSpec.describe TdxFeedbackGem::Configuration do
   describe '#initialize' do
     it 'sets default values correctly' do
       expect(config.require_authentication).to be false
-      # URLs are now automatically resolved from credentials, ENV, or defaults
-      expect(config.tdx_base_url).to be_a(String)
-      expect(config.oauth_token_url).to be_a(String)
+      # URLs require credentials or ENV; no hardcoded defaults
+      expect(config.tdx_base_url).to be_nil.or be_a(String)
+      expect(config.oauth_token_url).to be_nil.or be_a(String)
       # client_id and client_secret are resolved from credentials or ENV, so they may not be nil
       expect(config.client_id).to eq(nil).or eq(ENV['TDX_CLIENT_ID'])
       expect(config.client_secret).to eq(nil).or eq(ENV['TDX_CLIENT_SECRET'])
@@ -205,9 +205,9 @@ RSpec.describe TdxFeedbackGem::Configuration do
 
         expect(config.require_authentication).to be false
         expect(config.enable_ticket_creation).to be false
-        # URLs are automatically resolved from credentials, ENV, or defaults
-        expect(config.tdx_base_url).to be_a(String)
-        expect(config.oauth_token_url).to be_a(String)
+        # URLs may be nil unless provided via credentials/ENV
+        expect(config.tdx_base_url).to be_nil.or be_a(String)
+        expect(config.oauth_token_url).to be_nil.or be_a(String)
       end
     end
 
@@ -472,11 +472,10 @@ RSpec.describe TdxFeedbackGem::Configuration do
         expect(config.oauth_token_url).to eq('https://env.api.example.com/um/oauth2/token')
       end
 
-      it 'uses default URLs when neither credentials nor ENV are available' do
+      it 'returns nil when neither credentials nor ENV are available' do
         config = described_class.new
-        # Since Rails is not defined, it will use the default URL for non-production
-        expect(config.tdx_base_url).to eq('https://gw-test.api.it.umich.edu/um/it')
-        expect(config.oauth_token_url).to eq('https://gw-test.api.it.umich.edu/um/oauth2/token')
+        expect(config.tdx_base_url).to be_nil
+        expect(config.oauth_token_url).to be_nil
       end
     end
 
@@ -487,11 +486,10 @@ RSpec.describe TdxFeedbackGem::Configuration do
         end
       end
 
-      it 'uses test URLs for non-production environments' do
-        # Without Rails defined, it defaults to test URLs
+      it 'does not provide built-in defaults for non-production environments' do
         config = described_class.new
-        expect(config.tdx_base_url).to eq('https://gw-test.api.it.umich.edu/um/it')
-        expect(config.oauth_token_url).to eq('https://gw-test.api.it.umich.edu/um/oauth2/token')
+        expect(config.tdx_base_url).to be_nil
+        expect(config.oauth_token_url).to be_nil
       end
 
       context 'when Rails environment is production' do
@@ -509,10 +507,10 @@ RSpec.describe TdxFeedbackGem::Configuration do
           allow(Rails).to receive(:application).and_return(mock_app)
         end
 
-        it 'uses production URLs for production environment' do
+        it 'does not provide built-in defaults even in production environment' do
           config = described_class.new
-          expect(config.tdx_base_url).to eq('https://gw.api.it.umich.edu/um/it')
-          expect(config.oauth_token_url).to eq('https://gw.api.it.umich.edu/um/oauth2/token')
+          expect(config.tdx_base_url).to be_nil
+          expect(config.oauth_token_url).to be_nil
         end
       end
 
@@ -531,10 +529,10 @@ RSpec.describe TdxFeedbackGem::Configuration do
           allow(Rails).to receive(:application).and_return(mock_app)
         end
 
-        it 'uses test URLs for staging environment' do
+        it 'does not provide built-in defaults for staging environment' do
           config = described_class.new
-          expect(config.tdx_base_url).to eq('https://gw-test.api.it.umich.edu/um/it')
-          expect(config.oauth_token_url).to eq('https://gw-test.api.it.umich.edu/um/oauth2/token')
+          expect(config.tdx_base_url).to be_nil
+          expect(config.oauth_token_url).to be_nil
         end
       end
     end

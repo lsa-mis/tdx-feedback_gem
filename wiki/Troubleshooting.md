@@ -157,7 +157,7 @@ TdxFeedbackGem.configuration.enable_ticket_creation
 require 'net/http'
 require 'uri'
 
-uri = URI('https://gw.api.it.umich.edu/um/oauth2/token')
+uri = URI('https://api.example.com/')
 response = Net::HTTP.get_response(uri)
 puts response.code
 puts response.body
@@ -167,7 +167,7 @@ puts response.body
 
 ```bash
 # Test network connectivity
-curl -v https://gw.api.it.umich.edu/um/oauth2/token
+curl -v https://api.example.com/
 
 # Check firewall/proxy settings
 # Ensure outbound HTTPS (443) is allowed
@@ -177,7 +177,7 @@ curl -v https://gw.api.it.umich.edu/um/oauth2/token
 
 ```bash
 # Test OAuth token request
-curl -X POST "https://gw.api.it.umich.edu/um/oauth2/token" \
+curl -X POST "https://api.example.com/" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -H "Authorization: Basic $(echo -n 'client_id:client_secret' | base64)" \
   -d "grant_type=client_credentials&scope=tdxticket"

@@ -93,7 +93,7 @@ sequenceDiagram
 
 ```bash
 # Request OAuth token
-curl -X POST "https://gw.api.it.umich.edu/um/oauth2/token" \
+curl -X POST "https://api.example.com/" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -H "Authorization: Basic $(echo -n 'client_id:client_secret' | base64)" \
   -d "grant_type=client_credentials&scope=tdxticket"
@@ -118,7 +118,7 @@ curl -X POST "https://gw.api.it.umich.edu/um/oauth2/token" \
 
 ```bash
 # Use access token for API requests
-curl -X GET "https://gw.api.it.umich.edu/um/it/tickets" \
+curl -X GET "https://api.example.com//tickets" \
   -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -379,8 +379,8 @@ Content-Type: application/json
 
 1. **Import the schema file** into Postman
 2. **Set up environment variables**:
-   - `base_url`: `https://gw.api.it.umich.edu/um/it`
-   - `oauth_url`: `https://gw.api.it.umich.edu/um/oauth2/token`
+   - `base_url`: `https://api.example.com/`
+   - `oauth_url`: `https://api.example.com/`
    - `client_id`: Your client ID
    - `client_secret`: Your client secret
 
@@ -391,13 +391,13 @@ Content-Type: application/json
 
 ```bash
 # Get OAuth token
-TOKEN=$(curl -s -X POST "https://gw.api.it.umich.edu/um/oauth2/token" \
+TOKEN=$(curl -s -X POST "https://api.example.com/" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -H "Authorization: Basic $(echo -n 'client_id:client_secret' | base64)" \
   -d "grant_type=client_credentials&scope=tdxticket" | jq -r '.access_token')
 
 # Create ticket
-curl -X POST "https://gw.api.it.umich.edu/um/it/tickets" \
+curl -X POST "https://api.example.com//tickets" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{

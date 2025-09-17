@@ -42,10 +42,7 @@ module TdxFeedbackGem
       @runtime_scss_copy  = resolve_runtime_scss_copy
     end
 
-    # Allow runtime toggling of ticket creation (useful for testing/emergencies)
-    def enable_ticket_creation=(value)
-      @enable_ticket_creation = value
-    end
+    # Note: use the generated writer from attr_accessor for enable_ticket_creation
 
     private
 
@@ -106,8 +103,8 @@ module TdxFeedbackGem
       env_value = ENV['TDX_BASE_URL']
       return env_value if env_value && !env_value.empty?
 
-      # Default based on environment
-      default_url_for_environment
+      # No built-in default. Require credentials or ENV to provide this.
+      nil
     end
 
     def resolve_oauth_token_url
@@ -129,8 +126,8 @@ module TdxFeedbackGem
       env_value = ENV['TDX_OAUTH_TOKEN_URL']
       return env_value if env_value && !env_value.empty?
 
-      # Default based on environment
-      default_oauth_url_for_environment
+      # No built-in default. Require credentials or ENV to provide this.
+      nil
     end
 
     def environment_key
@@ -158,21 +155,7 @@ module TdxFeedbackGem
       false
     end
 
-    def default_url_for_environment
-      if production?
-        'https://gw.api.it.umich.edu/um/it'
-      else
-        'https://gw-test.api.it.umich.edu/um/it'
-      end
-    end
-
-    def default_oauth_url_for_environment
-      if production?
-        'https://gw.api.it.umich.edu/um/oauth2/token'
-      else
-        'https://gw-test.api.it.umich.edu/um/oauth2/token'
-      end
-    end
+    # Removed environment-specific hardcoded defaults to avoid exposing institution-specific URLs
 
     def resolve_enable_ticket_creation
       # First check Rails encrypted credentials for environment-specific values
@@ -267,6 +250,16 @@ module TdxFeedbackGem
       end
       if runtime_scss_copy && defined?(Rails) && Rails.env.production?
         Rails.logger.warn("[tdx_feedback_gem] runtime_scss_copy should be disabled in production for immutable builds")
+      end
+      if enable_ticket_creation
+        missing = []
+        missing << 'tdx_base_url' if tdx_base_url.nil? || tdx_base_url.to_s.strip.empty?
+        missing << 'oauth_token_url' if oauth_token_url.nil? || oauth_token_url.to_s.strip.empty?
+        missing << 'client_id' if client_id.nil? || client_id.to_s.strip.empty?
+        missing << 'client_secret' if client_secret.nil? || client_secret.to_s.strip.empty?
+        if defined?(Rails) && !missing.empty?
+          Rails.logger.warn("[tdx_feedback_gem] Ticket creation enabled but missing API configuration: #{missing.join(', ')}")
+        end
       end
       if enable_ticket_creation && [app_id, type_id, form_id, service_offering_id, status_id, source_id, service_id, responsible_group_id].any?(&:nil?)
         Rails.logger.warn("[tdx_feedback_gem] Ticket creation enabled but one or more required IDs are nil (app_id/type_id/form_id/etc.)") if defined?(Rails)

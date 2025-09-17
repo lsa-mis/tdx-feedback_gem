@@ -8,7 +8,7 @@ The gem uses a hierarchical configuration system that automatically resolves val
 
 1. **Rails Encrypted Credentials** (highest priority – recommended for production)
 2. **Environment Variables** (medium priority – good for deployment)
-3. **Built-in Defaults** (lowest priority – fallback values)
+3. **Built-in Defaults** (none for API URLs; provide via credentials/ENV)
 
 ## ⚙️ Basic Configuration
 
@@ -108,14 +108,9 @@ Use cases:
 ### TDX API Endpoints
 
 ```ruby
-config.tdx_base_url = 'https://gw.api.it.umich.edu/um/it'
-config.oauth_token_url = 'https://gw.api.it.umich.edu/um/oauth2/token'
+config.tdx_base_url = 'https://api.example.com/'
+config.oauth_token_url = 'https://api.example.com/'
 ```
-
-**Default URLs:**
-
-- **Development/Test**: `https://gw-test.api.it.umich.edu/um/it`
-- **Production**: `https://gw.api.it.umich.edu/um/it`
 
 ### OAuth Configuration
 
@@ -184,22 +179,22 @@ tdx:
   development:
     client_id: dev_client_id_here
     client_secret: dev_client_secret_here
-    base_url: https://gw-test.api.it.umich.edu/um/it
-    oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+    base_url: https://api.example.com/
+    oauth_token_url: https://api.example.com/
     enable_ticket_creation: 'false'  # Use string 'true'/'false'
     account_id: 2
   staging:
     client_id: staging_client_id_here
     client_secret: staging_client_secret_here
-    base_url: https://gw-test.api.it.umich.edu/um/it
-    oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+    base_url: https://api.example.com/
+    oauth_token_url: https://api.example.com/
     enable_ticket_creation: 'true'   # Use string 'true'/'false'
     account_id: 2
   production:
     client_id: prod_client_id_here
     client_secret: prod_client_secret_here
-    base_url: https://gw.api.it.umich.edu/um/it
-    oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
+    base_url: https://api.example.com/
+    oauth_token_url: https://api.example.com/
     enable_ticket_creation: 'true'   # Use string 'true'/'false'
     account_id: 2
 ```
@@ -214,16 +209,16 @@ tdx_client_secret: your_shared_client_secret_here
 # Environment-specific URLs only
 tdx:
   development:
-    base_url: https://gw-test.api.it.umich.edu/um/it
-    oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+    base_url: https://api.example.com/
+    oauth_token_url: https://api.example.com/
     enable_ticket_creation: 'false'  # Use string 'true'/'false'
   staging:
-    base_url: https://gw-test.api.it.umich.edu/um/it
-    oauth_token_url: https://gw-test.api.it.umich.edu/um/oauth2/token
+    base_url: https://api-staging.example.com/um/it
+    oauth_token_url: https://api-staging.example.com/um/oauth2/token
     enable_ticket_creation: 'true'
   production:
-    base_url: https://gw.api.it.umich.edu/um/it
-    oauth_token_url: https://gw.api.it.umich.edu/um/oauth2/token
+    base_url: https://api.example.com/
+    oauth_token_url: https://api.example.com/
     enable_ticket_creation: 'true'
 ```
 
@@ -235,8 +230,8 @@ tdx:
 # .env or your environment configuration
 TDX_CLIENT_ID=your_client_id_here
 TDX_CLIENT_SECRET=your_client_secret_here
-TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
-TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
+TDX_BASE_URL=https://api.example.com/
+TDX_OAUTH_TOKEN_URL=https://api.example.com/
 TDX_ENABLE_TICKET_CREATION=false
 TDX_FEEDBACK_GEM_AUTO_PIN=true
 TDX_FEEDBACK_GEM_RUNTIME_SCSS_COPY=false
@@ -245,27 +240,27 @@ TDX_FEEDBACK_GEM_RUNTIME_SCSS_COPY=false
 #### Environment-Specific .env Files
 
 ```bash
-# .env.development
+# .env.development (example)
 TDX_CLIENT_ID=dev_client_id_here
 TDX_CLIENT_SECRET=dev_client_secret_here
-TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
-TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
+TDX_BASE_URL=https://api-dev.example.com/um/it
+TDX_OAUTH_TOKEN_URL=https://api-dev.example.com/um/oauth2/token
 TDX_ENABLE_TICKET_CREATION=false
 TDX_ACCOUNT_ID=2
 
-# .env.staging
+# .env.staging (example)
 TDX_CLIENT_ID=staging_client_id_here
 TDX_CLIENT_SECRET=staging_client_secret_here
-TDX_BASE_URL=https://gw-test.api.it.umich.edu/um/it
-TDX_OAUTH_TOKEN_URL=https://gw-test.api.it.umich.edu/um/oauth2/token
+TDX_BASE_URL=https://api-staging.example.com/um/it
+TDX_OAUTH_TOKEN_URL=https://api-staging.example.com/um/oauth2/token
 TDX_ENABLE_TICKET_CREATION=true
 TDX_ACCOUNT_ID=2
 
-# .env.production
+# .env.production (example)
 TDX_CLIENT_ID=prod_client_id_here
 TDX_CLIENT_SECRET=prod_client_secret_here
-TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
-TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
+TDX_BASE_URL=https://api.example.com/
+TDX_OAUTH_TOKEN_URL=https://api.example.com/
 TDX_ENABLE_TICKET_CREATION=true
 TDX_ACCOUNT_ID=2
 ```
@@ -293,8 +288,8 @@ TDX_ACCOUNT_ID=2
 | `TDX_ENABLE_TICKET_CREATION` | `true` | Enable TDX ticket creation |
 | `TDX_CLIENT_ID` | `your_client_id` | TDX OAuth client ID |
 | `TDX_CLIENT_SECRET` | `your_client_secret` | TDX OAuth client secret |
-| `TDX_BASE_URL` | `https://gw.api.it.umich.edu/um/it` | Production TDX API URL |
-| `TDX_OAUTH_TOKEN_URL` | `https://gw.api.it.umich.edu/um/oauth2/token` | Production OAuth token URL |
+| `TDX_BASE_URL` | `https://api.example.com/` | TDX API base URL |
+| `TDX_OAUTH_TOKEN_URL` | `https://api.example.com/` | OAuth token URL |
 | `TDX_ACCOUNT_ID` | `2` | Production Account ID |
 
 #### Development/Staging Variables
@@ -324,8 +319,8 @@ environment:
   - TDX_ENABLE_TICKET_CREATION=true
   - TDX_CLIENT_ID=your_client_id
   - TDX_CLIENT_SECRET=your_client_secret
-  - TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
-  - TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
+  - TDX_BASE_URL=https://api.example.com/
+  - TDX_OAUTH_TOKEN_URL=https://api.example.com/
   - TDX_ACCOUNT_ID=2
 ```
 
@@ -354,8 +349,8 @@ env:
 heroku config:set TDX_ENABLE_TICKET_CREATION=true
 heroku config:set TDX_CLIENT_ID=your_client_id
 heroku config:set TDX_CLIENT_SECRET=your_client_secret
-heroku config:set TDX_BASE_URL=https://gw.api.it.umich.edu/um/it
-heroku config:set TDX_OAUTH_TOKEN_URL=https://gw.api.it.umich.edu/um/oauth2/token
+heroku config:set TDX_BASE_URL=https://api.example.com/
+heroku config:set TDX_OAUTH_TOKEN_URL=https://api.example.com/
 heroku config:set TDX_ACCOUNT_ID=2
 ```
 
@@ -368,10 +363,7 @@ heroku config:set TDX_ACCOUNT_ID=2
    - Then global credentials (e.g., `tdx.client_id`)
 2. **Environment Variables** (medium priority)
    - `TDX_CLIENT_ID`, `TDX_ENABLE_TICKET_CREATION`, etc.
-3. **Built-in Defaults** (lowest priority)
-   - Development: `https://gw-test.api.it.umich.edu/um/it`
-   - Staging: `https://gw-test.api.it.umich.edu/um/it`
-   - Production: `https://gw.api.it.umich.edu/um/it`
+3. There are no built-in defaults for API URLs; configure via credentials/ENV.
 4. **Built-in Defaults** (lowest priority)
    - Development: `2`
    - Staging: `2`

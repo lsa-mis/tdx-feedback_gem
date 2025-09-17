@@ -21,9 +21,9 @@ TdxFeedbackGem.configure do |config|
   # - Staging: Rails.application.credentials.tdx[:staging][:client_id]
   # - Production: Rails.application.credentials.tdx[:production][:client_id]
   #
-  # You can override manually if needed:
-  # config.tdx_base_url = 'https://gw-test.api.it.umich.edu/um/it'
-  # config.oauth_token_url = 'https://gw-test.api.it.umich.edu/um/oauth2/token'
+  # You can override manually if needed (example placeholders):
+  # config.tdx_base_url = 'https://api.example.com/'
+  # config.oauth_token_url = 'https://api.example.com/'
   # config.client_id = 'your_client_id'
   # config.client_secret = 'your_client_secret'
   # config.oauth_scope = 'tdxticket'
