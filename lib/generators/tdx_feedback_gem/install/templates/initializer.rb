@@ -8,19 +8,19 @@ if defined?(TdxFeedbackGem)
     # Enable ticket creation and set ID defaults (uncomment & customize)
     # Note: These can also be configured via Rails credentials or environment variables
     # config.enable_ticket_creation = true
-    # config.app_id = 46
-    # config.type_id = 644
-    # config.form_id = 107
-    # config.service_offering_id = 289
-    # config.status_id = 115
-    # config.source_id = 8
-    # config.service_id = 2314
-    # config.responsible_group_id = 388
+    # config.app_id = 0
+    # config.type_id = 1
+    # config.form_id = 1
+    # config.service_offering_id = 2
+    # config.status_id = 1
+    # config.source_id = 1
+    # config.service_id = 1
+    # config.responsible_group_id = 1
 
     # Optional: Account/department ID for ticket organization
-    # Can be configured via credentials: tdx.development.account_id: 21
-    # Or environment variable: TDX_ACCOUNT_ID=21
-    # config.account_id = 21
+    # Can be configured via credentials: tdx.development.account_id: 2
+    # Or environment variable: TDX_ACCOUNT_ID=2
+    # config.account_id = 2
 
     # Default requestor email (fallback when user is not authenticated)
     # config.default_requestor_email = 'noreply@example.com'
@@ -44,14 +44,14 @@ if defined?(TdxFeedbackGem)
   # tdx:
   #   development:
   #     enable_ticket_creation: 'true'  # Note: string values
-  #     account_id: 21
+  #     account_id: 2
   #   production:
   #     enable_ticket_creation: 'true'
-  #     account_id: 21
+  #     account_id: 2
   #
   # Example environment variables:
   # TDX_ENABLE_TICKET_CREATION=true
-  # TDX_ACCOUNT_ID=21
+  # TDX_ACCOUNT_ID=2
   #
   # The gem automatically resolves these settings after Rails initialization
   # and logs the resolution for debugging purposes.

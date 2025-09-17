@@ -29,14 +29,14 @@ TdxFeedbackGem.configure do |config|
   # config.oauth_scope = 'tdxticket'
 
   # Ticket defaults (required by TDX CreateTicket schema)
-  # config.app_id = 46
-  # config.type_id = 644
-  # config.form_id = 107
-  # config.service_offering_id = 289
-  # config.status_id = 115
-  # config.source_id = 8
-  # config.service_id = 2314
-  # config.responsible_group_id = 388
+  # config.app_id = 0
+  # config.type_id = 1
+  # config.form_id = 1
+  # config.service_offering_id = 2
+  # config.status_id = 1
+  # config.source_id = 1
+  # config.service_id = 1
+  # config.responsible_group_id = 1
 
   # Optional ticket configuration
   # config.account_id = 2  # Sets the account/department ID for ticket organization
