@@ -71,7 +71,7 @@ module TdxFeedbackGem
         say "3. Configure TDX settings via Rails credentials or environment variables:"
         say "   - Credentials: tdx.development.enable_ticket_creation: 'true'"
         say "   - Environment: TDX_ENABLE_TICKET_CREATION=true"
-        say "   - Account ID: tdx.development.account_id: 21 or TDX_ACCOUNT_ID=21"
+        say "   - Account ID: tdx.development.account_id: 1 or TDX_ACCOUNT_ID=1"
         say "4. (Optional) Customize feedback trigger in your layout footer: <%= feedback_system(trigger: :link, text: 'Feedback') %>"
         say "5. Restart your server"
         say "6. Verify modal loads and submissions create tickets (if enabled)."

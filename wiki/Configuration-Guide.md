@@ -142,8 +142,8 @@ config.account_id = 2                 # Account/department ID for ticket organiz
 ```
 
 **Note:** `account_id` can be configured via credentials or environment variables:
-- Credentials: `tdx.development.account_id: 21`
-- Environment: `TDX_ACCOUNT_ID=21`
+- Credentials: `tdx.development.account_id: 1`
+- Environment: `TDX_ACCOUNT_ID=1`
 
 ## 🎨 Customization Options
 
